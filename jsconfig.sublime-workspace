@@ -1,0 +1,922 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"compo",
+				"components"
+			],
+			[
+				"menu-comp",
+				"menu-component/"
+			],
+			[
+				"quer",
+				"querySelector"
+			],
+			[
+				"menu",
+				"menu-component/"
+			],
+			[
+				"fontZ",
+				"fontSize"
+			],
+			[
+				"list",
+				"list-columns"
+			],
+			[
+				"eve",
+				"eventName"
+			],
+			[
+				"sta",
+				"staticObj"
+			],
+			[
+				"key",
+				"keyup"
+			],
+			[
+				"gird",
+				"gridRow"
+			],
+			[
+				"grid",
+				"gridRow"
+			],
+			[
+				"offset",
+				"offsetLeft"
+			],
+			[
+				"rightD",
+				"rightDownMove"
+			],
+			[
+				"type",
+				"typeOfMove"
+			],
+			[
+				"ri",
+				"rightDown"
+			],
+			[
+				"near",
+				"nearlestObj"
+			],
+			[
+				"level",
+				"levelBackground"
+			],
+			[
+				"inde",
+				"indexOfmin"
+			],
+			[
+				"for",
+				"forEach"
+			],
+			[
+				"cli",
+				"clientWidth"
+			],
+			[
+				"clie",
+				"clientWidth"
+			],
+			[
+				"moved",
+				"movedObj"
+			],
+			[
+				"up",
+				"updateState"
+			],
+			[
+				"Pla",
+				"PlayerMy"
+			],
+			[
+				"baseCla",
+				"baseClassesMy"
+			],
+			[
+				"base",
+				"baseClassesMy"
+			],
+			[
+				"long",
+				"longPush"
+			],
+			[
+				"my",
+				"myReq"
+			],
+			[
+				"arr",
+				"arrOffset"
+			],
+			[
+				"Map",
+				"WeakMap"
+			],
+			[
+				"e",
+				"endPos"
+			],
+			[
+				"set",
+				"setTimeout"
+			],
+			[
+				"end",
+				"endPos"
+			],
+			[
+				"anima",
+				"animationSet"
+			],
+			[
+				"requ",
+				"requestAnimationFrame"
+			],
+			[
+				"act",
+				"actorsView"
+			],
+			[
+				"add",
+				"addEventListener"
+			],
+			[
+				"cla",
+				"className"
+			],
+			[
+				"st",
+				"style"
+			],
+			[
+				"vert",
+				"vertMove"
+			],
+			[
+				"start",
+				"startAnimation"
+			],
+			[
+				"ac",
+				"actorsView"
+			],
+			[
+				"coin",
+				"coinSilver"
+			],
+			[
+				"timing",
+				"timingFunc"
+			],
+			[
+				"ani",
+				"animationSet"
+			],
+			[
+				"el",
+				"elastic"
+			],
+			[
+				"ea",
+				"easeInOut"
+			],
+			[
+				"append",
+				"appendAnima"
+			],
+			[
+				"ste",
+				"step1"
+			],
+			[
+				"sca",
+				"scaleX()"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"moun",
+				"mountain-green_icon.svg"
+			],
+			[
+				"backg",
+				"background-color"
+			],
+			[
+				"star",
+				"star_icon.svg"
+			],
+			[
+				"jus",
+				"justify-self"
+			],
+			[
+				"align",
+				"align-items"
+			],
+			[
+				"u",
+				"url()"
+			],
+			[
+				"appen",
+				"appendChild"
+			],
+			[
+				"creaet",
+				"createElement"
+			],
+			[
+				"border-",
+				"border-box"
+			],
+			[
+				"min",
+				"min-height"
+			],
+			[
+				"backgd",
+				"background-image"
+			],
+			[
+				"Co",
+				"CoinSilver"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"plan",
+				"planMy"
+			],
+			[
+				"ba",
+				"baseClassesMy"
+			],
+			[
+				"draw",
+				"drawActors"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"border-s",
+				"border-spacing"
+			],
+			[
+				"DO",
+				"DOMDisplay"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"cons",
+				"constructor"
+			],
+			[
+				"leve",
+				"levelsMap"
+			],
+			[
+				"delete",
+				"deleteOnly"
+			],
+			[
+				"visi",
+				"visibility"
+			],
+			[
+				"inn",
+				"innerText"
+			],
+			[
+				"parent",
+				"parent-elem"
+			],
+			[
+				"appe",
+				"appendChild"
+			],
+			[
+				"consol",
+				"console.log"
+			],
+			[
+				"chi",
+				"child-elem-container"
+			],
+			[
+				"doc-",
+				"doc-tree-container"
+			],
+			[
+				"tra",
+				"transition-timing-function"
+			],
+			[
+				"trans",
+				"transparent"
+			],
+			[
+				"pad",
+				"padding-left"
+			],
+			[
+				"doc",
+				"doc-tree-container"
+			],
+			[
+				"Arra",
+				"Array.from"
+			],
+			[
+				"inner",
+				"innerText"
+			],
+			[
+				"que",
+				"querySelector"
+			],
+			[
+				"p",
+				"p"
+			],
+			[
+				"h",
+				"h1"
+			],
+			[
+				"win",
+				"window"
+			],
+			[
+				"sphere",
+				"sphere-container"
+			],
+			[
+				"just",
+				"justify-content"
+			],
+			[
+				"re",
+				"relative"
+			],
+			[
+				"border",
+				"borderRadius"
+			],
+			[
+				"functon",
+				"function"
+			],
+			[
+				"a",
+				"appendChild"
+			],
+			[
+				"tou",
+				"touchmove"
+			],
+			[
+				"touc",
+				"touchmove"
+			],
+			[
+				"pa",
+				"pageX"
+			],
+			[
+				"page",
+				"pageY"
+			],
+			[
+				"touch",
+				"touchstart"
+			],
+			[
+				"ease",
+				"ease-out"
+			],
+			[
+				"getbo",
+				"getBoundingClientRect"
+			],
+			[
+				"user",
+				"user-select"
+			],
+			[
+				"transi",
+				"transition-duration"
+			],
+			[
+				"remoe",
+				"remove"
+			],
+			[
+				"th",
+				"thNum"
+			],
+			[
+				"ro",
+				"rotate3d()"
+			],
+			[
+				"he",
+				"height"
+			],
+			[
+				"conso",
+				"console.log"
+			],
+			[
+				"call",
+				"callFunc"
+			],
+			[
+				"ra",
+				"rawDigit"
+			],
+			[
+				"get",
+				"getAccaunt"
+			],
+			[
+				"acca",
+				"accauntName"
+			],
+			[
+				"con",
+				"console.log"
+			],
+			[
+				"pro",
+				"promtNumber"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"index",
+				"indexOf"
+			],
+			[
+				"parce",
+				"parcelPlace"
+			],
+			[
+				"parcel",
+				"parcelPlace"
+			],
+			[
+				"road",
+				"roadGraph"
+			],
+			[
+				"robo",
+				"robotPlace"
+			],
+			[
+				"so",
+				"sosedi"
+			],
+			[
+				"arra",
+				"arrayEqual"
+			],
+			[
+				"temp",
+				"tempArr2"
+			],
+			[
+				"pass",
+				"passNode"
+			],
+			[
+				"le",
+				"length"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git qui",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git",
+				"Git: Commit"
+			],
+			[
+				"git q",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git com",
+				"Git: Commit"
+			],
+			[
+				"git pull",
+				"Git: Pull"
+			],
+			[
+				"git me",
+				"Git: Merge Branch"
+			],
+			[
+				"git stat",
+				"Git: Status"
+			],
+			[
+				"git add",
+				"Git: Add All"
+			],
+			[
+				"git qu",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git co",
+				"Git: Commit"
+			],
+			[
+				"git pu",
+				"Git: Push"
+			],
+			[
+				"qui",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git add ",
+				"Git: Add All"
+			],
+			[
+				"git ",
+				"Git: Commit"
+			],
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"git init",
+				"Git: Amend Commit"
+			],
+			[
+				"git f",
+				"Git: Fetch"
+			],
+			[
+				"git ush",
+				"Git: Push"
+			],
+			[
+				"git remote",
+				"Git: Track Remote Branch"
+			],
+			[
+				"git statu",
+				"Git: Status"
+			],
+			[
+				"quick",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git p",
+				"Git: Push"
+			],
+			[
+				"git quick",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git quic",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git qiuck",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git qio",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git cha",
+				"Git: Change Branch"
+			],
+			[
+				"git c",
+				"Git: Commit"
+			],
+			[
+				"git add all",
+				"Git: Add All"
+			],
+			[
+				"git repo",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git fet",
+				"Git: Fetch"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"prefe",
+				"Preferences: Package Control Settings"
+			],
+			[
+				"preferences: ",
+				"Preferences: Package Control Settings"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 243.0,
+		"history":
+		[
+			"git push",
+			"git remote set-url https://gitlab.com/beardelectric/2dvector.git",
+			"git remote set-url origin git@github.com:levelone/demo_app.git",
+			"$ git remote add",
+			"$ git remote add origin git@github.com:<username>/demo_app.git",
+			"https://gitlab.com/beardelectric/2dvector.git",
+			"git push",
+			"git remote add https://gitlab.com/beardelectric/2dvector.git"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/main.js",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/index.html",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/menu-component/menu-component_template.vue",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/main.js",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/anima.js",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/App.vue",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/module.js",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/raw.js",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/menu-component/menu-component_template.html",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/package.json",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/raw.html",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/style.css",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/package-lock.json",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/main-window",
+		"/C/Users/user/Documents/js-exercises/postalRobot/public/package.json",
+		"/C/Users/user/Documents/js-exercises/topos-frontend-romanuch/form-component/public/node_modules/vue/package.json",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/func.js",
+		"/C/Users/user/Downloads/Telegram Desktop/ChatExport_2022-10-26/js/script.js",
+		"/C/Users/user/Documents/js-exercises/errorsTests/public/index.html",
+		"/C/Users/user/Documents/js-exercises/errorsTests/public/main.js",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/levelsMap.js",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/baseClassesMy.js",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/style.css",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/index.html",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/raw.js",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/node_modules/acorn-globals/node_modules/acorn/dist/acorn.js",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/baseClasses.js",
+		"/C/Users/user/Documents/js-exercises/interfacePanel/public/func.js",
+		"/C/Users/user/Documents/js-exercises/interfacePanel/public/main.js",
+		"/C/Users/user/Documents/grid/main.html",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/main.js",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/package.json",
+		"/C/Users/user/Documents/js-exercises/lavaGame/public/module.js",
+		"/C/Users/user/Documents/js-exercises/interfacePanel/public/index.html",
+		"/C/Users/user/Documents/js-exercises/interfacePanel/public/module.js",
+		"/C/Users/user/Documents/js-exercises/errorsTests/public/style.css",
+		"/C/Users/user/Documents/js-exercises/errorsTests/public/node_modules/browserify/example/source_maps/js/wunder/bar.js",
+		"/C/Users/user/Documents/js-exercises/errorsTests/public/package.json",
+		"/C/Users/user/Documents/js-exercises/errorsTests/public/func.js",
+		"/C/Users/user/Documents/js-exercises/postalRobot/public/main.js",
+		"/C/Users/user/Documents/js-exercises/postalRobot/public/style.css",
+		"/C/Users/user/Documents/js-exercises/postalRobot/public/index.html",
+		"/C/Users/user/Documents/js-exercises/postalRobot/public/functions.js",
+		"/C/Users/user/Documents/js-exercises/group_lesson.js",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/style.css",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/functions.js",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/package.json",
+		"/C/Users/user/Downloads/html2canvas.min(1).js",
+		"/C/Users/user/Documents/js-exercises/lesson1.js",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/main2.js",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/module.js",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/node_modules/kiwimi/package.json",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/node_modules/pdfkit/package.json",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/bundle.js",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/public/findem.js",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/js/main2.js",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/css/style.css",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/html/index.html",
+		"/C/Users/user/AppData/Roaming/Sublime Text/Packages/All Autocomplete/All Autocomplete.sublime-settings",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/.gitlab-ci.yml",
+		"/C/Users/user/Documents/js-exercises/lesson1.html",
+		"/C/Users/user/Documents/js-exercises/index.html",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/index.html",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/main2.js",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/style.css",
+		"/C/Users/user/Documents/js-exercises/main2.js",
+		"/C/Users/user/AppData/Roaming/Sublime Text/Packages/User/GitlabIntegrate.sublime-settings",
+		"/C/Users/user/AppData/Roaming/Sublime Text/Packages/Git/Git.sublime-settings",
+		"/C/Users/user/AppData/Roaming/Sublime Text/Packages/User/Git.sublime-settings",
+		"/C/Users/user/Documents/js-exercises/shigida.html",
+		"/C/Users/user/Documents/grid/styles/container/container-two-rows/meet-our-amazing-team_photo-descript/meet-our-amazing-team_photo-descript.css",
+		"/C/Users/user/Documents/js-exercises/main.js",
+		"/C/Users/user/Documents/js-exercises/lesson.sublime-workspace",
+		"/C/Users/user/Documents/js-exercises/2Dvector_exersise/prepros.config"
+	],
+	"find":
+	{
+		"height": 34.4
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"script",
+			"html2"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.4
+	},
+	"input":
+	{
+		"height": 48.8
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 118.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/JavaScript & Coffeescript Build Systems/xJs.sublime-build",
+	"project": "jsconfig.sublime-project",
+	"replace":
+	{
+		"height": 65.6
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 301.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
