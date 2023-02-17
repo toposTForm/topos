@@ -1,7 +1,7 @@
 <template>
 
     <CellList cellListuid = 'mainCellsTable'></CellList>
-
+<!--  <CellList cellListuid = 'childCellsTable'></CellList>-->
 </template>
 
 <script>

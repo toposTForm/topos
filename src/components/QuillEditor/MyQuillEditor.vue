@@ -1,0 +1,93 @@
+<template>
+  <div>
+    <QuillEditor
+        @textChange="update($event, $el)"
+        theme="snow"
+        toolbar="full"
+        v-model:content="content" required contentType="html"
+        :style="{height: `${quillHeight}`,}"
+    />
+  </div>
+</template>
+
+<script>
+import { QuillEditor } from "@vueup/vue-quill";
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import '@vueup/vue-quill/dist/vue-quill.bubble.css'
+import '@vueup/vue-quill/dist/vue-quill.bubble.prod.css'
+import {mapActions} from "vuex";
+
+export default {
+  name: "MyQuillEditor",
+  components: {
+    QuillEditor
+  },
+  emits: ['resizeRowBar', 'saveInnerHtml', 'displayFontMenu'],
+  data(){
+    return {
+      quillOldHeight: '',
+      quillHeight: '',
+      content: '',
+    }
+  },
+  methods: {
+    update( quill, el){
+      if (this.quillHeight != this.$el.parentElement.offsetHeight){
+        this.quillHeight = this.$el.parentElement.offsetHeight
+      }
+      this.saveInnerHtml();
+    },
+    resizeRowBar(){
+      this.$emit('resizeRowBar', {
+        data: this.$data,
+      })
+    },
+    saveInnerHtml(){
+      this.$emit('saveInnerHtml', {
+        data: this.content,
+      })
+    },
+    temp(){
+      this.$el.children[0].querySelectorAll('.ql-formats').forEach( (elem, index)=> {
+        if (index != 0 && index != 8){
+          this.$el.children[0].querySelectorAll('.ql-formats')[index].style.display = 'none';
+        }
+      })
+    }
+  },
+  watch: {
+    quillHeight: function (data){
+      this.resizeRowBar();
+    }
+  },
+  mounted() {
+    this.$data.quillHeight = this.$el.parentElement.offsetHeight;
+    this.$el.children[1].style.height = 'fit-content';
+    // let newBut = document.createElement("button");
+    // let span = document.createElement('span');
+    // newBut.style.minwidth = 20 + 'px';
+    // newBut.style.width = 'fit-content';
+    // newBut.style.minheight = 20 + 'px';
+    // newBut.style.display = 'inline-block';
+    // newBut.style.verticalAlign = 'middle';
+    // newBut.type = 'button';
+    // newBut.title = 'minimize';
+    // newBut.style.justifySelf = 'end';
+    // span.className = 'q1-formats';
+    // newBut.innerText = '[X]';
+    // newBut.addEventListener('click', this.temp);
+    // span.appendChild(newBut);
+    // this.$el.children[0].appendChild(span);
+    this.$emit('displayFontMenu', {
+      data: this.$data,
+      el: this.$el
+    })
+
+  },
+}
+
+</script>
+
+<style scoped>
+
+</style>

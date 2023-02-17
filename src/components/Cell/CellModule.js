@@ -1,4 +1,5 @@
 import {nextTick} from "vue";
+import cell from "@/components/Cell/Cell";
 
 export default {
     state:{
@@ -9,6 +10,7 @@ export default {
         clickUp: true,
         cellMinHeight: '55px',
         rowBarCount: 0,
+        selectedText: '',
         getListIdx: function (str, substr) {
             let str1 = str;
             let listIdx = [];
@@ -17,7 +19,6 @@ export default {
             while ((lastIndex = str1.indexOf(substr, lastIndex + 1)) !== -1) {
                 listIdx.push(lastIndex);
                 counter++;
-
             }
             return {indexes: listIdx, amount: counter};
         },
@@ -37,7 +38,6 @@ export default {
         },
         rClick(ctx, cellData){
             ctx.commit("showrClickMenu", {state: cellData});
-
         },
         loadCellRow(ctx, cellData){
             ctx.commit("updateCellRow", {state: cellData});
@@ -45,16 +45,19 @@ export default {
         loadCellColumn(ctx, cellData){
             ctx.commit("updateCellColumn", {state: cellData});
         },
+        selectedText(ctx, cellData){
+            ctx.commit("updateSelectedText", {state: cellData});
+        }
     },
-    mutations:{
-        resizeCell(state, cellData){
-            if (cellData.state.clickDown){
+    mutations: {
+        resizeCell(state, cellData) {
+            if (cellData.state.clickDown) {
                 cellData.state.data.clickDown = true;
                 state.clickUp = false;
             }
-            if (cellData.state.mouseMoveColResize && !state.clickUp){
+            if (cellData.state.mouseMoveColResize && !state.clickUp) {
                 cellData.state.data.mouseMoveColResize = true;
-                if (cellData.state.data.mouseMoveColResize && cellData.state.data.clickDown && !state.clickUp){
+                if (cellData.state.data.mouseMoveColResize && cellData.state.data.clickDown && !state.clickUp) {
                     let posX = cellData.state.el.offsetLeft;
                     let posY = cellData.state.el.offsetTop;
                     let width = cellData.state.el.offsetWidth;
@@ -67,7 +70,7 @@ export default {
                     bla = 0;
                 }
             }
-            if (cellData.state.clickUp){
+            if (cellData.state.clickUp) {
                 cellData.state.data.clickDown = false;
                 cellData.state.data.clickUp = true;
                 state.clickUp = true;
@@ -77,29 +80,45 @@ export default {
             state.cellsRawLog.push(cellData.state);
             state.cellsLog.add(cellData.state);
         },
-        updateCell(state, cellData){
+        updateCell(state, cellData) {
             let parentCellList = this._modules.root.state.CellListModule;
             state.cellsLog.add(cellData.state);
             state.cellsRawLog.push(cellData.state);
         },
-        processCellText(state, cellData){
-            let bla = cellData.state.$data.cellText;
+        processCellText(state, cellData) {
+            // let bla = cellData.state.$data.cellText;
+            let bla = cellData.state.$el.innerText;
+            cellData.state.cellTextEl = cellData.state.$el;
+            cellData.state.$data.cellText = bla;
             bla = bla.replace(/[\n]/gi, '<br>');
             cellData.state.$data.cellTextHtml = bla;
+            let elem = cellData.state.$el.querySelector('.text-area');
+            if (!elem.childNodes.length == 0){
+                let range = document.createRange();
+                let sel = window.getSelection();
+                let offset = elem.childNodes[0].length;
+                if (typeof offset === 'undefined') debugger
+                // range.setStart(elem.childNodes[0], offset)
+                // range.collapse(true);
+                // sel.removeAllRanges();
+                // sel.addRange(range);
+            }
+            // elem.innerHTML = `<span style=\"color: red; background-color: yellow \">${bla}</span>`;
             let oldHeight = cellData.state.$data.textAreaOldHeight;
             let newHeight = cellData.state.$data.textAreaNewHeight;
             let amount = state.getListIdx(bla, '<br>').amount;
-            if (typeof bla !== 'undefined' && amount >= 1){
+            if (typeof bla !== 'undefined' && amount >= 1) {
                 let addHeight = amount * cellData.state.$data.fontSize;
-                if ((oldHeight + addHeight) !== newHeight){
+                if ((oldHeight + addHeight) !== newHeight) {
                     cellData.state.$data.textAreaNewHeight = cellData.state.$data.textAreaOldHeight + addHeight;
                 }
             }
         },
-        processDbClickCell(state, cellData){
-            if (cellData.state.dbClicked){
+        processDbClickCell(state, cellData) {
+            if (cellData.state.dbClicked) {
                 cellData.state.dbClicked = false;
                 cellData.state.disableClick = true;
+                state.selectedText = '';
                 nextTick(() => {
                     cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
                     cellData.state.cellBgColor = '';
@@ -108,66 +127,79 @@ export default {
                         cellData.state.disableClick = false;
                     }, 100);
                 });
-            }else{
+            } else {
                 cellData.state.dbClicked = true;
-                cellData.state.cellWIdth = 100 + '%';
+                cellData.state.$data.cellWIdth = 100 + '%';
+                if(cellData.state.$.parent.data.cellDbClicked === ''){
+                    cellData.state.$.parent.data.cellDbClicked = cellData;
+                }else{
+                    cellData.state.$.parent.data.cellDbClicked.state.$data.dbClicked = false;
+                    cellData.state.$.parent.data.cellDbClicked = cellData;
+                }
+                nextTick(() => {
+                    // cellData.state.$el.querySelector('.text-area').innerHTML = cellData.state.$data.cellText;
+                    // cellData.state.$el.querySelector('.text-area').focus();
+                    cellData.state.$refs.quillEditor.$data.content = cellData.state.cellTextHtml;
+                    cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
+                    cellData.state.$el.querySelector('.input-cell').children[0].children[0].children[0].focus();
+                });
             }
             state.cellsLog.add(cellData.state);
             state.cellsRawLog.push(cellData.state);
         },
         updateCellRow(state, cellData) {
             if (cellData.state.gridRow) return;
-            if (this._modules.root.state.CellListModule.cellListsLog.has(cellData.state.parentCellList)){
+            if (this._modules.root.state.CellListModule.cellListsLog.has(cellData.state.parentCellList)) {
                 let parentCellList = this._modules.root.state.CellListModule.cellListsLog.get(cellData.state.parentCellList);
-                if (typeof parentCellList.cellField.rows === 'undefined' || parentCellList.cellField.cols === ''){
+                if (typeof parentCellList.cellField.rows === 'undefined' || parentCellList.cellField.cols === '') {
                     let cols = parentCellList.cellField.defaultCols;
                     let cellNum = '';
-                    if (state.cellsLog.has(cellData.state)){
+                    if (state.cellsLog.has(cellData.state)) {
                         let index = 1;
                         state.cellsLog.forEach((elem) => {
-                            if (elem.uid === cellData.state.uid){
+                            if (elem.uid === cellData.state.uid) {
                                 cellNum = index;
                             }
                             index++;
                         });
                     }
                     if (cellData.state.name === 'Cell') cellNum = cellNum - 2;
-                    if (cellNum <= cols){
+                    if (cellNum <= cols) {
                         cellData.state.gridRow = 1;
-                    }else{
-                        if (!(cellNum % cols)){
+                    } else {
+                        if (!(cellNum % cols)) {
                             cellData.state.gridRow = cellNum / cols;
-                        }else{
+                        } else {
                             cellData.state.gridRow = Math.floor(cellNum / cols + 1);
                         }
                     }
-                    if (cellData.state.name === 'RowBar'){
-                        if (cellData.state.gridRaw === 'undefined'){
+                    if (cellData.state.name === 'RowBar') {
+                        if (cellData.state.gridRaw === 'undefined') {
                             cellData.state.gridRaw = 1;
                             state.rowBarCount = 1;
-                        }else{
+                        } else {
                             state.rowBarCount++;
                             cellData.state.gridRaw = state.rowBarCount;
                         }
                     }
-                }else{
+                } else {
                     let cols = parentCellList.cellField.cols;
                     let cellNum = '';
-                    if (state.cellsLog.has(cellData.state)){
+                    if (state.cellsLog.has(cellData.state)) {
                         let index = 1;
                         state.cellsLog.forEach((elem) => {
-                            if (elem.uid === cellData.state.uid){
+                            if (elem.uid === cellData.state.uid) {
                                 cellNum = index;
                             }
                             index++;
                         });
                     }
-                    if (cellNum <= cols){
+                    if (cellNum <= cols) {
                         cellData.state.gridRow = 1;
-                    }else{
-                        if (!(cellNum % cols)){
+                    } else {
+                        if (!(cellNum % cols)) {
                             cellData.state.gridRow = cellNum / cols;
-                        }else{
+                        } else {
                             cellData.state.gridRow = Math.floor(cellNum / cols + 1);
                         }
                     }
@@ -176,61 +208,137 @@ export default {
         },
         updateCellColumn(state, cellData) {
             if (cellData.state.gridCol) return;
-            if (this._modules.root.state.CellListModule.cellListsLog.has(cellData.state.parentCellList)){
+            if (this._modules.root.state.CellListModule.cellListsLog.has(cellData.state.parentCellList)) {
                 let parentCellList = this._modules.root.state.CellListModule.cellListsLog.get(cellData.state.parentCellList);
-                if (typeof parentCellList.cellField.cols === 'undefined' || parentCellList.cellField.cols === ''){
+                if (typeof parentCellList.cellField.cols === 'undefined' || parentCellList.cellField.cols === '') {
                     let cols = parentCellList.cellField.defaultCols;
                     if (cellData.state.name === 'RowBar') cols = 1;
                     let cellNum = '';
-                    if (state.cellsLog.has(cellData.state)){
+                    if (state.cellsLog.has(cellData.state)) {
                         let index = 1;
                         state.cellsLog.forEach((elem) => {
-                            if (elem.uid === cellData.state.uid){
+                            if (elem.uid === cellData.state.uid) {
                                 cellNum = index;
                             }
                             index++;
                         });
                     }
-                    if (cellNum <= cols){
+                    if (cellNum <= cols) {
                         if (cellData.state.name === 'RowBar') cellNum = cols;
                         cellData.state.gridCol = cellNum;
-                    }else{
+                    } else {
                         let res = Math.floor(cellNum % cols);
-                        if (res === 0){
+                        if (res === 0) {
                             cellData.state.gridCol = cols;
-                        } else{
+                        } else {
                             cellData.state.gridCol = res;
                         }
                     }
-                }else{
+                } else {
                     let cols = parentCellList.cellField.cols;
                     if (cellData.state.name === 'RowBar') cols = 1;
                     let cellNum = '';
-                    if (state.cellsLog.has(cellData.state)){
+                    if (state.cellsLog.has(cellData.state)) {
                         let index = 1;
                         state.cellsLog.forEach((elem) => {
-                            if (elem.uid === cellData.state.uid){
+                            if (elem.uid === cellData.state.uid) {
                                 cellNum = index;
                             }
                             index++;
                         });
                     }
-                    if (cellNum <= cols){
+                    if (cellNum <= cols) {
                         if (cellData.state.name === 'RowBar') cellNum = cols;
                         cellData.state.gridCol = cellNum;
-                    }else{
+                    } else {
                         let res = Math.floor(cellNum % cols);
-                        if (res === 0){
+                        if (res === 0) {
                             cellData.state.gridCol = cols;
-                        } else{
+                        } else {
                             cellData.state.gridCol = res;
                         }
                     }
                 }
             }
         },
-        showrClickMenu(state, cellData){
+        showrClickMenu(state, cellData) {
             let bla = 0;
+        },
+        updateSelectedText(state, cellData) {
+            // let selected = cellData.state.event.target.value.substring(cellData.state.event.target.selectionStart, cellData.state.event.target.selectionEnd);
+            // if (cellData.state.name !== 'clearSelectedState') {
+            //     let selected = window.document.getSelection().toString();
+            //     if (cellData.state.data.cellFocusAnima) {
+            //         if (selected === '') {
+            //             selected = cellData.state.el.innerText;
+            //         }
+            //         if (selected !== '') {
+            //             state.selectedText = {
+            //                 data: cellData.state.data,
+            //                 el: cellData.state.el,
+            //                 target: cellData.state.event.target,
+            //                 text: selected
+            //             };
+            //         }
+            //     } else if (cellData.state.data.dbClicked) {
+            //         if (selected === '') {
+            //             selected = cellData.state.el.innerText;
+            //         }
+            //         if (selected !== '') {
+            //             state.selectedText = {
+            //                 data: cellData.state.data,
+            //                 el: cellData.state.el,
+            //                 target: cellData.state.event.target,
+            //                 text: selected
+            //             };
+            //         }
+            //     } else if (!cellData.state.data.dbClicked && !cellData.state.data.cellFocusAnima) {
+            //         state.selectedText = '';
+            //     }
+            // }else{
+            //     state.selectedText = '';
+            // }
+            if (cellData.state.name === 'selectText'){
+                let selected = window.document.getSelection().toString();
+                // selected = `<span style=\"color: red; background-color: yellow \">${selected}</span>`;
+                let elem = cellData.state.el.querySelector('.text-area');
+                let range = document.createRange();
+                if (selected !== ''){
+                    selected = window.document.getSelection().getRangeAt(0);
+                    if (window.document.getSelection().getRangeAt(0).startContainer.parentNode.nodeName === 'SPAN'){
+
+                    }
+                    let extract = selected.extractContents();
+                    let spanWrapper = document.createElement('span');
+                    spanWrapper.style.backgroundColor = 'red';
+                    spanWrapper.appendChild(extract);
+                    selected.insertNode(spanWrapper);
+                    selected.collapse(true);
+                    state.selectedText = {
+                        data: cellData.state.data,
+                        el: cellData.state.el,
+                        target: cellData.state.event.target,
+                        text: selected
+                    };
+                }else{
+                    state.selectedText = '';
+                }
+            }else if (cellData.state.name === 'cellFocus'){
+                let selected = '';
+                if (cellData.state.el.querySelector('div') != null){
+                    selected = cellData.state.el.querySelector('.cell-text').innerHTML;
+                }
+                if (selected !== ''){
+                    state.selectedText = {
+                        data: cellData.state.data,
+                        el: cellData.state.el,
+                        target: cellData.state.event.target,
+                        text: selected
+                    };
+                }else{
+                    state.selectedText = '';
+                }
+            }
         }
     },
     getters:{
@@ -242,6 +350,9 @@ export default {
         },
         getClickUp(state){
             return state.clickUp;
+        },
+        getSelectedText(state){
+            return state.selectedText;
         }
     },
 }

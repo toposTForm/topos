@@ -22,7 +22,10 @@
           v-for="row in cellField.defaultRaws">
         </row-bar>
       </div>
-      <div :style="{position: `sticky`, height: 'fit-content', top: `${90}px`, display: 'grid', zIndex: '1', backgroundColor: 'red', gridRow: '2', gridColumn: `1 / ${cellField.defaultCols + 1}`, justifyContent: 'start', paddingLeft: '20px', cursor: columnBarFocused.cursor}"
+      <div :style="{position: `sticky`, height: 'fit-content', top: `${90}px`, display: 'grid', zIndex: '1',
+           backgroundColor: 'red', gridRow: '2', gridColumn: `1 / ${cellField.defaultCols + 1}`,
+           justifyContent: 'start', paddingLeft: '20px', cursor: columnBarFocused.cursor, webkitUserSelect: 'none',
+           userSelect: 'none'}"
            @mousemove="moveResizeLine({data: this.$data, el: this.$el, event: $event})"
            @click="showResizeLineLast({name: name, data: this.$data, el: this.$el, event: $event})"
             >
@@ -39,6 +42,7 @@
         <Cell
             ref="cell"
             @resizeRowBar="resizeRowBar"
+            @displayFontMenu="displayFontMenu"
             :cellListuid="cellListuid"
             v-for="cell in cellField.numberOfcells">
         </Cell>
@@ -53,16 +57,20 @@ import Cell from "@/components/Cell/Cell";
 import ColumnBar from "@/components/columnBar/ColumnBar";
 import RowBar from "@/components/RowBar/RowBar";
 import FormatBar from "@/components/FormatBar/FormatBar";
+import ChartJS from "@/components/ChartJS/ChartContainer";
 import {nextTick} from "vue";
 import {mapActions, mapGetters} from "vuex";
-
+import ChartContainer from "@/components/ChartJS/ChartContainer";
+import testChart from "@/components/ChartJS/testChart";
 export default {
   name: "CellList",
   components:{
+    ChartContainer,
     Cell,
     ColumnBar,
     RowBar,
     FormatBar,
+    testChart
   },
   directives: {
     resize: {
@@ -110,6 +118,7 @@ export default {
         lastColumn: '',
         cursor: ''
       },
+      cellDbClicked: '',
       cellFocused: {
         el: '',
         data: '',
@@ -169,9 +178,11 @@ export default {
             let temp = this.$data.resizeLine.offsetLeft - offsetLeft + scrollLeft;
             targetBar.$data.resizedMinWidth = temp + 20;
             targetCell.$data.resizedMinWidth = temp + 20 + 'px';
+            targetCell.$data.resizedTextWidth = temp + 19 + 'px';
           }else if ((this.$data.resizeLine.offsetLeft + scrollLeft) > (offsetLeft + width)){
             targetBar.$data.resizedMinWidth = Math.abs((offsetLeft) - this.$data.resizeLine.offsetLeft) + scrollLeft + 5 + 20;
             targetCell.$data.resizedMinWidth = targetBar.$data.resizedMinWidth + 'px';
+            targetCell.$data.resizedTextWidth = targetBar.$data.resizedMinWidth - 1 + 'px';
           }
         }
         this.$data.resizeLine.display = 'none';
@@ -221,7 +232,7 @@ export default {
       }
     },
     resizeRowBar(params){
-      let newCellHeight = params.data.textAreaNewHeight;
+      let newCellHeight = params.data.textAreaNewHeight + 1;
       let targetBar = this.$refs.rowBar.find(elem => elem.gridRaw == params.data.gridRow);
       targetBar.newHeight = newCellHeight;
     },
@@ -232,6 +243,17 @@ export default {
       this.$refs.cell.forEach((cell, index) => { //
 
       });
+    },
+    displayFontMenu(params){
+      let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
+      params.el.children[0].style.border = 'none';
+      if(fontContainer.children.length == 0){
+        fontContainer.appendChild(params.el.children[0]);
+      }else{
+        fontContainer.children[0].remove();
+        fontContainer.appendChild(params.el.children[0]);
+      }
+
     }
   },
   mounted() {
@@ -296,6 +318,8 @@ export default {
     height: fit-content;
     grid-row: 1;
     grid-column: 1 / 3;
+    -webkit-user-select: none; /* Safari */
+    user-select: none; /* Standard syntax */
   }
   .row-bar{
     display: grid;
@@ -307,6 +331,8 @@ export default {
     width: fit-content;
     grid-column: 1;
     grid-row: 3;
+    -webkit-user-select: none; /* Safari */
+    user-select: none; /* Standard syntax */
   }
 
 </style>

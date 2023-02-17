@@ -7,34 +7,36 @@
       <div class="font-container__label">
         <div class="label-font">Текст</div>
       </div>
-      <div class="font-container__bold">B</div>
-      <div class="font-container__italic">&nbspI&nbsp</div>
-      <div class="font-container__u">U</div>
-      <div class="font-container__font-list">
-        <select class="font-list">
-          <option value="font-name_1">Open Sans</option>
-          <option value="font-name_2" selected>Rowdies</option>
-          <option value="font-name_3">Lato</option>
-          <option value="font-name_4">Poppins</option>
-          <option value="font-name_4">Poppinfffffffffffffffffffffs</option>
-        </select>
-      </div>
+      <div class="quill-edit"></div>
+<!--      <div @click="setBold({name: name, data: this.$data, el: this.$el, event: $event})" class="font-container__bold">B</div>-->
+<!--      <div class="font-container__italic">&nbspI&nbsp</div>-->
+<!--      <div class="font-container__u">U</div>-->
+<!--      <div class="font-container__font-list">-->
+<!--        <select class="font-list">-->
+<!--          <option value="font-name_1">Open Sans</option>-->
+<!--          <option value="font-name_2" selected>Rowdies</option>-->
+<!--          <option value="font-name_3">Lato</option>-->
+<!--          <option value="font-name_4">Poppins</option>-->
+<!--          <option value="font-name_4">Poppinfffffffffffffffffffffs</option>-->
+<!--        </select>-->
+<!--      </div>-->
       <div class="font-container__font-format">
-        <div class="font-size-container">
-          <input class="font-size" type="number" min="3" max="36" name="font-size-input" v-model="fontSizeInput">
-          <label class="font-size-input-label" for="font-size-input" >px</label>
-        </div>
+<!--        <div class="font-size-container">-->
+<!--          <input class="font-size" type="number" min="3" max="36" name="font-size-input" v-model="fontSizeInput">-->
+<!--          <label class="font-size-input-label" for="font-size-input" >px</label>-->
+<!--        </div>-->
         <div class="font-container__color">
-          <div class="font-color" title="цвет текста">A</div>
-          <div class="cell-fill" title="заливка"></div>
+<!--          <div class="font-color" title="цвет текста">A</div>-->
+<!--          <div class="cell-fill" title="заливка"></div>-->
+
         </div>
       </div>
-      <select class="color-list">
-        <option value="font-name_1">Open Sans</option>
-        <option value="font-name_2" selected>Rowdies</option>
-        <option value="font-name_3">Lato</option>
-        <option value="font-name_4">Poppins</option>
-      </select>
+<!--      <select class="color-list">-->
+<!--        <option value="font-name_1">Open Sans</option>-->
+<!--        <option value="font-name_2" selected>Rowdies</option>-->
+<!--        <option value="font-name_3">Lato</option>-->
+<!--        <option value="font-name_4">Poppins</option>-->
+<!--      </select>-->
     </div>
     <div class="alignment-container">
       <div class="font-container__label">
@@ -58,9 +60,24 @@
         <div class="label-font">Вставка</div>
       </div>
       <div class="row-two">
-        <div class="insert-graph" title="добавить график"></div>
+        <div  class="insert-graph" title="добавить график"
+             @mouseenter="showGraphMenu(true)">
+        </div>
         <div class="insert-obj" title="добавить топос-объект"></div>
         <div class="insert-picture" title="добавить картинку"></div>
+      </div>
+      <div v-if="insertContainer.showGraphMenu" class="graph-dropdown-menu"
+        @mouseleave="showGraphMenu(false)">
+        <div class="graph-dropdown-menu__item line-chart" title="линейный график"></div>
+        <div class="graph-dropdown-menu__item bar-chart-hor" title="гистограмма горизонтальная"></div>
+        <div class="graph-dropdown-menu__item bar-chart-vert" title="гистограмма вертикальаня"></div>
+        <div class="graph-dropdown-menu__item grouped-bar-chart" title="гистограмма групповая"></div>
+        <div class="graph-dropdown-menu__item pie-chart" title="круговая диаграмма"></div>
+        <div class="graph-dropdown-menu__item radar-chart" title="диаграмма направленности"></div>
+        <div class="graph-dropdown-menu__item sector-chart" title="секторная диаграмма"></div>
+        <div class="graph-dropdown-menu__item doughnut-chart" title="кольцевая диаграмма"></div>
+        <div class="graph-dropdown-menu__item mix-bar-chart" title="смешанная диаграмма"></div>
+        <div class="graph-dropdown-menu__item bubble-chart" title="пузырьковая диаграмма"></div>
       </div>
     </div>
     <div class="data-container">
@@ -109,6 +126,7 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from "vuex";
 export default {
   name: "FormatBar",
   props: ['cellListuid',],
@@ -145,10 +163,35 @@ export default {
           active: false,
         },
       },
+      insertContainer: {
+        showGraphMenu: false,
+      },
       fontSizeInput: '12',
     }
   },
-  watch:{
+  computed: mapGetters(["getSelectedText"]),
+  methods: {
+    ...mapActions(['selectedText']),
+    showGraphMenu(param){
+      setTimeout(()=> this.$data.insertContainer.showGraphMenu = param, 100)
+    },
+    setBold(params){
+      if(typeof this.getSelectedText !== 'undefined' && this.getSelectedText !== ''){
+        if (!this.getSelectedText.data.cellFocusAnima && !this.getSelectedText.data.dbClicked){
+          this.selectedText({name: 'clearSelectedState'});
+          return;
+        }
+        if (typeof this.getSelectedText.target.style.fontWeight !== 'undefined' && this.getSelectedText.data.fontWeight !== 'bold'){
+          this.getSelectedText.data.fontWeight = 'bold';
+          let elem = this.getSelectedText.el.querySelector('.text-area');
+          // let spanTarget = elem.innerHTML.find()
+        }else if(this.getSelectedText.data.fontWeight === 'bold'){
+          this.getSelectedText.data.fontWeight = 'normal';
+        }
+      }
+    }
+  },
+  watch: {
     fontSizeInput(input){
       if (input.toString().length <= 2){
         if (input <= 36){
@@ -224,6 +267,12 @@ export default {
     justify-self: center;
     font-size: 12px;
     opacity: 0.8;
+  }
+  .quill-edit{
+    display: grid;
+    justify-self: center;
+    min-width: 600px;
+    min-height: 103px;
   }
   .font-container__bold{
     display: grid;
@@ -376,7 +425,6 @@ export default {
     background-image: url("./all-border-icon.png");
     transform: rotate(90deg);
     background-size: cover;
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-repeat: no-repeat;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -392,7 +440,6 @@ export default {
     grid-row: 1;
     background-image: url("./left-border-icon.png");
     transform: rotate(90deg);
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-size: cover;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -409,7 +456,6 @@ export default {
     grid-row: 1;
     background-image: url("./left-border-icon.png");
     transform: rotate(180deg);
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-size: cover;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -426,7 +472,6 @@ export default {
     grid-row: 1;
     background-image: url("./left-border-icon.png");
     transform: rotate(270deg);
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-size: cover;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -442,7 +487,6 @@ export default {
     grid-column: 5;
     grid-row: 1;
     background-image: url("./left-border-icon.png");
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-size: cover;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -464,7 +508,6 @@ export default {
     grid-column: 1;
     grid-row: 1;
     background-image: url("./align-left-icon.png");
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-size: cover;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -480,7 +523,6 @@ export default {
     grid-column: 2;
     grid-row: 1;
     background-image: url("./align-center-icon.png");
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-size: cover;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -496,7 +538,6 @@ export default {
     grid-column: 3;
     grid-row: 1;
     background-image: url("./align-right-icon.png");
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-size: cover;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -529,7 +570,6 @@ export default {
     grid-column: 1;
     grid-row: 1;
     background-image: url("./insert-graph-icon.png");
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-size: cover;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -545,7 +585,6 @@ export default {
     grid-column: 2;
     grid-row: 1;
     background-image: url("./insert-object-icon.png");
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     opacity: 0.8;
     background-size: cover;
     min-width: 1.7em;
@@ -563,7 +602,6 @@ export default {
     grid-column: 3;
     grid-row: 1;
     background-image: url("./insert-picture-icon.png");
-    background-color: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
     background-size: cover;
     min-width: 1.7em;
     min-height: 1.7em;
@@ -628,8 +666,6 @@ export default {
     text-decoration: none;
     display: block;
   }
-
-
   .button{
     border: 0;
     width: 100%;
@@ -647,4 +683,89 @@ export default {
     transform: scale(1.1);
     opacity: 0.99;
   }
+  .graph-dropdown-menu{
+    display: grid;
+    position: absolute;
+    justify-content: space-between;
+    align-content: space-around;
+    grid-gap: 6px;
+    padding: 5px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    background: linear-gradient(27deg, rgba(2,0,36,1) 0%, rgba(119,115,115,0.9697128851540616) 1%, rgba(0,212,255,1) 100%);
+    border-bottom-left-radius: 3%;
+    border-bottom-right-radius: 3%;
+    min-width: 310px;
+    min-height: 120px;
+    z-index: 1;
+    transition-duration: 200ms;
+  }
+  .graph-dropdown-menu:hover{
+    transition-duration: 200ms;
+  }
+  .graph-dropdown-menu__item{
+    height: 50px;
+    width: 50px;
+    background: conic-gradient(from -90deg at bottom center, papayawhip, peachpuff);
+    transition-duration: 200ms;
+  }
+  .line-chart{
+    background-image: url("./line-chart-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .bar-chart-vert{
+    background-image: url("./bar-chart-vert-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .bar-chart-hor{
+    background-image: url("./bar-chart-hor-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .grouped-bar-chart{
+    background-image: url("./grouped-bar-chart-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .pie-chart{
+    background-image: url("./pie-chart-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .radar-chart{
+    background-image: url("./radar-chart-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .sector-chart{
+    background-image: url("./sector-chart-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .doughnut-chart{
+    background-image: url("./doughnut-chart-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .mix-bar-chart{
+    background-image: url("./mix-bar-chart-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .bubble-chart{
+    background-image: url("./bubble-chart-icon.png");
+    transition-duration: 200ms;
+    background-size: cover;
+  }
+  .line-chart:hover, .bar-chart-vert:hover, .bar-chart-hor:hover, .mix-bar-chart:hover, .pie-chart:hover, .sector-chart:hover,
+  .bubble-chart:hover, .grouped-bar-chart:hover, .doughnut-chart:hover, .radar-chart:hover{
+    cursor: pointer;
+    transition-duration: 100ms;
+    background-color: white;
+    transform: scale(1.2);
+    opacity: 0.8;
+    border-radius: 10%;
+  }
+
 </style>
