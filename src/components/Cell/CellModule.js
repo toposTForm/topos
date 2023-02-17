@@ -118,6 +118,7 @@ export default {
             if (cellData.state.dbClicked) {
                 cellData.state.dbClicked = false;
                 cellData.state.disableClick = true;
+                cellData.state.$.parent.data.cellDbClicked = '';
                 state.selectedText = '';
                 nextTick(() => {
                     cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;

@@ -63,6 +63,7 @@ export default {
   mounted() {
     this.$data.quillHeight = this.$el.parentElement.offsetHeight;
     this.$el.children[1].style.height = 'fit-content';
+    this.$el.children[1].style.zIndex = 1;
     // let newBut = document.createElement("button");
     // let span = document.createElement('span');
     // newBut.style.minwidth = 20 + 'px';
