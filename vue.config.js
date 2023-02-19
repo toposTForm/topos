@@ -4,6 +4,6 @@ module.exports = defineConfig({
 })
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/<https://gitlab.com/beardelectric/topo.git>/'
-    : '/'
+      ? '/' + process.env.CI_PROJECT_NAME + '/'
+      : '/'
 }
