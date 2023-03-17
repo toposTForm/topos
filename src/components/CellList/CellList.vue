@@ -145,8 +145,7 @@ export default {
     showResizeLine(params){
       let scrollLeft = document.querySelector('.main-container').scrollLeft - document.querySelector('.row-bar').scrollWidth;
       if (this.$data.resizeLine.display === 'none'){
-        let scrollWIdth = document.querySelector('.main-container').scrollWidth;
-        this.$data.cellField.scrollWidth = scrollWIdth;
+        this.$data.cellField.scrollWidth = document.querySelector('.main-container').scrollWidth;
         let scroll = window.pageXOffset;
         let line = this.$data.resizeLine;
         line.display = 'grid';
@@ -236,9 +235,10 @@ export default {
             }
           }
         }
-      }else{
-        return;
       }
+      // else{
+      //   return;
+      // }
     },
     moveResizeLine(params){
       if (this.$data.resizeLine.display !== 'none'){
