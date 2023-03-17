@@ -140,9 +140,11 @@ export default {
                 nextTick(() => {
                     // cellData.state.$el.querySelector('.text-area').innerHTML = cellData.state.$data.cellText;
                     // cellData.state.$el.querySelector('.text-area').focus();
-                    cellData.state.$refs.quillEditor.$data.content = cellData.state.cellTextHtml;
-                    cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
-                    cellData.state.$el.querySelector('.input-cell').children[0].children[0].children[0].focus();
+                    if (typeof cellData.state.$refs.quillEditor !== 'undefined'){
+                        cellData.state.$refs.quillEditor.$data.content = cellData.state.cellTextHtml;
+                        cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
+                        cellData.state.$el.querySelector('.input-cell').children[0].children[0].children[0].focus();
+                    }
                 });
             }
             state.cellsLog.add(cellData.state);
@@ -164,7 +166,7 @@ export default {
                             index++;
                         });
                     }
-                    if (cellData.state.name === 'Cell') cellNum = cellNum - 2;
+                    if (cellData.state.name === 'Cell') cellNum = cellNum;
                     if (cellNum <= cols) {
                         cellData.state.gridRow = 1;
                     } else {
@@ -326,8 +328,13 @@ export default {
                 }
             }else if (cellData.state.name === 'cellFocus'){
                 let selected = '';
-                if (cellData.state.el.querySelector('div') != null){
-                    selected = cellData.state.el.querySelector('.cell-text').innerHTML;
+                if (typeof cellData.state.el.innerHTML !== 'undefined' && cellData.state.el.querySelector('div') != null){
+                    try {
+                        selected = cellData.state.el.querySelector('.cell-text').innerHTML;
+                    }catch (e) {
+                        console.log(e);
+                    }
+
                 }
                 if (selected !== ''){
                     state.selectedText = {

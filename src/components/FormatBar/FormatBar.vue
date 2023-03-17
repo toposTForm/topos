@@ -5,7 +5,7 @@
     </div>
     <div class="font-container">
       <div class="font-container__label">
-        <div class="label-font">Текст</div>
+        <div class="label-font">Активный элемент</div>
       </div>
       <div class="quill-edit"></div>
 <!--      <div @click="setBold({name: name, data: this.$data, el: this.$el, event: $event})" class="font-container__bold">B</div>-->
@@ -20,17 +20,16 @@
 <!--          <option value="font-name_4">Poppinfffffffffffffffffffffs</option>-->
 <!--        </select>-->
 <!--      </div>-->
-      <div class="font-container__font-format">
+<!--      <div class="font-container__font-format">-->
 <!--        <div class="font-size-container">-->
 <!--          <input class="font-size" type="number" min="3" max="36" name="font-size-input" v-model="fontSizeInput">-->
 <!--          <label class="font-size-input-label" for="font-size-input" >px</label>-->
 <!--        </div>-->
-        <div class="font-container__color">
+<!--        <div class="font-container__color">-->
 <!--          <div class="font-color" title="цвет текста">A</div>-->
 <!--          <div class="cell-fill" title="заливка"></div>-->
-
-        </div>
-      </div>
+<!--        </div>-->
+<!--      </div>-->
 <!--      <select class="color-list">-->
 <!--        <option value="font-name_1">Open Sans</option>-->
 <!--        <option value="font-name_2" selected>Rowdies</option>-->
@@ -60,24 +59,33 @@
         <div class="label-font">Вставка</div>
       </div>
       <div class="row-two">
-        <div  class="insert-graph" title="добавить график"
+        <div v-if="cellSelected" class="insert-graph" title="добавить график"
              @mouseenter="showGraphMenu(true)">
         </div>
-        <div class="insert-obj" title="добавить топос-объект"></div>
-        <div class="insert-picture" title="добавить картинку"></div>
+        <div v-else class="insert-graph grayed" title="добавить график"></div>
+        <div v-if="cellSelected" class="insert-obj" title="добавить топос-объект" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}"></div>
+        <div v-else class="insert-obj grayed" ></div>
+        <div v-if="cellSelected" class="insert-picture" title="добавить картинку" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}"></div>
+        <div v-else class="insert-picture grayed"></div>
+      </div>
+      <div class="row-three">
+        <div v-if="cellSelected" class="insert-text" title="добавить текст" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}"></div>
+        <div v-else class="insert-text grayed"></div>
+        <div v-if="cellSelected" class="insert-table" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}" title="добавить таблицу"></div>
+        <div v-else class="insert-table grayed"></div>
       </div>
       <div v-if="insertContainer.showGraphMenu" class="graph-dropdown-menu"
-        @mouseleave="showGraphMenu(false)">
-        <div class="graph-dropdown-menu__item line-chart" title="линейный график"></div>
-        <div class="graph-dropdown-menu__item bar-chart-hor" title="гистограмма горизонтальная"></div>
-        <div class="graph-dropdown-menu__item bar-chart-vert" title="гистограмма вертикальаня"></div>
-        <div class="graph-dropdown-menu__item grouped-bar-chart" title="гистограмма групповая"></div>
-        <div class="graph-dropdown-menu__item pie-chart" title="круговая диаграмма"></div>
-        <div class="graph-dropdown-menu__item radar-chart" title="диаграмма направленности"></div>
-        <div class="graph-dropdown-menu__item sector-chart" title="секторная диаграмма"></div>
-        <div class="graph-dropdown-menu__item doughnut-chart" title="кольцевая диаграмма"></div>
-        <div class="graph-dropdown-menu__item mix-bar-chart" title="смешанная диаграмма"></div>
-        <div class="graph-dropdown-menu__item bubble-chart" title="пузырьковая диаграмма"></div>
+        @mouseleave="showGraphMenu(false)" @mouseenter="showGraphMenu(true)">
+        <div @click="insertChart('lineChart')" class="graph-dropdown-menu__item line-chart" title="линейный график"></div>
+        <div @click="insertChart('barChartHor')" class="graph-dropdown-menu__item bar-chart-hor" title="гистограмма горизонтальная"></div>
+        <div @click="insertChart('barChartVert')" class="graph-dropdown-menu__item bar-chart-vert" title="гистограмма вертикальаня"></div>
+        <div @click="insertChart('groupedBarChart')" class="graph-dropdown-menu__item grouped-bar-chart" title="гистограмма групповая"></div>
+        <div @click="insertChart('pieChart')" class="graph-dropdown-menu__item pie-chart" title="круговая диаграмма"></div>
+        <div @click="insertChart('radarChart')" class="graph-dropdown-menu__item radar-chart" title="диаграмма направленности"></div>
+        <div @click="insertChart('sectorChart')" class="graph-dropdown-menu__item sector-chart" title="секторная диаграмма"></div>
+        <div @click="insertChart('doughnutChart')" class="graph-dropdown-menu__item doughnut-chart" title="кольцевая диаграмма"></div>
+        <div @click="insertChart('mixBarChart')" class="graph-dropdown-menu__item mix-bar-chart" title="смешанная диаграмма"></div>
+        <div @click="insertChart('bubbleChart')" class="graph-dropdown-menu__item bubble-chart" title="пузырьковая диаграмма"></div>
       </div>
     </div>
     <div class="data-container">
@@ -165,7 +173,9 @@ export default {
       },
       insertContainer: {
         showGraphMenu: false,
+        displayOtherButtons: 'auto'
       },
+      cellSelected: false,
       fontSizeInput: '12',
     }
   },
@@ -173,22 +183,18 @@ export default {
   methods: {
     ...mapActions(['selectedText']),
     showGraphMenu(param){
+      if (param){
+        this.$data.insertContainer.displayOtherButtons = 'none';
+      }else{
+        this.$data.insertContainer.displayOtherButtons = 'auto';
+      }
       setTimeout(()=> this.$data.insertContainer.showGraphMenu = param, 100)
     },
-    setBold(params){
-      if(typeof this.getSelectedText !== 'undefined' && this.getSelectedText !== ''){
-        if (!this.getSelectedText.data.cellFocusAnima && !this.getSelectedText.data.dbClicked){
-          this.selectedText({name: 'clearSelectedState'});
-          return;
-        }
-        if (typeof this.getSelectedText.target.style.fontWeight !== 'undefined' && this.getSelectedText.data.fontWeight !== 'bold'){
-          this.getSelectedText.data.fontWeight = 'bold';
-          let elem = this.getSelectedText.el.querySelector('.text-area');
-          // let spanTarget = elem.innerHTML.find()
-        }else if(this.getSelectedText.data.fontWeight === 'bold'){
-          this.getSelectedText.data.fontWeight = 'normal';
-        }
-      }
+    insertChart(param){
+      this.$emit('insertChart', {
+        data: this.$data,
+        type: param
+      })
     }
   },
   watch: {
@@ -566,6 +572,13 @@ export default {
     min-width: 115px;
     justify-content: space-evenly;
   }
+  .row-three{
+    display: grid;
+    grid-row: 3;
+    grid-column: 1 / 4;
+    min-width: 115px;
+    justify-content: space-evenly;
+  }
   .insert-graph{
     grid-column: 1;
     grid-row: 1;
@@ -612,6 +625,39 @@ export default {
     transition-duration: 100ms;
     background-color: white;
     transform: scale(1.2);
+  }
+  .insert-text{
+    grid-row: 1;
+    background-image: url("./text-editor-icon.png");
+    background-size: cover;
+    min-width: 1.5em;
+    min-height: 1.5em;
+    justify-self: start;
+  }
+  .insert-text:hover{
+    cursor: pointer;
+    transition-duration: 100ms;
+    background-color: white;
+    transform: scale(1.2);
+  }
+  .insert-table{
+    grid-row: 1;
+    background-image: url("./table-grid-icon.png");
+    background-size: cover;
+    min-width: 1.5em;
+    min-height: 1.5em;
+    justify-self: start;
+  }
+  .insert-table:hover{
+    cursor: pointer;
+    transition-duration: 100ms;
+    background-color: white;
+    transform: scale(1.2);
+  }
+  .grayed{
+    pointer-events: none;
+    opacity: 0.3;
+    color: #666666;
   }
   .data-container{
     display: grid;

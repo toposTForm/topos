@@ -10,46 +10,31 @@ import {
   Title,
   Tooltip,
   Legend,
-  BarElement,
   CategoryScale,
   LinearScale,
   LineElement,
   PointElement
 } from 'chart.js'
-import { Bar } from 'vue-chartjs'
-import {Line} from 'vue-chartjs'
+
+import { Line } from 'vue-chartjs'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 export default {
-  name: 'testChart',
+  name: 'lineChart',
   components: {
-    Bar,
     Line
   },
   data() {
-    // return chartConfig
     return {
       data: {
-        // labels: [
-        //   'January',
-        //   'February',
-        //   'March',
-        //   'April',
-        //   'May',
-        //   'June',
-        //   'July',
-        //   'August',
-        //   'September',
-        //   'October',
-        //   'November',
-        //   'December'
-        // ],
+        labels: [
+
+        ],
         datasets: [
           {
             type: 'line',
             label: 'Data Two',
-            // axis: 'y',
             backgroundColor: '#748044',
             data: [{
               x: 1,
@@ -80,18 +65,13 @@ export default {
             }
           },
           y: {
-            // max: 15,
-            // min: 0,
-            // ticks: {
-            //   stepSize: 0.5
-            // }
           }
         }
       }
     }
   },
   mounted() {
-    let bla = this.$data;
+
   }
 }
 </script>

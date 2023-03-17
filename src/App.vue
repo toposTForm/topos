@@ -11,15 +11,20 @@ import FormList2 from "@/components/FormList/FormList2";
 import CellList from "@/components/CellList/CellList";
 import Cell from "@/components/Cell/Cell";
 import MyQuillEditor from "@/components/QuillEditor/MyQuillEditor";
+import {ButtonPlugin} from "@syncfusion/ej2-vue-buttons";
+import naive from "naive-ui";
+
 
 export default {
   name: 'App',
   store,
+  ButtonPlugin,
   components: {
     FormList2,
     CellList,
     Cell,
     MyQuillEditor,
+    naive
   },
 }
 

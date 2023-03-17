@@ -13,9 +13,6 @@
 <script>
 import { QuillEditor } from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import '@vueup/vue-quill/dist/vue-quill.bubble.css'
-import '@vueup/vue-quill/dist/vue-quill.bubble.prod.css'
-import {mapActions} from "vuex";
 
 export default {
   name: "MyQuillEditor",
@@ -47,13 +44,6 @@ export default {
         data: this.content,
       })
     },
-    temp(){
-      this.$el.children[0].querySelectorAll('.ql-formats').forEach( (elem, index)=> {
-        if (index != 0 && index != 8){
-          this.$el.children[0].querySelectorAll('.ql-formats')[index].style.display = 'none';
-        }
-      })
-    }
   },
   watch: {
     quillHeight: function (data){

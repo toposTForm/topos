@@ -12,6 +12,7 @@
       <div class="format-bar">
         <format-bar
             ref='formatBar'
+            @insertChart="insertChart"
             :cellListuid="cellListuid">
         </format-bar>
       </div>
@@ -22,9 +23,9 @@
           v-for="row in cellField.defaultRaws">
         </row-bar>
       </div>
-      <div :style="{position: `sticky`, height: 'fit-content', top: `${90}px`, display: 'grid', zIndex: '1',
+      <div class="column-bar" :style="{position: `sticky`, height: 'fit-content', top: `${117}px`, display: 'grid', zIndex: '1',
            backgroundColor: 'red', gridRow: '2', gridColumn: `1 / ${cellField.defaultCols + 1}`,
-           justifyContent: 'start', paddingLeft: '20px', cursor: columnBarFocused.cursor, webkitUserSelect: 'none',
+           justifyContent: 'start', paddingLeft: '21.5px', cursor: columnBarFocused.cursor, webkitUserSelect: 'none',
            userSelect: 'none'}"
            @mousemove="moveResizeLine({data: this.$data, el: this.$el, event: $event})"
            @click="showResizeLineLast({name: name, data: this.$data, el: this.$el, event: $event})"
@@ -41,14 +42,21 @@
       <div :style="{display: 'grid', height: '100%', zIndex: '0', gridRow: '3', gridColumn: `1 / ${cellField.defaultCols + 1}`, justifyContent: cellField.justifyCellContent, paddingLeft: '20px'}">
         <Cell
             ref="cell"
-            @resizeRowBar="resizeRowBar"
-            @displayFontMenu="displayFontMenu"
-            :cellListuid="cellListuid"
+            @resizeRowBar = "resizeRowBar"
+            @displayFontMenu = "displayFontMenu"
+            @cellFocus = 'cellFocus'
+            :cellListuid = "cellListuid"
             v-for="cell in cellField.numberOfcells">
         </Cell>
       </div>
     </div>
   </div>
+  <!--  modals-->
+<!--  <my-jenesius-modal></my-jenesius-modal>-->
+  <my-naive-modal
+      ref="naiveModal"
+      @promtModalAction = 'promtModalAction'>
+  </my-naive-modal>
 </template>
 <script>
 
@@ -57,20 +65,29 @@ import Cell from "@/components/Cell/Cell";
 import ColumnBar from "@/components/columnBar/ColumnBar";
 import RowBar from "@/components/RowBar/RowBar";
 import FormatBar from "@/components/FormatBar/FormatBar";
-import ChartJS from "@/components/ChartJS/ChartContainer";
-import {nextTick} from "vue";
+import { nextTick } from "vue";
 import {mapActions, mapGetters} from "vuex";
 import ChartContainer from "@/components/ChartJS/ChartContainer";
 import testChart from "@/components/ChartJS/testChart";
+import { openModal } from "jenesius-vue-modal";
+import MySimpleModal from "@/components/MySimpleModal/MySimpleModal";
+import MyJenesiusModal from "@/components/MyJenesiusModal/MyJenesiusModal";
+import { promptModal } from "jenesius-vue-modal";
+import MyNaiveModal from "@/components/MyNaiveModal/MyNaiveModal";
+import { useMessage } from 'naive-ui'
+
 export default {
   name: "CellList",
   components:{
+    MyNaiveModal,
     ChartContainer,
     Cell,
     ColumnBar,
     RowBar,
     FormatBar,
-    testChart
+    testChart,
+    MyJenesiusModal,
+    MySimpleModal,
   },
   directives: {
     resize: {
@@ -92,8 +109,8 @@ export default {
       active: true,
       name: 'CellList',
       cellField:{
-        defaultRaws: 2,
-        defaultCols: 2,
+        defaultRaws: 4,
+        defaultCols: 3,
         numberOfcells: '',
         raws: '',
         cols: '',
@@ -119,11 +136,7 @@ export default {
         cursor: ''
       },
       cellDbClicked: '',
-      cellFocused: {
-        el: '',
-        data: '',
-        event: '',
-      }
+      cellFocused: [],
     }
   },
   computed: mapGetters(['getCellList']),
@@ -132,11 +145,13 @@ export default {
     showResizeLine(params){
       let scrollLeft = document.querySelector('.main-container').scrollLeft - document.querySelector('.row-bar').scrollWidth;
       if (this.$data.resizeLine.display === 'none'){
-        let scrollWIdth = document.querySelector('.cell').scrollWidth;
+        let scrollWIdth = document.querySelector('.main-container').scrollWidth;
         this.$data.cellField.scrollWidth = scrollWIdth;
+        let scroll = window.pageXOffset;
         let line = this.$data.resizeLine;
         line.display = 'grid';
-        if (typeof params.data.event !== 'undefined') line.offsetLeft = params.data.event.clientX;
+        // if (typeof params.data.event !== 'undefined') line.offsetLeft = params.data.event.clientX;
+        if (typeof params.data.event !== 'undefined') line.offsetLeft = Number(params.data.event.clientX) + scroll;
         line.cursorPosX = line.offsetLeft;
         this.$data.columnBarFocused.el = params.data.el;
         this.$data.columnBarFocused.data = params.data.data;
@@ -195,17 +210,19 @@ export default {
     showResizeLineLast(params){
       if (this.$data.columnBarFocused.lastColumn){
         let scrollLeft = document.querySelector('.main-container').scrollLeft - document.querySelector('.row-bar').scrollWidth;
+        let scroll = window.pageXOffset;
         if (this.$data.resizeLine.display !== 'none'){
           let line = this.$data.resizeLine;
-          if (typeof params.event !== 'undefined') line.offsetLeft = params.event.clientX;
+          if (typeof params.event !== 'undefined') line.offsetLeft = params.event.clientX + scroll;
           line.cursorPosX = line.offsetLeft;
+          if (typeof params.el.offsetLeft === 'undefined') params.el.offsetLeft = 0;
           if (( Math.abs(this.$data.resizeLine.offsetLeft + scrollLeft - params.el.offsetLeft)) > 2) {
             let targetBar = this.$refs.columnBar.find(elem => elem.gridCol == this.$data.columnBarFocused.data.gridCol);
             let offsetLeft = targetBar.$el.offsetLeft;
             let width = targetBar.$el.offsetWidth;
             let targetCell = this.$refs.cell.find(elem => elem.gridCol == this.$data.columnBarFocused.data.gridCol);
-            if ((this.$data.resizeLine.offsetLeft + scrollLeft) > (offsetLeft + width)){
-              targetBar.$data.resizedMinWidth = Math.abs((offsetLeft) - this.$data.resizeLine.offsetLeft) + scrollLeft + 5 + 20;
+            if ((this.$data.resizeLine.offsetLeft) > (offsetLeft + width)){
+              targetBar.$data.resizedMinWidth = Math.abs((offsetLeft) - this.$data.resizeLine.offsetLeft) + scrollLeft + 5 + 15;
               targetCell.$data.resizedMinWidth = targetBar.$data.resizedMinWidth + 'px';
               this.$data.resizeLine.display = 'none';
               this.$data.columnBarFocused.cursor = 'default';
@@ -225,9 +242,10 @@ export default {
     },
     moveResizeLine(params){
       if (this.$data.resizeLine.display !== 'none'){
+        let scroll = window.pageXOffset;
         let line = this.$data.resizeLine;
         if ( Math.abs(line.offsetLeft - params.event.clientX) > 5){
-          line.offsetLeft = params.event.clientX;
+          line.offsetLeft = params.event.clientX + scroll;
         }
       }
     },
@@ -240,9 +258,31 @@ export default {
       let bla  = 0;
     },
     cellFocus(params){
-      this.$refs.cell.forEach((cell, index) => { //
-
-      });
+      if (params.focused){
+        let cellIndex = '';
+        let checkCellState = this.$data.cellFocused.find((elem, index) => {
+          if (elem.data.data.uid === params.data.data.uid){
+            cellIndex = index;
+            return elem;
+          }
+        });
+        if (typeof checkCellState === 'undefined'){
+          this.$data.cellFocused.push(params);
+        }
+        this.$refs.formatBar.$data.cellSelected = params;
+      }else{
+        let cellIndex = '';
+        let checkCellState = this.$data.cellFocused.find((elem, index) => {
+          if (elem.data.data.uid === params.data.data.uid){
+            cellIndex = index;
+             return elem;
+          }
+        });
+        if(typeof checkCellState !== 'undefined'){
+          this.$data.cellFocused.splice(cellIndex,1);
+        }
+        if (this.$data.cellFocused.length == 0) this.$refs.formatBar.$data.cellSelected = false;
+      }
     },
     displayFontMenu(params){
       let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
@@ -253,13 +293,32 @@ export default {
         fontContainer.children[0].remove();
         fontContainer.appendChild(params.el.children[0]);
       }
-
-    }
+    },
+    insertChart(params){
+      try {
+        this.$data.cellFocused.forEach(elem => {
+          if (elem.data.data.insertObj == ''){
+            elem.data.data.insertObj = params.type;
+          }else{
+            this.$refs.naiveModal.$refs.promtModal.showModal = true;
+            this.$refs.naiveModal.$refs.promtModal.content = 'Некоторые ячейки содержат объекты. Перезаписать?';
+            this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, chartType: params.type};
+          }
+        });
+      }catch (e) {
+        console.log(`Err: ${promptModal(MySimpleModal)}`);
+      }
+    },
+    promtModalAction(params){
+      let bla = params;
+      params.data.data.cell.data.data.insertObj = 'empty';
+      params.data.data.cell.data.data.insertObj = params.data.data.chartType;
+    },
   },
   mounted() {
     this.$data.cellField.numberOfcells = this.$data.cellField.defaultRaws * this.$data.cellField.defaultCols;
     nextTick(() => {
-      let availWidth = window.screen.availWidth + 0;
+      let availWidth = window.screen.availWidth;
       let correctCellWidth = null;
       let koef = 0.05;
       do {
@@ -267,8 +326,8 @@ export default {
         correctCellWidth = (this.$refs.cell[0].$el.offsetWidth - koef) * (this.$data.cellField.defaultCols);
       } while(Math.round(availWidth) < Math.round(correctCellWidth));
       this.$refs.columnBar.forEach((barCell, index) => {
-        barCell.$data.resizedMinWidth = this.$refs.cell[index].$el.offsetWidth + koef;
-        this.$refs.cell[index].$data.resizedMinWidth = this.$refs.cell[index].$el.offsetWidth + koef + 'px';
+        barCell.$data.resizedMinWidth = this.$refs.cell[index].$el.offsetWidth + koef - 0;
+        this.$refs.cell[index].$data.resizedMinWidth = this.$refs.cell[index].$el.offsetWidth - 0 + koef +'px';
       });
       this.$data.cellField.justifyCellContent = 'start';
     });
@@ -334,5 +393,12 @@ export default {
     -webkit-user-select: none; /* Safari */
     user-select: none; /* Standard syntax */
   }
-
+  .test{
+    position: absolute;
+    z-index: 3;
+    min-height: 20px;
+    min-width: 20px;
+    background-color: transparent;
+    border: 2px solid red;
+  }
 </style>
