@@ -36,7 +36,7 @@ export default {
     },
     resizeRowBar(){
       this.$emit('resizeRowBar', {
-        data: this.$data,
+        heightKey: this.$data.quillHeight
       })
     },
     saveInnerHtml(){

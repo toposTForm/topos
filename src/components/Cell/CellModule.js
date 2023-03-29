@@ -130,7 +130,7 @@ export default {
                 });
             } else {
                 cellData.state.dbClicked = true;
-                cellData.state.$data.cellWIdth = 100 + '%';
+                // cellData.state.$data.cellWIdth = 100 + '%';
                 if(cellData.state.$.parent.data.cellDbClicked === ''){
                     cellData.state.$.parent.data.cellDbClicked = cellData;
                 }else{
@@ -171,9 +171,9 @@ export default {
                         cellData.state.gridRow = 1;
                     } else {
                         if (!(cellNum % cols)) {
-                            cellData.state.gridRow = cellNum / cols;
+                            cellData.state.gridRow = cellNum / cols - 1;
                         } else {
-                            cellData.state.gridRow = Math.floor(cellNum / cols + 1);
+                            cellData.state.gridRow = Math.floor(cellNum / cols);
                         }
                     }
                     if (cellData.state.name === 'RowBar') {

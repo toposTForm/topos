@@ -1,11 +1,11 @@
 <template>
-  <div :class="{'row': active}"
+  <div :class="{'main-container_hover': hoverIsActive, 'main-container': !hoverIsActive, 'main-container_selected': choosed}"
        v-if="active"
        v-on:click.right.prevent="rClick($event)"
-       v-on="
-       loadCellRow(this.$data),
-       loadCellColumn(this.$data)"
-       :style="{gridRow: gridRaw, gridColumn: gridCol, cursor: cursor,}">
+       v-on="loadCellRow(this.$data), loadCellColumn(this.$data)"
+       :style="{gridRow: gridRaw, gridColumn: gridCol, cursor: cursor,}"
+       @click="showResizeRowLine({name: name, data: this.$data, el: this.$el, event: $event})"
+        >
     <div class="wrap" :style="{minHeight: `${newHeight}px`}">
       <div class="cell-text" >
         {{gridRaw}}X
@@ -32,7 +32,7 @@ export default {
       newHeight: '40',
       gridRaw: 1,
       gridRow: '',
-      cursor: '',
+      cursor: 'pointer',
       hoverIsActive: true,
     }
   },
@@ -40,18 +40,48 @@ export default {
   watch: {
   },
   methods: {
-    ...mapActions(["loadCell", "loadCellRow", "loadCellColumn", 'rClick',])
+    ...mapActions(["loadCell", "loadCellRow", "loadCellColumn", 'rClick',]),
+    showResizeRowLine(data){
+      this.$emit('showResizeRowLine', {
+        data: data,
+      })
+    },
   },
 }
 </script>
 
 <style scoped>
-.row{
+.main-container{
+  width: 100%;
+  justify-self: start;
   display: grid;
   background-color: gray;
   opacity: 0.9;
   font-size: 14px;
   transition-duration: 100ms;
+}
+.main-container_selected{
+  width: 100%;
+  justify-self: start;
+  display: grid;
+  opacity: 0.8;
+  border-bottom: none;
+  border-top: none;
+  background-color: blanchedalmond;
+}
+.main-container_hover{
+  display: grid;
+  background-color: gray;
+  opacity: 0.9;
+  font-size: 14px;
+  transition-duration: 100ms;
+}
+.main-container_hover:hover {
+  opacity: 0.8;
+  border-bottom: none;
+  border-top: none;
+  background-color: blanchedalmond;
+  border-color: white;
 }
 .wrap{
   display: grid;

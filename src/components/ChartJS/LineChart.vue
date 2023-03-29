@@ -1,6 +1,6 @@
 <template>
-  <div class="main-container">
-    <Line :data="data" :options="options" />
+  <div>
+    <Line :data="data" :options="options" :style='{width: width, height: height}' />
   </div>
 </template>
 
@@ -10,8 +10,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  CategoryScale,
-  LinearScale,
+  CategoryScale, LinearScale,
   LineElement,
   PointElement
 } from 'chart.js'
@@ -25,16 +24,15 @@ export default {
   components: {
     Line
   },
+  props: ['width', 'height'],
   data() {
     return {
+      graphHeigth: '',
       data: {
-        labels: [
-
-        ],
         datasets: [
           {
             type: 'line',
-            label: 'Data Two',
+            label: 'График продаж',
             backgroundColor: '#748044',
             data: [{
               x: 1,
@@ -61,8 +59,9 @@ export default {
             // max: 50,
             // min: 0,
             ticks: {
-              stepSize: 0.5
-            }
+              stepSize: 1
+            },
+            label: 'График продаж',
           },
           y: {
           }
@@ -70,16 +69,24 @@ export default {
       }
     }
   },
+  methods: {
+    resizeRowBar(){
+      this.$emit('resizeRowBar', {
+        heightKey: this.$data.graphHeigth
+      })
+    },
+  },
+  watch: {
+    graphHeigth: function (data){
+      this.resizeRowBar();
+    },
+  },
   mounted() {
-
+    this.$data.graphHeigth = this.$el.parentElement.offsetHeight;
   }
 }
 </script>
 
 <style scoped>
-.main-container{
-  max-width: 300px;
-  height: 300px;
-  background-color: white;
-}
+
 </style>

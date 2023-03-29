@@ -1,6 +1,6 @@
 <template>
-  <div :style='{width: `${resizedMinWidth}px`, height: `${resizedMinHeight}px`}'>
-    <Bar :data="data" :options="options" />
+  <div>
+    <Bar :data="data" :options="options" :style='{width: width, height: height}'/>
   </div>
 </template>
 
@@ -23,37 +23,51 @@ export default {
   components: {
     Bar
   },
+  props: ['width', 'height'],
   data() {
     return {
       resizedMinWidth: '300',
-      resizedMinHeight: '300',
+      graphHeigth: '',
       data: {
         labels: [
-          'Золотодобыча',
-          'Свиноплан',
+          'Февраль',
+          'Март',
         ],
         datasets: [
           {
             type: 'bar',
-            label: 'вклад Вани',
-            backgroundColor: '#FFE123',
-            data: [3, 4],
-          },
-          {
-            type: 'bar',
-            label: 'вклад Егора',
+            label: 'Активность разработки 2023г (0 - 10)',
             backgroundColor: 'red',
-            data: [2, 5],
+            data: [3, 9],
           },
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        indexAxis: 'y'
+        indexAxis: 'y',
+        title: {
+          display: true,
+          text: 'Title'
+        }
       }
     }
   },
+  methods: {
+    resizeRowBar(){
+      this.$emit('resizeRowBar', {
+        heightKey: this.$data.graphHeigth
+      })
+    },
+  },
+  watch: {
+    graphHeigth: function (data){
+      this.resizeRowBar();
+    }
+  },
+  mounted() {
+    this.$data.graphHeigth = this.$el.parentElement.offsetHeight;
+  }
 }
 </script>
 

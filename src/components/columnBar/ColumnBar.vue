@@ -49,7 +49,6 @@ export default {
   watch: {
     hovered(state){
       if (state.columnBarFocused.activeBar){
-        // console.log(`active columnBar ${state.columnBarFocused.activeBar}`);
       }
       if (state.columnBarFocused.resizedWidth){
         this.resizedWidth = state.columnBarFocused.resizedWidth;
@@ -63,13 +62,6 @@ export default {
         data: data,
       })
     },
-    moveResizeLine(data){
-      setTimeout(() =>  {
-        this.$emit('moveResizeLine',{
-          data: data,
-        })
-      }, 100)
-    }
   },
 }
 </script>

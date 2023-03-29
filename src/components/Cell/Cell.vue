@@ -1,110 +1,133 @@
+<!--@dblclick='dbClickCell(this)'-->
 <template>
   <div :id=uid
        v-if="active"
        v-on="loadCell(this.$data),
        loadCellRow(this.$data),
        loadCellColumn(this.$data)"
-       @dblclick='dbClickCell(this)'
+       @resize="resizeRowBar"
        @click="cellFocus({name: name, data: this.$data, el: this.$el, event: $event})"
        class="cell"
        :style="{display: 'grid', gridRow: gridRow, gridColumn: gridCol, cursor: cursor, width: `${resizedWidth}`, backgroundColor: `${cellBgColor}`, justifyContent: 'stretch'}">
-
-    <div class="wrap" :style="{minWidth: `${resizedMinWidth}`}" :class="{'cell-focus-anima': cellFocusAnima}">
-<!--      <div v-if="!dbClicked" class="cell-text" v-html="cellTextHtml" :style="{fontSize: `${fontSize}px`,fontWeight: fontWeight, width: `${resizedTextWidth}`, height: `${textAreaNewHeight}` }"-->
-<!--           >-->
-<!--      </div>-->
-      <div class="input-cell" :style="{width: `${resizedMinWidth}`, cursor: 'auto' }">
-        <div v-if="insertObj === 'handsonTable'">
-          <handsontable-one
-              ref="hansontableOne"
-              @saveInnerHtml="saveInnerHtml"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}">
-          </handsontable-one>
-        </div>
-        <div v-else-if="insertObj === 'qillEditor'">
-          <my-quill-editor
-              @resizeRowBar="resizeRowBar"
-              @displayFontMenu="displayFontMenu"
-              ref="quillEditor"
-              :style="{width: `${resizedMinWidth}`}">
-          </my-quill-editor>
-        </div>
-        <div v-else-if="insertObj === 'lineChart'">
-          <line-chart
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></line-chart>
-        </div>
-        <div v-else-if="insertObj === 'barChartHor'">
-          <bar-chart-hor
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></bar-chart-hor>
-        </div>
-        <div v-else-if="insertObj === 'barChartVert'">
-          <bar-chart-vert
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></bar-chart-vert>
-        </div>
-        <div v-else-if="insertObj === 'bubbleChart'">
-          <bubble-chart
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></bubble-chart>
-        </div>
-        <div v-else-if="insertObj === 'doughnutChart'">
-          <doughnut-chart
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></doughnut-chart>
-        </div>
-        <div v-else-if="insertObj === 'groupedBarChart'">
-          <grouped-bar-chart
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></grouped-bar-chart>
-        </div>
-        <div v-else-if="insertObj === 'mixBarChart'">
-          <mix-bar-chart
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></mix-bar-chart>
-        </div>
-        <div v-else-if="insertObj === 'pieChart'">
-          <pie-chart
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></pie-chart>
-        </div>
-        <div v-else-if="insertObj === 'radarChart'">
-          <radar-chart
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></radar-chart>
-        </div>
-        <div v-else-if="insertObj === 'sectorChart'">
-          <sector-chart
-              ref="chartcontainer"
-              @resizeRowBar="resizeRowBar"
-              :style="{width: `${resizedMinWidth}px`}"
-          ></sector-chart>
-        </div>
-        <div v-else-if="insertObj === 'empty'">
-        </div>
-        <right-click-menu v-if="showMenu"></right-click-menu>
+    <div class="wrap" tabindex="1"  @keyup.delete.exact="insertChart('empty')" :style="{width: `${resizedMinWidth}`, height: `${newHeight}`, minHeight: `${newHeight}`}" :class="{'cell-focus-anima': cellFocusAnima}">
+      <div v-if="insertObj === 'handsonTable'">
+        <handsontable-one
+            ref="hansontableOne"
+            @saveInnerHtml="saveInnerHtml"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}">
+        </handsontable-one>
       </div>
-    </div>
+      <div v-else-if="insertObj === 'quillEditor'">
+<!--          <div v-if="!dbClicked" class="cell-text" v-html="cellTextHtml" :style="{fontSize: `${fontSize}px`,fontWeight: fontWeight, width: `${resizedTextWidth}`, height: `${textAreaNewHeight}` }"-->
+<!--          >-->
+<!--          </div>-->
+        <my-quill-editor
+            ref="quillEditor"
+            @resizeRowBar="resizeRowBar"
+            @displayFontMenu="displayFontMenu"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}`}">
+        </my-quill-editor>
+      </div>
+      <div v-else-if="insertObj === 'lineChart'">
+        <line-chart
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :width='resizedMinWidth'
+            :height="newHeight"
+            :style="{width: `${resizedMinWidth}px`}"
+        ></line-chart>
+      </div>
+      <div v-else-if="insertObj === 'barChartHor'">
+        <bar-chart-hor
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}"
+        ></bar-chart-hor>
+      </div>
+      <div v-else-if="insertObj === 'barChartVert'">
+        <bar-chart-vert
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}"
+        ></bar-chart-vert>
+      </div>
+      <div v-else-if="insertObj === 'bubbleChart'">
+        <bubble-chart
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}"
+        ></bubble-chart>
+      </div>
+      <div v-else-if="insertObj === 'doughnutChart'">
+        <doughnut-chart
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}"
+        ></doughnut-chart>
+      </div>
+      <div v-else-if="insertObj === 'groupedBarChart'">
+        <grouped-bar-chart
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}"
+        ></grouped-bar-chart>
+      </div>
+      <div v-else-if="insertObj === 'mixBarChart'">
+        <mix-bar-chart
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}"
+        ></mix-bar-chart>
+      </div>
+      <div v-else-if="insertObj === 'pieChart'">
+        <pie-chart
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}"
+        ></pie-chart>
+      </div>
+      <div v-else-if="insertObj === 'radarChart'">
+        <radar-chart
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}"
+        ></radar-chart>
+      </div>
+      <div v-else-if="insertObj === 'sectorChart'">
+        <sector-chart
+            ref="chartcontainer"
+            @resizeRowBar="resizeRowBar"
+            :height="newHeight"
+            :width='resizedMinWidth'
+            :style="{width: `${resizedMinWidth}px`}">
+        </sector-chart>
+      </div>
+      <div v-else-if="insertObj === 'empty'"></div>
+      <right-click-menu v-if="showMenu"></right-click-menu>
+  </div>
+
+
   </div>
 </template>
 
@@ -168,6 +191,7 @@ export default {
       resizedWidth: '',
       resizedTextWidth: '',
       resizedMinWidth: '',
+      newHeight: '',
       insertObj: '',
       cellBgColor: '',
       cellFocusAnima: false,
@@ -182,9 +206,12 @@ export default {
   methods: {
     ...mapActions(['loadCell', 'dbClickCell', "loadCellRow", "loadCellColumn", 'rClick', 'loadCellText', 'loadResize', 'selectedText']),
     resizeRowBar(params){
-      if (typeof params !== 'undefined') this.textAreaNewHeight = params.data.quillHeight;
+      if (typeof params !== 'undefined'){
+        // if (params.data.quillHeight !== 'undefined') this.textAreaNewHeight = params.data.quillHeight;
+      }
       this.$emit('resizeRowBar', {
         data: this.$data,
+        heightKey: params.heightKey
       })
     },
     cellFocus(data){
@@ -193,7 +220,7 @@ export default {
           if (!this.$data.disableClick){
             this.$data.cellBgColor = 'blanchedalmond';
             this.$data.cellFocusAnima = true;
-            this.selectedText({name: 'cellFocus', data: this.$data, el: this.$el, event: data.event});
+            // this.selectedText({name: 'cellFocus', data: this.$data, el: this.$el, event: data.event});
             this.$emit('cellFocus',{
               data: data,
               focused: true,
@@ -217,7 +244,13 @@ export default {
         data: params.data,
         el: params.el
       })
-    }
+    },
+    insertChart(param){
+      this.$emit('insertChart', {
+        data: this.$data,
+        type: param
+      })
+    },
   },
 }
 </script>
@@ -277,6 +310,7 @@ export default {
   grid-row: 1 / 3;
   display: grid;
   background-color: white;
+  justify-content: stretch;
 }
 .text-area {
   padding: 2px;

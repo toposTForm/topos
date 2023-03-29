@@ -69,7 +69,7 @@
         <div v-else class="insert-picture grayed"></div>
       </div>
       <div class="row-three">
-        <div v-if="cellSelected" class="insert-text" title="добавить текст" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}"></div>
+        <div v-if="cellSelected" @click="insertChart('quillEditor')" class="insert-text" title="добавить текст" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}"></div>
         <div v-else class="insert-text grayed"></div>
         <div v-if="cellSelected" class="insert-table" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}" title="добавить таблицу"></div>
         <div v-else class="insert-table grayed"></div>
@@ -195,7 +195,7 @@ export default {
         data: this.$data,
         type: param
       })
-    }
+    },
   },
   watch: {
     fontSizeInput(input){

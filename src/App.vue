@@ -1,6 +1,6 @@
 
 <template>
-    <FormList2></FormList2>
+    <FormList2 ></FormList2>
 </template>
 
 <script>
@@ -26,6 +26,8 @@ export default {
     MyQuillEditor,
     naive
   },
+  methods: {
+  }
 }
 
 </script>
