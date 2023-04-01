@@ -209,6 +209,7 @@ export default {
       if (typeof params !== 'undefined'){
         // if (params.data.quillHeight !== 'undefined') this.textAreaNewHeight = params.data.quillHeight;
       }
+      this.$data.newHeight = params.heightKey + 'px';
       this.$emit('resizeRowBar', {
         data: this.$data,
         heightKey: params.heightKey

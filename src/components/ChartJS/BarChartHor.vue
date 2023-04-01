@@ -26,7 +26,6 @@ export default {
   props: ['width', 'height'],
   data() {
     return {
-      resizedMinWidth: '300',
       graphHeigth: '',
       data: {
         labels: [

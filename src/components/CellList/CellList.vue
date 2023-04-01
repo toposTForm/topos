@@ -1,11 +1,10 @@
-<template v-if="getCellList" >
+<template v-if="getCellList">
   <div
-      v-resize="testResize"
       v-if="active && typeof cellField.raws !== 'undefined'"
       v-on="loadCellListParams(this.$data)"
       class="main-container">
     <div class="resize-column-line"
-      :style="{left: `${resizeLine.offsetLeft}px`, top: `${resizeLine.offsetTop}px`, display: resizeLine.display, height: '99%' }">
+      :style="{left: `${resizeLine.offsetLeft}px`, top: `${resizeLine.offsetTop}px`, display: resizeLine.display, height: `${resizeLine.height}px` }">
     </div>
     <div class="resize-row-line"
          :style="{top: `${resizeRowLine.offsetTop}px`, display: resizeRowLine.display}">
@@ -19,10 +18,20 @@
             :cellListuid="cellListuid">
         </format-bar>
       </div>
-      <div class="row-bar" @mousemove="moveResizeRowLine({data: this.$data, el: this.$el, event: $event})">
+      <div class="row-resize-container"
+           @mousemove="moveResizeRowLine({data: this.$data, el: this.$el, event: $event})"
+           @click="showResizeRowLine({name: name, data: this.$data, el: this.$el, event: $event})"
+           :style="{height: `${resizeRowLine.resizeContainerHeight}`}">
+        <div class="resize-bar"
+           :style="{backgroundColor: `${resizeRowLine.resizeContainerBgColor}`, display: `${resizeRowLine.resizeBarDisplay}`,
+            height: `${resizeRowLine.resizeBarHeight}`, cursor: `${resizeRowLine.resizeContainerCursor}`}"
+        ></div>
+      </div>
+      <div class="row-bar">
         <row-bar
           ref='rowBar'
           @showResizeRowLine="showResizeRowLine"
+          @mousemove="moveResizeRowLine({data: this.$data, el: this.$el, event: $event})"
           :cellListuid="cellListuid"
           :hovered="{rowBarFocused, row}"
           v-for="row in cellField.defaultRaws">
@@ -30,7 +39,7 @@
       </div>
       <div class="column-bar" :style="{position: `sticky`, height: 'fit-content', top: `${117}px`, display: 'grid', zIndex: '1',
            backgroundColor: 'red', gridRow: '2', gridColumn: `1 / ${cellField.defaultCols + 1}`,
-           justifyContent: 'start', paddingLeft: '20px', cursor: columnBarFocused.cursor, webkitUserSelect: 'none',
+           justifyContent: 'start', paddingLeft: '31px', cursor: columnBarFocused.cursor, webkitUserSelect: 'none',
            userSelect: 'none'}"
            @mousemove="moveResizeLine({data: this.$data, el: this.$el, event: $event})"
            @click="showResizeLineLast({name: name, data: this.$data, el: this.$el, event: $event})"
@@ -43,7 +52,7 @@
             v-for="cell in cellField.defaultCols">
         </column-bar>
       </div>
-      <div :style="{display: 'grid', height: '100%', zIndex: '0', gridRow: '3', gridColumn: `1 / ${cellField.defaultCols + 1}`, alignContent: cellField.alignCellContent, justifyContent: cellField.justifyCellContent, paddingLeft: '20px'}">
+      <div :style="{display: 'grid', height: '100%', zIndex: '0', gridRow: '3', gridColumn: `1 / ${cellField.defaultCols + 1}`, alignContent: cellField.alignCellContent, justifyContent: cellField.justifyCellContent, paddingLeft: '31px'}">
         <Cell
             ref="cell"
             @resizeRowBar = "resizeRowBar"
@@ -73,12 +82,12 @@ import FormatBar from "@/components/FormatBar/FormatBar";
 import { nextTick } from "vue";
 import {mapActions, mapGetters} from "vuex";
 import testChart from "@/components/ChartJS/testChart";
-import { openModal } from "jenesius-vue-modal";
+// import { openModal } from "jenesius-vue-modal";
 import MySimpleModal from "@/components/MySimpleModal/MySimpleModal";
 import MyJenesiusModal from "@/components/MyJenesiusModal/MyJenesiusModal";
 import { promptModal } from "jenesius-vue-modal";
 import MyNaiveModal from "@/components/MyNaiveModal/MyNaiveModal";
-import { useMessage } from 'naive-ui'
+
 
 export default {
   name: "CellList",
@@ -112,7 +121,7 @@ export default {
       active: true,
       name: 'CellList',
       cellField:{
-        defaultRaws: 3,
+        defaultRaws: 6,
         defaultCols: 6,
         numberOfcells: '',
         raws: '',
@@ -133,7 +142,12 @@ export default {
       resizeRowLine: {
         offsetTop: '',
         display: 'none',
-        cursorPosY: ''
+        cursorPosY: '',
+        resizeContainerBgColor: 'transparent',
+        resizeContainerHeight: '80%',
+        resizeBarHeight: '',
+        resizeContainerCursor: 'none',
+        resizeBarDisplay: 'none',
       },
       columnBarFocused: {
         el: '',
@@ -163,9 +177,12 @@ export default {
     showResizeLine(params){
       let scrollLeft = document.querySelector('.main-container').scrollLeft - document.querySelector('.row-bar').scrollWidth;
       if (this.$data.resizeLine.display === 'none'){
+        // let offsetTop = document.querySelector('.row-bar').getBoundingClientRect().top;//отступ сверху
         this.$data.cellField.scrollWidth = document.querySelector('.main-container').scrollWidth;
-        let scroll = window.pageXOffset;
+        let scroll = window.scrollX;
         let line = this.$data.resizeLine;
+        line.height = document.querySelector('.row-bar').scrollHeight;
+        // line.offsetTop = window.pageYOffset + document.querySelector('.column-bar').scrollHeight;
         line.display = 'grid';
         if (typeof params.data.event !== 'undefined') line.offsetLeft = Number(params.data.event.clientX) + scroll;
         line.cursorPosX = line.offsetLeft;
@@ -205,17 +222,17 @@ export default {
           let offsetLeft = targetBar.$el.offsetLeft;
           let width = targetBar.$el.getBoundingClientRect().width
           let targetCell = [];
-          this.$refs.cell.map((elem, index )=> {
+          this.$refs.cell.map((elem)=> {
             if (elem.gridCol == this.$data.columnBarFocused.data.gridCol) targetCell.push(elem);
           })
-          if ((this.$data.resizeLine.offsetLeft + scrollLeft) < (offsetLeft + width) && (this.$data.resizeLine.offsetLeft + scrollLeft) > offsetLeft){
+          if ((this.$data.resizeLine.offsetLeft + scrollLeft) < (offsetLeft + width) && (this.$data.resizeLine.offsetLeft + scrollLeft) > (offsetLeft - 31)){
             let temp = this.$data.resizeLine.offsetLeft - offsetLeft + scrollLeft;
-            targetBar.$data.resizedMinWidth = temp + 20;
+            targetBar.$data.resizedMinWidth = temp + 31;
             targetCell.forEach(elem => {
               elem.$data.resizedMinWidth = targetBar.$data.resizedMinWidth + 'px';
             });
           }else if ((this.$data.resizeLine.offsetLeft + scrollLeft) > (offsetLeft + width)){
-            targetBar.$data.resizedMinWidth = Math.abs((offsetLeft) - this.$data.resizeLine.offsetLeft) + scrollLeft + 25;
+            targetBar.$data.resizedMinWidth = Math.abs((offsetLeft) - this.$data.resizeLine.offsetLeft) + scrollLeft + 35;
             targetCell.forEach(elem => {
               elem.$data.resizedMinWidth = targetBar.$data.resizedMinWidth + 'px';
             });
@@ -231,7 +248,7 @@ export default {
     showResizeLineLast(params){
       if (this.$data.columnBarFocused.lastColumn){
         let scrollLeft = document.querySelector('.main-container').scrollLeft - document.querySelector('.row-bar').scrollWidth;
-        let scroll = window.pageXOffset;
+        let scroll = window.scrollX;
         if (this.$data.resizeLine.display !== 'none'){
           let line = this.$data.resizeLine;
           if (typeof params.event !== 'undefined') line.offsetLeft = params.event.clientX + scroll;
@@ -242,11 +259,11 @@ export default {
             let offsetLeft = targetBar.$el.offsetLeft;
             let width = targetBar.$el.getBoundingClientRect().width;
             let targetCell = [];
-            this.$refs.cell.map((elem, index )=> {
+            this.$refs.cell.map((elem)=> {
               if (elem.gridCol == this.$data.columnBarFocused.data.gridCol) targetCell.push(elem);
             })
             if ((this.$data.resizeLine.offsetLeft) > (offsetLeft + width)){
-              targetBar.$data.resizedMinWidth = Math.abs((offsetLeft) - this.$data.resizeLine.offsetLeft) + scrollLeft + 5 + 15;
+              targetBar.$data.resizedMinWidth = Math.abs((offsetLeft) - this.$data.resizeLine.offsetLeft) + scrollLeft + 5 + 31;
               targetCell.forEach(elem => {
                 elem.$data.resizedMinWidth = targetBar.$data.resizedMinWidth + 'px';
               });
@@ -266,7 +283,7 @@ export default {
     },
     moveResizeLine(params){
       if (this.$data.resizeLine.display !== 'none'){
-        let scroll = window.pageXOffset;
+        let scroll = window.scrollX;
         let line = this.$data.resizeLine;
         if ( Math.abs(line.offsetLeft - params.event.clientX) > 5){
           line.offsetLeft = params.event.clientX + scroll;
@@ -274,10 +291,10 @@ export default {
       }
     },
     showResizeRowLine(params){
-      let scrollTop = document.querySelector('.row-bar').scrollHeight;
+      if (this.$data.resizeRowLine.display === 'none' && params.name === 'CellList') return;
       if (this.$data.resizeRowLine.display === 'none'){
         this.$data.cellField.scrollHeight = document.querySelector('.main-container').scrollHeight;
-        let scroll = window.pageYOffset;
+        let scroll = window.scrollY;
         let line = this.$data.resizeRowLine;
         line.display = 'grid';
         if (typeof params.data.event !== 'undefined') line.offsetTop = Number(params.data.event.clientY) + scroll;
@@ -298,15 +315,15 @@ export default {
             if (elem.uid != params.data.data.uid){
               elem.choosed = false;
               elem.hoverIsActive = false;
-              elem.cursor = 'e-resize';
+              elem.cursor = 'ns-resize';
             }else{
               elem.choosed = true;
               elem.hoverIsActive = false;
-              elem.cursor = 'e-resize';
+              elem.cursor = 'ns-resize';
             }
           }
         });
-      }else{
+      }else if (this.$data.resizeRowLine.display === 'grid' && params.name !== 'CellList'){
         this.$refs.rowBar.forEach(elem => {
           if (typeof elem.hoverIsActive !== 'undefined'){
             elem.choosed = false;
@@ -318,17 +335,17 @@ export default {
           let offsetTop = targetBar.$el.getBoundingClientRect().top;//отступ сверху
           let height = targetBar.$el.getBoundingClientRect().height;//высота текущего row-bar
           let targetCell = [];
-          this.$refs.cell.map((elem, index )=> {
+          this.$refs.cell.map((elem)=> {
             if (elem.gridRow == this.$data.rowBarFocused.data.gridRaw) targetCell.push(elem);
           })
-          if ((this.$data.resizeRowLine.offsetTop - window.pageYOffset) < (offsetTop + height) && (this.$data.resizeRowLine.offsetTop) > offsetTop){
-            let temp = this.$data.resizeRowLine.offsetTop - window.pageYOffset - offsetTop;
+          if ((this.$data.resizeRowLine.offsetTop - window.scrollY) < (offsetTop + height) && (this.$data.resizeRowLine.offsetTop) > offsetTop){
+            let temp = this.$data.resizeRowLine.offsetTop - window.scrollY - offsetTop;
             targetBar.$data.newHeight = temp + 2;
             targetCell.forEach(elem => {
               elem.$data.newHeight = targetBar.$data.newHeight + 'px';
             });
-          }else if ((this.$data.resizeRowLine.offsetTop - window.pageYOffset) > (offsetTop + height)){
-            targetBar.$data.newHeight = this.$data.resizeRowLine.offsetTop - window.pageYOffset - offsetTop + 7;
+          }else if ((this.$data.resizeRowLine.offsetTop - window.scrollY) > (offsetTop + height)){
+            targetBar.$data.newHeight = this.$data.resizeRowLine.offsetTop - window.scrollY - offsetTop + 7;
             targetCell.forEach(elem => {
               elem.$data.newHeight = targetBar.$data.newHeight + 'px';
             });
@@ -339,14 +356,51 @@ export default {
         this.$refs.rowBar.forEach(elem => {
           elem.cursor = 'pointer';
         });
+      }else if (this.$data.resizeRowLine.display === 'grid' && params.name === 'CellList'){
+        let targetBar = this.$refs.rowBar.find(elem => elem.gridRaw == this.$data.rowBarFocused.data.gridRaw);
+        let offsetTop = targetBar.$el.getBoundingClientRect().top;//отступ сверху
+        let targetCell = [];
+        this.$refs.cell.map((elem)=> {
+          if (elem.gridRow == this.$data.rowBarFocused.data.gridRaw) targetCell.push(elem);
+        });
+        targetBar.$data.newHeight = this.$data.resizeRowLine.offsetTop - window.scrollY - offsetTop + 7;
+        targetCell.forEach(elem => {
+          elem.$data.newHeight = targetBar.$data.newHeight + 'px';
+        });
+        this.$data.resizeRowLine.display = 'none';
+        this.$data.rowBarFocused.cursor = 'default';
+        this.$refs.rowBar.forEach(elem => {
+          elem.cursor = 'pointer';
+          elem.$data.hoverIsActive = true;
+        });
+        this.$data.resizeRowLine.resizeContainerBgColor = 'transparent';
+        this.$data.resizeRowLine.resizeContainerCursor = 'none';
+        this.$data.resizeRowLine.resizeBarDisplay = 'none';
       }
     },
     moveResizeRowLine(params){
       if (this.$data.resizeRowLine.display !== 'none'){
-        let scroll = window.pageYOffset;
+        let availWidth = window.screen.availHeight;
+        let scrollTop = document.querySelector('.row-bar').scrollHeight;
+        let scroll = window.scrollY;
         let line = this.$data.resizeRowLine;
         if ( Math.abs(line.offsetTop - params.event.clientY) > 5){
           line.offsetTop = params.event.clientY + scroll;
+          if ((scrollTop + document.querySelector('.row-bar').offsetTop) < line.offsetTop){
+            this.$data.resizeRowLine.resizeBarDisplay = 'grid';
+            this.$data.resizeRowLine.resizeContainerBgColor = 'orange';
+            this.$data.resizeRowLine.resizeContainerCursor = 'ns-resize';
+            this.$data.resizeRowLine.resizeBarHeight = params.event.clientY - document.querySelector('.row-bar').offsetTop + 7 + scroll + 'px';
+            // if (availWidth - (document.querySelector('.row-resize-container').scrollHeight + document.querySelector('.row-bar').offsetTop) < 70){
+            //   let bla = 0;
+            //   this.$data.resizeRowLine.resizeContainerHeight = (document.querySelector('.row-resize-container').scrollHeight + scroll + document.querySelector('.row-bar').offsetTop) + 100 + 'px';
+            // }
+          }else{
+            this.$data.resizeRowLine.resizeContainerBgColor = 'transparent';
+            this.$data.resizeRowLine.resizeContainerCursor = 'none';
+            this.$data.resizeRowLine.resizeBarHeight = '80%';
+            this.$data.resizeRowLine.resizeBarDisplay = 'none';
+          }
         }
       }
     },
@@ -354,11 +408,19 @@ export default {
       if (typeof params.data !== 'undefined'){
         let newCellHeight = params.heightKey;
         let targetBar = this.$refs.rowBar.find(elem => elem.gridRaw == params.data.gridRow);
-        targetBar.newHeight = newCellHeight + 2;
+        targetBar.newHeight = newCellHeight;
       }
     },
-    testResize({width, height}){
-      let bla  = 0;
+    scrollDetect(){
+      // let bla = event.currentTarget.scrollY;
+      // let line = this.$data.resizeLine;
+      // if (line.height < line.height + window.scrollY){
+      //   line.height = line.height + window.scrollY - 80;
+      // }else if (line.height > line.height + window.scrollY){
+      //   line.height = line.height - window.scrollY;
+      // }else if (window.scrollY == 0){
+      //   this.resizeLine.height = window.screen.availHeight - document.querySelector('.column-bar').getBoundingClientRect().y - 75;
+      // }
     },
     cellFocus(params){
       if (params.focused){
@@ -386,7 +448,6 @@ export default {
         }
         if (this.$data.cellFocused.length == 0) this.$refs.formatBar.$data.cellSelected = false;
       }
-      return;
     },
     displayFontMenu(params){
       let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
@@ -429,9 +490,6 @@ export default {
         elem.data.data.cellFocusAnima = false;
         this.cellFocus({data: elem.data, focused: false});
       });
-      nextTick(() => {
-        let bla = 0;
-      })
     },
   },
   mounted() {
@@ -449,20 +507,15 @@ export default {
         this.$refs.cell.forEach((cell, index) => {
           this.$refs.cell[index].$data.resizedMinWidth = this.$refs.cell[index].$el.getBoundingClientRect().width - koef +'px';
         });
-        // this.$refs.cell[index].$data.resizedMinWidth = this.$refs.cell[index].$el.getBoundingClientRect().width - koef +'px';
       });
       this.$data.cellField.justifyCellContent = 'start';
+      this.resizeLine.height = window.screen.availHeight - document.querySelector('.column-bar').getBoundingClientRect().y - 75;
+      this.resizeLine.offsetTop = document.querySelector('.column-bar').getBoundingClientRect().y + window.pageYOffset + document.querySelector('.column-bar').scrollHeight;
     });
-  }
-}
-var hotels = {
-  item: {
-    reviewer_score: 10,
-    tags: [
-        'Leisure',
-        'trip',
-        'Couple'
-    ]
+    window.addEventListener('scroll', this.scrollDetect);
+  },
+  unmounted() {
+    window.removeEventListener('scroll', this.scrollDetect);
   }
 }
 
@@ -495,15 +548,15 @@ var hotels = {
     background-color: red;
     border: 2px dotted black;
     position: absolute;
-    left: 20px;
+    left: 31px;
     z-index: 3;
     display: none;
   }
   .empty-bar{
     display: grid;
     position: sticky;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 2;
     align-content: stretch;
     justify-content: stretch;
@@ -514,8 +567,8 @@ var hotels = {
     display: grid;
     position: sticky;
     justify-content: start;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 2;
     height: fit-content;
     grid-row: 1;
@@ -527,14 +580,28 @@ var hotels = {
     display: grid;
     position: sticky;
     top: 100px;
-    left: 0px;
+    left: 0;
     z-index: 1;
     height: fit-content;
     width: fit-content;
+    min-width: 31px;
     grid-column: 1;
     grid-row: 3;
     -webkit-user-select: none; /* Safari */
     user-select: none; /* Standard syntax */
+  }
+  .row-resize-container{
+    position: absolute;
+    top: 137px;
+    left: 0;
+    z-index: 1;
+    width: 31px;
+    -webkit-user-select: none; /* Safari */
+    user-select: none; /* Standard syntax */
+  }
+  .resize-bar{
+    z-index: 1;
+    position: relative;
   }
 </style>
 

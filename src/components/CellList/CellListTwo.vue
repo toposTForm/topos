@@ -68,7 +68,7 @@ export default {
     opacity: 0.9;
     border: 0.5px solid gray;
     font-size: 14px;
-    overflow: auto;
+    overflow: v-bind(test);
   }
   .cell:hover{
     opacity: 1;
