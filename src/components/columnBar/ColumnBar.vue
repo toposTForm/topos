@@ -6,7 +6,7 @@
        loadCellRow(this.$data),
        loadCellColumn(this.$data)"
        :style="{gridRow: gridRow, gridColumn: gridCol, cursor: cursor,}"
-       @click="showResizeLine({name: name, data: this.$data, el: this.$el, event: $event})"
+       @click="showResizeColumnLine({name: name, data: this.$data, el: this.$el, event: $event})"
       >
     <div class="wrap"
          :style="{minWidth: `${resizedMinWidth}px`, width: `${resizedWidth}` }"
@@ -57,8 +57,8 @@ export default {
   },
   methods: {
     ...mapActions(['loadCell', 'dbClickCell', "loadCellRow", "loadCellColumn", 'rClick', 'loadCellText', 'loadResize']),
-    showResizeLine(data){
-      this.$emit('showResizeLine', {
+    showResizeColumnLine(data){
+      this.$emit('showResizeColumnLine', {
         data: data,
       })
     },

@@ -71,7 +71,7 @@
       <div class="row-three">
         <div v-if="cellSelected" @click="insertChart('quillEditor')" class="insert-text" title="добавить текст" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}"></div>
         <div v-else class="insert-text grayed"></div>
-        <div v-if="cellSelected" class="insert-table" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}" title="добавить таблицу"></div>
+        <div v-if="cellSelected" @click="insertChart('handsonTable')" class="insert-table" :style="{pointEvents: `${insertContainer.displayOtherButtons}`}" title="добавить таблицу"></div>
         <div v-else class="insert-table grayed"></div>
       </div>
       <div v-if="insertContainer.showGraphMenu" class="graph-dropdown-menu"

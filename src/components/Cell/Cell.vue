@@ -30,7 +30,7 @@
             @displayFontMenu="displayFontMenu"
             :height="newHeight"
             :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}`}">
+            :style="{width: `${resizedMinWidth}px`}">
         </my-quill-editor>
       </div>
       <div v-else-if="insertObj === 'lineChart'">
@@ -270,6 +270,7 @@ export default {
   min-height: 40px;
   min-width: 18px;
   border: 1px solid gray;
+  overflow: hidden;
 }
 .cell-focus-anima{
   width: 100%;

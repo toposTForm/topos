@@ -5,7 +5,7 @@
         theme="snow"
         toolbar="full"
         v-model:content="content" required contentType="html"
-        :style="{height: `${quillHeight}`,}"
+        :style='{width: width, height: height}'
     />
   </div>
 </template>
@@ -19,6 +19,7 @@ export default {
   components: {
     QuillEditor
   },
+  props: ['width', 'height'],
   emits: ['resizeRowBar', 'saveInnerHtml', 'displayFontMenu'],
   data(){
     return {
@@ -51,8 +52,8 @@ export default {
     }
   },
   mounted() {
-    this.$data.quillHeight = this.$el.parentElement.offsetHeight;
-    this.$el.children[1].style.height = 'fit-content';
+    this.$data.quillHeight = this.$props.height;
+    this.$el.children[1].style.height = this.$props.height;
     this.$el.children[1].style.zIndex = 1;
     // let newBut = document.createElement("button");
     // let span = document.createElement('span');

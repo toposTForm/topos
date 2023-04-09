@@ -1,6 +1,8 @@
 <template>
-  <div id="example1">
-    <hot-table :settings="hotSettings"></hot-table>
+  <div>
+    <hot-table :settings="hotSettings"
+       :style='{width: width, height: height}'>
+    </hot-table>
   </div>
 </template>
 
@@ -9,14 +11,25 @@ import { defineComponent } from 'vue';
 import { HotTable } from '@handsontable/vue3';
 import { registerAllModules } from 'handsontable/registry';
 import 'handsontable/dist/handsontable.full.css';
+import {
+  registerLanguageDictionary,
+  getLanguagesDictionaries,
+  ruRU,
+} from 'handsontable/i18n';
+registerLanguageDictionary(ruRU);
+
 registerAllModules();
+
 export default {
   name: "HandsontableOne",
   components: {
     HotTable
   },
+  props: ['width', 'height'],
+  emits: ['resizeRowBar'],
   data(){
     return {
+      tableHeight: '',
       hotSettings: {
         data: [
           ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1'],
@@ -31,17 +44,36 @@ export default {
         rowHeaders: true,
         contextMenu: true,
         mergeCells: true,
-        licenseKey: 'non-commercial-and-evaluation'
+        licenseKey: 'non-commercial-and-evaluation',
+        language: 'ru-RU',
+        search: {
+          // add your custom callback function
+          callback: this.searchResultCounter
+        },
       },
-      language: 'en-US'
+
     }
   },
   methods: {
+    resizeRowBar(){
+      this.$emit('resizeRowBar', {
+        heightKey: this.$data.tableHeight
+      })
+    },
+    searchResultCounter(){
+
+    },
   },
   watch: {
+    tableHeight: function (data){
+      this.resizeRowBar();
+    },
   },
   mounted() {
+    // this.$data.tableHeight = this.$el.children[0].getBoundingClientRect().height;
+    this.$data.tableHeight = this.$el.parentElement.offsetHeight;
   },
+
 }
 
 </script>
