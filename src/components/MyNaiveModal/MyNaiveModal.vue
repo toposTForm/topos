@@ -5,6 +5,7 @@
         <n-notification-provider>
           <n-dialog-provider>
             <promt-modal @promtModalAction='promtModalAction' ref="promtModal"></promt-modal>
+            <message ref="message"></message>
           </n-dialog-provider>
         </n-notification-provider>
       </n-message-provider>
@@ -19,14 +20,17 @@ import {NMessageProvider} from "naive-ui/es/message";
 import {NDialogProvider} from "naive-ui/es/dialog/src/DialogProvider";
 import PromtModal from "@/components/PromtModal/PromtModal";
 import {NNotificationProvider} from "naive-ui/es/notification";
-export default {
+import Message from "@/components/MyNaiveMessage/Message";
+
+export default{
   name: "MyNaiveModal",
   components: {
     PromtModal,
     NLoadingBarProvider,
     NMessageProvider,
     NDialogProvider,
-    NNotificationProvider
+    NNotificationProvider,
+    Message
   },
   emits: ['promtModalAction'],
   methods: {
@@ -35,7 +39,7 @@ export default {
         data: params,
       });
     },
-  }
+  },
 }
 </script>
 

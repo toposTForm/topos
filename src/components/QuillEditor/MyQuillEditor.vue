@@ -1,7 +1,6 @@
 <template>
   <div>
     <QuillEditor
-        @textChange="update($event, $el)"
         theme="snow"
         toolbar="full"
         v-model:content="content" required contentType="html"
@@ -9,28 +8,33 @@
     />
   </div>
 </template>
-
 <script>
 import { QuillEditor } from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import domtoimage from 'dom-to-image-more';
 
 export default {
   name: "MyQuillEditor",
   components: {
     QuillEditor
   },
-  props: ['width', 'height'],
+  props: ['width', 'height', 'showAvatar'],
   emits: ['resizeRowBar', 'saveInnerHtml', 'displayFontMenu'],
   data(){
     return {
+      userName: '',
       quillOldHeight: '',
       quillHeight: '',
       content: '',
+      prevImage: '',
     }
   },
   methods: {
     update( quill, el){
-      if (this.quillHeight != this.$el.parentElement.offsetHeight){
+      if (isNaN(this.$data.quillHeight)){
+        this.$data.quillHeight = Number(this.$data.quillHeight.slice(0, (this.$data.quillHeight.length - 2)));
+      }
+      if (this.$data.quillHeight != this.$el.parentElement.offsetHeight){
         this.quillHeight = this.$el.parentElement.offsetHeight
       }
       this.saveInnerHtml();
@@ -52,7 +56,8 @@ export default {
     }
   },
   mounted() {
-    this.$data.quillHeight = this.$props.height;
+    this.$data.quillHeight = this.$el.parentElement.offsetHeight;
+
     this.$el.children[1].style.height = this.$props.height;
     this.$el.children[1].style.zIndex = 1;
     // let newBut = document.createElement("button");
@@ -70,11 +75,24 @@ export default {
     // newBut.addEventListener('click', this.temp);
     // span.appendChild(newBut);
     // this.$el.children[0].appendChild(span);
+    let node = this.$el.children[1];
+    let data = this.$data;
+    domtoimage
+        .toPng((node), {quality: 0.1})
+        .then(function (dataUrl) {
+          let img = new Image();
+          img.src = dataUrl;
+          data.prevImage = '<img src=' + img.src + '>';
+          // document.querySelector('.picture').append(img);
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        });
     this.$emit('displayFontMenu', {
       data: this.$data,
-      el: this.$el
+      el: this.$el,
+      type: this.$.type.name
     })
-
   },
 }
 

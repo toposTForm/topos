@@ -1,4 +1,7 @@
 <!--@dblclick='dbClickCell(this)'-->
+<!--          <div v-if="!dbClicked" class="cell-text" v-html="cellTextHtml" :style="{fontSize: `${fontSize}px`,fontWeight: fontWeight, width: `${resizedTextWidth}`, height: `${textAreaNewHeight}` }"-->
+<!--          >-->
+<!--          </div>-->
 <template>
   <div :id=uid
        v-if="active"
@@ -7,31 +10,34 @@
        loadCellColumn(this.$data)"
        @resize="resizeRowBar"
        @click="cellFocus({name: name, data: this.$data, el: this.$el, event: $event})"
+       @dblclick='dbClickCell(this)'
        class="cell"
        :style="{display: 'grid', gridRow: gridRow, gridColumn: gridCol, cursor: cursor, width: `${resizedWidth}`, backgroundColor: `${cellBgColor}`, justifyContent: 'stretch'}">
     <div class="wrap" tabindex="1"  @keyup.delete.exact="insertChart('empty')" :style="{width: `${resizedMinWidth}`, height: `${newHeight}`, minHeight: `${newHeight}`}" :class="{'cell-focus-anima': cellFocusAnima}">
       <div v-if="insertObj === 'handsonTable'">
         <handsontable-one
             ref="hansontableOne"
-            @saveInnerHtml="saveInnerHtml"
+            @displayFontMenu="displayFontMenu"
             @resizeRowBar="resizeRowBar"
             :height="newHeight"
             :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}">
+            :style="{width: `${resizedMinWidth}px`, zIndex: 0}">
         </handsontable-one>
       </div>
       <div v-else-if="insertObj === 'quillEditor'">
-<!--          <div v-if="!dbClicked" class="cell-text" v-html="cellTextHtml" :style="{fontSize: `${fontSize}px`,fontWeight: fontWeight, width: `${resizedTextWidth}`, height: `${textAreaNewHeight}` }"-->
-<!--          >-->
-<!--          </div>-->
-        <my-quill-editor
+        <my-quill-editor v-show="dbClicked"
             ref="quillEditor"
             @resizeRowBar="resizeRowBar"
             @displayFontMenu="displayFontMenu"
+            :show-avatar="dbClicked"
             :height="newHeight"
             :width='resizedMinWidth'
             :style="{width: `${resizedMinWidth}px`}">
         </my-quill-editor>
+<!--        <div v-if="!dbClicked && this.$refs.quillEditor.$data.prevImage">-->
+<!--          <span>Текстовый элемент</span>-->
+<!--          <div v-html="this.$refs.quillEditor.$data.prevImage"></div>-->
+<!--        </div>-->
       </div>
       <div v-else-if="insertObj === 'lineChart'">
         <line-chart
@@ -126,9 +132,8 @@
       <div v-else-if="insertObj === 'empty'"></div>
       <right-click-menu v-if="showMenu"></right-click-menu>
   </div>
+</div>
 
-
-  </div>
 </template>
 
 <script>
@@ -209,11 +214,16 @@ export default {
       if (typeof params !== 'undefined'){
         // if (params.data.quillHeight !== 'undefined') this.textAreaNewHeight = params.data.quillHeight;
       }
-      this.$data.newHeight = params.heightKey + 'px';
-      this.$emit('resizeRowBar', {
-        data: this.$data,
-        heightKey: params.heightKey
-      })
+      if (isNaN(this.$data.newHeight)){
+        this.$data.newHeight = Number(this.$data.newHeight.slice(0, (this.$data.newHeight.length - 2)));
+      }
+      if (this.$data.newHeight <= params.heightKey){
+        this.$data.newHeight = params.heightKey + 'px';
+        this.$emit('resizeRowBar', {
+          data: this.$data,
+          heightKey: params.heightKey
+        })
+      }
     },
     cellFocus(data){
       setTimeout(() =>  {
@@ -243,7 +253,8 @@ export default {
     displayFontMenu(params){
       this.$emit('displayFontMenu', {
         data: params.data,
-        el: params.el
+        el: params.el,
+        type: params.type
       })
     },
     insertChart(param){

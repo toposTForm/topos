@@ -447,18 +447,30 @@ export default {
       }
     },
     displayFontMenu(params){
-      let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
-      params.el.children[0].style.border = 'none';
-      if(fontContainer.children.length == 0){
-        fontContainer.appendChild(params.el.children[0]);
-      }else{
-        fontContainer.children[0].remove();
-        fontContainer.appendChild(params.el.children[0]);
+      if (params.type === 'MyQuillEditor'){
+        let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
+        params.el.children[0].style.border = 'none';
+        if(fontContainer.children.length == 0){
+          fontContainer.appendChild(params.el.children[0]);
+        }else{
+          fontContainer.children[0].remove();
+          fontContainer.appendChild(params.el.children[0]);
+        }
+      }else if (params.type === 'HandsontableOne'){
+        let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
+        params.el.children[0].style.border = 'none';
+        // if(fontContainer.children.length == 0){
+        //   fontContainer.appendChild(params.el.children[0]);
+        // }else{
+        //   fontContainer.children[0].remove();
+        //   fontContainer.appendChild(params.el.children[0]);
+        // }
       }
     },
     insertChart(params){
       try {
         let tempArr = this.$data.cellFocused.slice(0);
+
         tempArr.forEach(elem => {
           if (elem.data.data.insertObj == '' || elem.data.data.insertObj == 'empty'){
             elem.data.data.insertObj = params.type;

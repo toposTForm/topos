@@ -1,5 +1,4 @@
 import {nextTick} from "vue";
-import cell from "@/components/Cell/Cell";
 
 export default {
     state:{
@@ -121,29 +120,35 @@ export default {
                 cellData.state.$.parent.data.cellDbClicked = '';
                 state.selectedText = '';
                 nextTick(() => {
-                    cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
+                    // cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
                     cellData.state.cellBgColor = '';
                     cellData.state.cellFocusAnima = false;
                     setTimeout(() => {
                         cellData.state.disableClick = false;
                     }, 100);
                 });
-            } else {
+            }else {
+                if (cellData.state.$data.insertObj === ''){
+                    return
+                }
+
+                // cellData.state.$.parent.refs.naiveModal.createMessage();
+                // cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage();
                 cellData.state.dbClicked = true;
                 // cellData.state.$data.cellWIdth = 100 + '%';
-                if(cellData.state.$.parent.data.cellDbClicked === ''){
-                    cellData.state.$.parent.data.cellDbClicked = cellData;
-                }else{
-                    cellData.state.$.parent.data.cellDbClicked.state.$data.dbClicked = false;
-                    cellData.state.$.parent.data.cellDbClicked = cellData;
-                }
+                // if(cellData.state.$.parent.data.cellDbClicked === ''){
+                //     cellData.state.$.parent.data.cellDbClicked = cellData;
+                // }else{
+                //     cellData.state.$.parent.data.cellDbClicked.state.$data.dbClicked = false;
+                //     cellData.state.$.parent.data.cellDbClicked = cellData;
+                // }
                 nextTick(() => {
                     // cellData.state.$el.querySelector('.text-area').innerHTML = cellData.state.$data.cellText;
                     // cellData.state.$el.querySelector('.text-area').focus();
                     if (typeof cellData.state.$refs.quillEditor !== 'undefined'){
                         cellData.state.$refs.quillEditor.$data.content = cellData.state.cellTextHtml;
-                        cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
-                        cellData.state.$el.querySelector('.input-cell').children[0].children[0].children[0].focus();
+                        // cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
+                        // cellData.state.$el.querySelector('.input-cell').children[0].children[0].children[0].focus();
                     }
                 });
             }
