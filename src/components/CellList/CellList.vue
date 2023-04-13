@@ -451,10 +451,24 @@ export default {
         let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
         params.el.children[0].style.border = 'none';
         if(fontContainer.children.length == 0){
-          fontContainer.appendChild(params.el.children[0]);
+          if (params.enable){
+            fontContainer.appendChild(params.el.children[0]);
+            params.toolbar.style.display = 'block';
+          }
         }else{
-          fontContainer.children[0].remove();
-          fontContainer.appendChild(params.el.children[0]);
+          if (params.enable){
+            // fontContainer.children[0].remove();
+            //
+            params.toolbar.style.display = 'block';
+            fontContainer.children[0].replaceWith(params.toolbar);
+          }
+          if (!params.enable){
+            // fontContainer.appendChild(params.el.children[0]);
+            // fontContainer.children[0].remove();
+            params.toolbar.style.display = 'none';
+          }
+          // fontContainer.children[0].remove();
+          // fontContainer.appendChild(params.el.children[0]);
         }
       }else if (params.type === 'HandsontableOne'){
         let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');

@@ -116,6 +116,18 @@ export default {
         processDbClickCell(state, cellData) {
             if (cellData.state.dbClicked) {
                 cellData.state.dbClicked = false;
+                if (typeof cellData.state.$refs.quillEditor !== 'undefined'){
+                    cellData.state.$data.cellTextHtml = cellData.state.$refs.quillEditor.$data.content;
+                    cellData.state.$refs.quillEditor.$data.readOnly = true;
+                    cellData.state.$refs.quillEditor.disableEditor();
+                }
+                if (cellData.state.$data.insertObj === 'quillEditor' || cellData.state.$data.insertObj === 'handsonTable'){
+                    cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
+                        `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме выбора`);
+                }else{
+                    cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
+                        `Выбор элемента ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X разблокирован`);
+                }
                 cellData.state.disableClick = true;
                 cellData.state.$.parent.data.cellDbClicked = '';
                 state.selectedText = '';
@@ -130,11 +142,18 @@ export default {
             }else {
                 if (cellData.state.$data.insertObj === ''){
                     return
+                }else if (cellData.state.$data.insertObj === 'quillEditor' || cellData.state.$data.insertObj === 'handsonTable'){
+                    cellData.state.$refs.quillEditor.enableEditor();
+                    cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
+                        `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме редактирования`);
+                }else{
+                    cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
+                        `Выбор элемента ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X заблокирован`);
                 }
-
-                // cellData.state.$.parent.refs.naiveModal.createMessage();
-                // cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage();
                 cellData.state.dbClicked = true;
+                if (typeof cellData.state.$refs.quillEditor !== 'undefined'){
+                    cellData.state.$data.cellTextHtml = cellData.state.$refs.quillEditor.$data.content;
+                }
                 // cellData.state.$data.cellWIdth = 100 + '%';
                 // if(cellData.state.$.parent.data.cellDbClicked === ''){
                 //     cellData.state.$.parent.data.cellDbClicked = cellData;
@@ -146,7 +165,8 @@ export default {
                     // cellData.state.$el.querySelector('.text-area').innerHTML = cellData.state.$data.cellText;
                     // cellData.state.$el.querySelector('.text-area').focus();
                     if (typeof cellData.state.$refs.quillEditor !== 'undefined'){
-                        cellData.state.$refs.quillEditor.$data.content = cellData.state.cellTextHtml;
+                        cellData.state.$data.cellTextHtml = cellData.state.$refs.quillEditor.$data.content;
+                        // cellData.state.$refs.quillEditor.$data.content = cellData.state.cellTextHtml;
                         // cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
                         // cellData.state.$el.querySelector('.input-cell').children[0].children[0].children[0].focus();
                     }

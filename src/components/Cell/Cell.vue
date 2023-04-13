@@ -25,15 +25,26 @@
         </handsontable-one>
       </div>
       <div v-else-if="insertObj === 'quillEditor'">
-        <my-quill-editor v-show="dbClicked"
-            ref="quillEditor"
-            @resizeRowBar="resizeRowBar"
-            @displayFontMenu="displayFontMenu"
-            :show-avatar="dbClicked"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}">
-        </my-quill-editor>
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover="false">
+          <template #trigger>
+            <div>
+              <my-quill-editor
+                  ref="quillEditor"
+                  @resizeRowBar="resizeRowBar"
+                  @displayFontMenu="displayFontMenu"
+                  :show-avatar="dbClicked"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}">
+              </my-quill-editor>
+            </div>
+          </template>
+         Двойной клик для выхода из редактирования
+        </n-tooltip>
+<!--        <div v-if="!dbClicked">-->
+<!--          <span>Текстовый элемент</span>-->
+<!--          <div v-html="cellTextHtml"></div>-->
+<!--        </div>-->
 <!--        <div v-if="!dbClicked && this.$refs.quillEditor.$data.prevImage">-->
 <!--          <span>Текстовый элемент</span>-->
 <!--          <div v-html="this.$refs.quillEditor.$data.prevImage"></div>-->
@@ -153,6 +164,8 @@ import RadarChart from "@/components/ChartJS/RadarChart";
 import SectorChart from "@/components/ChartJS/SectorChart";
 import BarChartHor from "@/components/ChartJS/BarChartHor";
 import BarChartVert from "@/components/ChartJS/BarChartVert";
+import Tooltip from "@/components/MyNaiveMessage/Tooltip";
+import { NTooltip } from "naive-ui";
 
 export default {
   name: "Cell",
@@ -171,6 +184,8 @@ export default {
     RightClickMenu,
     MyQuillEditor,
     HandsontableOne,
+    Tooltip,
+    NTooltip
   },
   props: ['cellListuid', 'rows', 'columns'],
   setup(props){
@@ -217,7 +232,7 @@ export default {
       if (isNaN(this.$data.newHeight)){
         this.$data.newHeight = Number(this.$data.newHeight.slice(0, (this.$data.newHeight.length - 2)));
       }
-      if (this.$data.newHeight <= params.heightKey){
+      if (typeof params !== "undefined" && this.$data.newHeight <= params.heightKey){
         this.$data.newHeight = params.heightKey + 'px';
         this.$emit('resizeRowBar', {
           data: this.$data,
@@ -231,7 +246,6 @@ export default {
           if (!this.$data.disableClick){
             this.$data.cellBgColor = 'blanchedalmond';
             this.$data.cellFocusAnima = true;
-            // this.selectedText({name: 'cellFocus', data: this.$data, el: this.$el, event: data.event});
             this.$emit('cellFocus',{
               data: data,
               focused: true,
@@ -251,10 +265,13 @@ export default {
       this.cellTextHtml = params.data;
     },
     displayFontMenu(params){
+      let bla = params;
       this.$emit('displayFontMenu', {
         data: params.data,
         el: params.el,
-        type: params.type
+        type: params.type,
+        enable: params.enable,
+        toolbar: params.toolbar
       })
     },
     insertChart(param){

@@ -21,6 +21,7 @@ import {NDialogProvider} from "naive-ui/es/dialog/src/DialogProvider";
 import PromtModal from "@/components/PromtModal/PromtModal";
 import {NNotificationProvider} from "naive-ui/es/notification";
 import Message from "@/components/MyNaiveMessage/Message";
+import Tooltip from "@/components/MyNaiveMessage/Tooltip";
 
 export default{
   name: "MyNaiveModal",
@@ -30,7 +31,8 @@ export default{
     NMessageProvider,
     NDialogProvider,
     NNotificationProvider,
-    Message
+    Message,
+    Tooltip
   },
   emits: ['promtModalAction'],
   methods: {
