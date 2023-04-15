@@ -25,7 +25,7 @@
         </handsontable-one>
       </div>
       <div v-else-if="insertObj === 'quillEditor'">
-        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover="false">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false'>
           <template #trigger>
             <div>
               <my-quill-editor
@@ -41,14 +41,6 @@
           </template>
          Двойной клик для выхода из редактирования
         </n-tooltip>
-<!--        <div v-if="!dbClicked">-->
-<!--          <span>Текстовый элемент</span>-->
-<!--          <div v-html="cellTextHtml"></div>-->
-<!--        </div>-->
-<!--        <div v-if="!dbClicked && this.$refs.quillEditor.$data.prevImage">-->
-<!--          <span>Текстовый элемент</span>-->
-<!--          <div v-html="this.$refs.quillEditor.$data.prevImage"></div>-->
-<!--        </div>-->
       </div>
       <div v-else-if="insertObj === 'lineChart'">
         <line-chart

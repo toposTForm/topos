@@ -116,15 +116,15 @@ export default {
         processDbClickCell(state, cellData) {
             if (cellData.state.dbClicked) {
                 cellData.state.dbClicked = false;
-                if (typeof cellData.state.$refs.quillEditor !== 'undefined'){
+                if (typeof cellData.state.$refs.quillEditor !== 'undefined' && cellData.state.$refs.quillEditor !== null){
                     cellData.state.$data.cellTextHtml = cellData.state.$refs.quillEditor.$data.content;
                     cellData.state.$refs.quillEditor.$data.readOnly = true;
                     cellData.state.$refs.quillEditor.disableEditor();
                 }
-                if (cellData.state.$data.insertObj === 'quillEditor' || cellData.state.$data.insertObj === 'handsonTable'){
+                if (cellData.state.$data.insertObj === 'quillEditor'){
                     cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
                         `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме выбора`);
-                }else{
+                }else if (cellData.state.$data.insertObj !== 'empty') {
                     cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
                         `Выбор элемента ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X разблокирован`);
                 }
@@ -142,35 +142,18 @@ export default {
             }else {
                 if (cellData.state.$data.insertObj === ''){
                     return
-                }else if (cellData.state.$data.insertObj === 'quillEditor' || cellData.state.$data.insertObj === 'handsonTable'){
+                }else if (cellData.state.$data.insertObj === 'quillEditor'){
                     cellData.state.$refs.quillEditor.enableEditor();
                     cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
                         `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме редактирования`);
-                }else{
+                }else if (cellData.state.$data.insertObj !== 'empty') {
                     cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
                         `Выбор элемента ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X заблокирован`);
                 }
                 cellData.state.dbClicked = true;
-                if (typeof cellData.state.$refs.quillEditor !== 'undefined'){
+                if (typeof cellData.state.$refs.quillEditor !== 'undefined' && cellData.state.$refs.quillEditor !== null){
                     cellData.state.$data.cellTextHtml = cellData.state.$refs.quillEditor.$data.content;
                 }
-                // cellData.state.$data.cellWIdth = 100 + '%';
-                // if(cellData.state.$.parent.data.cellDbClicked === ''){
-                //     cellData.state.$.parent.data.cellDbClicked = cellData;
-                // }else{
-                //     cellData.state.$.parent.data.cellDbClicked.state.$data.dbClicked = false;
-                //     cellData.state.$.parent.data.cellDbClicked = cellData;
-                // }
-                nextTick(() => {
-                    // cellData.state.$el.querySelector('.text-area').innerHTML = cellData.state.$data.cellText;
-                    // cellData.state.$el.querySelector('.text-area').focus();
-                    if (typeof cellData.state.$refs.quillEditor !== 'undefined'){
-                        cellData.state.$data.cellTextHtml = cellData.state.$refs.quillEditor.$data.content;
-                        // cellData.state.$refs.quillEditor.$data.content = cellData.state.cellTextHtml;
-                        // cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
-                        // cellData.state.$el.querySelector('.input-cell').children[0].children[0].children[0].focus();
-                    }
-                });
             }
             state.cellsLog.add(cellData.state);
             state.cellsRawLog.push(cellData.state);

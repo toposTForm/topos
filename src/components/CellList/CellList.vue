@@ -71,7 +71,6 @@
     </div>
   </div>
   <!--  modals-->
-<!--  <my-jenesius-modal></my-jenesius-modal>-->
   <my-naive-modal
       ref="naiveModal"
       @promtModalAction = 'promtModalAction'>
@@ -91,7 +90,7 @@ import MySimpleModal from "@/components/MySimpleModal/MySimpleModal";
 import MyJenesiusModal from "@/components/MyJenesiusModal/MyJenesiusModal";
 import { promptModal } from "jenesius-vue-modal";
 import MyNaiveModal from "@/components/MyNaiveModal/MyNaiveModal";
-
+import MyNaiveInput from "@/components/MyNaiveMessage/MyNaiveInput";
 
 export default {
   name: "CellList",
@@ -104,6 +103,7 @@ export default {
     testChart,
     MyJenesiusModal,
     MySimpleModal,
+    MyNaiveInput
   },
   directives: {
     resize: {
@@ -457,69 +457,73 @@ export default {
           }
         }else{
           if (params.enable){
-            // fontContainer.children[0].remove();
-            //
             params.toolbar.style.display = 'block';
             fontContainer.children[0].replaceWith(params.toolbar);
           }
           if (!params.enable){
-            // fontContainer.appendChild(params.el.children[0]);
-            // fontContainer.children[0].remove();
             params.toolbar.style.display = 'none';
           }
-          // fontContainer.children[0].remove();
-          // fontContainer.appendChild(params.el.children[0]);
         }
       }else if (params.type === 'HandsontableOne'){
         let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
         params.el.children[0].style.border = 'none';
-        // if(fontContainer.children.length == 0){
-        //   fontContainer.appendChild(params.el.children[0]);
-        // }else{
-        //   fontContainer.children[0].remove();
-        //   fontContainer.appendChild(params.el.children[0]);
-        // }
       }
     },
     insertChart(params){
       try {
         let tempArr = this.$data.cellFocused.slice(0);
-
+        let objName = '';
+        switch (params.type){
+          case 'barChartHor':
+            objName ='Гистограмма горизонтальная';
+            break;
+          case 'barChartVert':
+            objName ='Гистограмма вертикальная';
+            break;
+          case 'groupedBarChart':
+            objName ='Гистограмма групповая';
+            break;
+          case 'pieChart':
+            objName ='Круговая диаграмма ';
+            break;
+          case 'lineChart':
+            objName ='Линейная диаграмма ';
+            break;
+          case 'mixBarChart':
+            objName ='Смешанная диаграмма';
+            break;
+          case 'radarChart':
+            objName ='Диаграмма направленности';
+            break;
+          case 'sectorChart':
+            objName ='Секторная диаграмма';
+            break;
+          case 'quillEditor':
+            objName ='Текстовый редактор';
+            break;
+          case 'handsonTable':
+            objName ='Таблица';
+            break;
+          default:
+            objName = 'Без имени';
+        }
+        let lengthFlag = false;
         tempArr.forEach(elem => {
-          if (elem.data.data.insertObj == '' || elem.data.data.insertObj == 'empty'){
-            elem.data.data.insertObj = params.type;
-            elem.data.data.cellBgColor = '';
-            elem.data.data.cellFocusAnima = false;
-            this.cellFocus({data: elem.data, focused: false});
-            let targetRows = [];
-            let heightArr = [];
-            this.$refs.cell.map((item)=> {
-              if (item.gridRow == elem.data.data.gridRow){
-                heightArr.push(item.$el.getBoundingClientRect().height);
-                targetRows.push(item.$data);
-              }
-            });
-            let maxRowHeight = Math.max.apply(null, heightArr);
-            if (elem.data.el.getBoundingClientRect().height > maxRowHeight){
-              targetRows.forEach(item => {
-                item.newHeight = elem.data.el.getBoundingClientRect().height + 'px';
-              });
-            }else if (elem.data.el.getBoundingClientRect().height < maxRowHeight){
-              targetRows.forEach(item => {
-                item.newHeight = maxRowHeight + 'px';
-              });
-            }else if (elem.data.el.getBoundingClientRect().height == maxRowHeight){
-              targetRows.forEach(item => {
-                if (item.newHeight === ''){
-                  if (params.type === 'barChartHor' || params.type === 'barChartVert' || params.type === 'bubbleChart' || params.type === 'doughnutChart'
-                      || params.type === 'groupedBarChart' || params.type === 'lineChart' || params.type === 'mixBarChart'
-                      || params.type === 'pieChart' || params.type === 'radarChart' || params.type === 'sectorChart'){
-                    item.newHeight = maxRowHeight + 150 + 'px';
-                  }else{
-                    item.newHeight = maxRowHeight + 'px';
-                  }
-                }
-              });
+          if (elem.data.data.insertObj == '' || elem.data.data.insertObj == 'empty' || typeof  elem.data.data.insertObj === 'undefined'){
+            if (this.$data.cellFocused.length > 1){
+              this.$refs.naiveModal.$refs.promtModal.title = `Вы добавляете ${this.$data.cellFocused.length} элементов. "Авто", чтобы установить имя автоматически. "Да" - ввести для каждого.`;
+              this.$refs.naiveModal.$refs.promtModal.negativeText = 'Авто';
+              this.$refs.naiveModal.$refs.promtModal.showModal = true;
+              this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, chartType: params.type};
+              lengthFlag = true;
+            }else if (!lengthFlag){
+              this.$refs.naiveModal.$refs.promtModal.showInput = true;
+              this.$refs.naiveModal.$refs.promtModal.content = 'Очистить выбранные ячейки?';
+              this.$refs.naiveModal.$refs.promtModal.title = `${objName}. Введите имя`;
+              this.$refs.naiveModal.$refs.promtModal.negativeText = 'Отмена';
+              this.$refs.naiveModal.$refs.promtModal.positiveText = 'Принять';
+              this.$refs.naiveModal.$refs.promtModal.showModal = true;
+              this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, chartType: params.type};
             }
           }else{
             this.$refs.naiveModal.$refs.promtModal.showModal = true;
@@ -542,6 +546,37 @@ export default {
         elem.data.data.cellBgColor = '';
         elem.data.data.cellFocusAnima = false;
         this.cellFocus({data: elem.data, focused: false});
+        let targetRows = [];
+        let heightArr = [];
+        this.$refs.cell.map((item)=> {
+          if (item.gridRow == elem.data.data.gridRow){
+            heightArr.push(item.$el.getBoundingClientRect().height);
+            targetRows.push(item.$data);
+          }
+        });
+        let maxRowHeight = Math.max.apply(null, heightArr);
+        if (elem.data.el.getBoundingClientRect().height > maxRowHeight){
+          targetRows.forEach(item => {
+            item.newHeight = elem.data.el.getBoundingClientRect().height + 'px';
+          });
+        }else if (elem.data.el.getBoundingClientRect().height < maxRowHeight){
+          targetRows.forEach(item => {
+            item.newHeight = maxRowHeight + 'px';
+          });
+        }else if (elem.data.el.getBoundingClientRect().height == maxRowHeight){
+          targetRows.forEach(item => {
+            if (item.newHeight === ''){
+              let type = params.data.data.chartType;
+              if (type === 'barChartHor' || type === 'barChartVert' || type === 'bubbleChart' || type === 'doughnutChart'
+                  || type === 'groupedBarChart' || type === 'lineChart' || type === 'mixBarChart'
+                  || type === 'pieChart' || type === 'radarChart' || type === 'sectorChart'){
+                item.newHeight = maxRowHeight + 150 + 'px';
+              }else{
+                item.newHeight = maxRowHeight + 'px';
+              }
+            }
+          });
+        }
       });
     },
   },

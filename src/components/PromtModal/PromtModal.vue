@@ -1,17 +1,22 @@
 <template>
   <div>
     <n-modal
+        ref="nModal"
         v-model:show="showModal"
         :mask-closable="false"
         preset="dialog"
-        title="Внимание!"
-        :content="content"
-        positive-text="Да"
-        negative-text="Нет"
+        :title=title
+        :content=content
+        :positive-text=positiveText
+        :negative-text=negativeText
+        :on-after-enter="onOpen"
         @positive-click="onPositiveClick(bufferElem)"
         @negative-click="onNegativeClick"
         @close = 'onClose'
-    />
+    >
+      <div>{{content}}</div>
+      <my-naive-input v-if="showInput" ref="nInput"></my-naive-input>
+    </n-modal>
   </div>
 </template>
 <script>
@@ -20,20 +25,22 @@ import { defineComponent, ref } from 'vue'
 import { useMessage } from 'naive-ui'
 import { NModal } from "naive-ui";
 import { defineEmits } from "vue";
+import MyNaiveInput from "@/components/MyNaiveMessage/MyNaiveInput";
+
 export default {
   components: {
     NButton,
     NModal,
+    MyNaiveInput
   },
   emits: ['promtModalAction'],
   name: 'PromtModal',
   props: {
-    title: String
   },
   data(){
     return {
-      content: '',
       bufferElem: '',
+      showInput: ''
     }
   },
   watch: {
@@ -42,12 +49,24 @@ export default {
   },
   setup (_, {emit}) {
     const message = useMessage();
-    const showModalRef = ref(false);
+    let showModalRef = ref(false);
+    const openState = false;
+    const onOpenRef =  async function(){
+
+    };
     const bufferElem = ref('');
-    const content = ref('content');
+    const contentRef = ref('content');
+    const titleRef = ref('Внимание!');
+    const positiveTextref = ref('Да');
+    const negativeTextref = ref('Отмена');
     return {
+      title: titleRef,
+      positiveText: positiveTextref,
+      negativeText: negativeTextref,
       showModal: showModalRef,
-      content, bufferElem,
+      content: contentRef, bufferElem,
+      onOpenRef,
+      onOpen: onOpenRef,
       onPositiveClick (bufferElem) {
         message.success('Успешно');
         showModalRef.value = false;

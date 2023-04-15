@@ -2,6 +2,7 @@
   <div>
     <QuillEditor
         ref="myEditor"
+        @selectionChange="selection"
         :theme=theme
         :toolbar=toolbar
         :read-only=readOnly
@@ -13,6 +14,7 @@
 <script>
 import { QuillEditor } from "@vueup/vue-quill";
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { nextTick } from "vue";
 
 export default {
   name: "MyQuillEditor",
@@ -72,7 +74,6 @@ export default {
       for (let i = 0; i < this.$refs.myEditor.getEditor().children[0].children.length; i++){
         this.$refs.myEditor.getEditor().children[0].children[i].style.cursor = 'text';
       };
-
       this.$emit('displayFontMenu', {
         data: this.$data,
         el: this.$el,
@@ -81,6 +82,26 @@ export default {
         toolbar: this.$refs.myEditor.getToolbar()
       });
     },
+    selection(){
+      let toolBar = this.$refs.myEditor.getToolbar();
+      if (!this.$refs.myEditor.getQuill().hasFocus()){
+        this.$emit('displayFontMenu', {
+          data: this.$data,
+          el: this.$el,
+          type: this.$.type.name,
+          enable: false,
+          toolbar: this.$refs.myEditor.getToolbar()
+        });
+      }else{
+        this.$emit('displayFontMenu', {
+          data: this.$data,
+          el: this.$el,
+          type: this.$.type.name,
+          enable: true,
+          toolbar: this.$refs.myEditor.getToolbar()
+        });
+      }
+    }
   },
   watch: {
     quillHeight: function (data){
@@ -93,22 +114,11 @@ export default {
     this.$el.children[1].style.zIndex = 1;
     let toolBar = this.$refs.myEditor.getToolbar();
     toolBar.style.display = 'none';
-    // this.$el.children[0].style.display = 'none';
-    // let newBut = document.createElement("button");
-    // let span = document.createElement('span');
-    // newBut.style.minwidth = 20 + 'px';
-    // newBut.style.width = 'fit-content';
-    // newBut.style.minheight = 20 + 'px';
-    // newBut.style.display = 'inline-block';
-    // newBut.style.verticalAlign = 'middle';
-    // newBut.type = 'button';
-    // newBut.title = 'minimize';
-    // newBut.style.justifySelf = 'end';
-    // span.className = 'q1-formats';
-    // newBut.innerText = '[X]';
-    // newBut.addEventListener('click', this.temp);
-    // span.appendChild(newBut);
-    // this.$el.children[0].appendChild(span);
+    nextTick(() => {
+      for (let i = 0; i < this.$refs.myEditor.getEditor().children[0].children.length; i++){
+        this.$refs.myEditor.getEditor().children[0].children[i].style.cursor = 'pointer';
+      }
+    })
   },
 }
 
