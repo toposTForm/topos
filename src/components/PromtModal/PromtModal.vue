@@ -5,15 +5,14 @@
         v-model:show="showModal"
         :mask-closable="false"
         preset="dialog"
-        :title=title
+        :title='title'
         :content=content
-        :positive-text=positiveText
-        :negative-text=negativeText
+        :positive-text='positiveText'
+        :negative-text='negativeText'
         :on-after-enter="onOpen"
         @positive-click="onPositiveClick(bufferElem)"
         @negative-click="onNegativeClick"
-        @close = 'onClose'
-    >
+        >
       <div>{{content}}</div>
       <my-naive-input v-if="showInput" ref="nInput"></my-naive-input>
     </n-modal>
@@ -21,10 +20,9 @@
 </template>
 <script>
 import { NButton } from 'naive-ui'
-import { defineComponent, ref } from 'vue'
+import { ref } from 'vue'
 import { useMessage } from 'naive-ui'
 import { NModal } from "naive-ui";
-import { defineEmits } from "vue";
 import MyNaiveInput from "@/components/MyNaiveMessage/MyNaiveInput";
 
 export default {
@@ -33,14 +31,13 @@ export default {
     NModal,
     MyNaiveInput
   },
-  emits: ['promtModalAction'],
+  emits: ['promtModalAction', 'addElement'],
   name: 'PromtModal',
   props: {
   },
   data(){
     return {
       bufferElem: '',
-      showInput: ''
     }
   },
   watch: {
@@ -50,10 +47,10 @@ export default {
   setup (_, {emit}) {
     const message = useMessage();
     let showModalRef = ref(false);
-    const openState = false;
-    const onOpenRef =  async function(){
-
+    let clickedPosRef = ref(false)
+    const onOpenRef = async function (){
     };
+    let showInputRef = ref(false);
     const bufferElem = ref('');
     const contentRef = ref('content');
     const titleRef = ref('Внимание!');
@@ -65,20 +62,30 @@ export default {
       negativeText: negativeTextref,
       showModal: showModalRef,
       content: contentRef, bufferElem,
+      clickedPos: clickedPosRef,
+      showInput: showInputRef,
       onOpenRef,
       onOpen: onOpenRef,
       onPositiveClick (bufferElem) {
-        message.success('Успешно');
-        showModalRef.value = false;
-        emit('promtModalAction', { data: bufferElem, action: 'Ok'})
+        if (this.positiveText === 'Вручную'){
+          showModalRef.value = false;
+          this.clickedPos = true;
+          emit('promtModalAction', { data: bufferElem, action: this.positiveText});
+        }else if (this.clickedPos || this.positiveText === 'Принять'){
+          showModalRef.value = false;
+          emit('addElement', { data: bufferElem, action: this.positiveText});
+        }
+        else{
+          message.success('Успешно');
+          showModalRef.value = false;
+          emit('promtModalAction', { data: bufferElem, action: 'Ok'})
+        }
       },
       onNegativeClick () {
         message.info('Отмена');
         showModalRef.value = false;
+        this.clickedPos = false;
       },
-      onClose(){
-        let bla = 0;
-      }
     }
   },
 }

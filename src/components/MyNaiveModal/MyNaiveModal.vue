@@ -4,7 +4,7 @@
       <n-message-provider placement="bottom-right">
         <n-notification-provider>
           <n-dialog-provider>
-            <promt-modal @promtModalAction='promtModalAction' ref="promtModal"></promt-modal>
+            <promt-modal @promtModalAction='promtModalAction' @addElement = 'addElement' ref="promtModal"></promt-modal>
             <message ref="message"></message>
           </n-dialog-provider>
         </n-notification-provider>
@@ -37,10 +37,15 @@ export default{
     Tooltip,
     MyNaiveInput
   },
-  emits: ['promtModalAction'],
+  emits: ['promtModalAction', 'addElement'],
   methods: {
     promtModalAction(params){
       this.$emit('promtModalAction',{
+        data: params,
+      });
+    },
+    addElement(params){
+      this.$emit('addElement',{
         data: params,
       });
     },

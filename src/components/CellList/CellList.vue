@@ -73,7 +73,8 @@
   <!--  modals-->
   <my-naive-modal
       ref="naiveModal"
-      @promtModalAction = 'promtModalAction'>
+      @promtModalAction = 'promtModalAction'
+      @addElement = 'addElement'>
   </my-naive-modal>
 </template>
 <script>
@@ -88,7 +89,6 @@ import {mapActions, mapGetters} from "vuex";
 import testChart from "@/components/ChartJS/testChart";
 import MySimpleModal from "@/components/MySimpleModal/MySimpleModal";
 import MyJenesiusModal from "@/components/MyJenesiusModal/MyJenesiusModal";
-import { promptModal } from "jenesius-vue-modal";
 import MyNaiveModal from "@/components/MyNaiveModal/MyNaiveModal";
 import MyNaiveInput from "@/components/MyNaiveMessage/MyNaiveInput";
 
@@ -465,7 +465,6 @@ export default {
           }
         }
       }else if (params.type === 'HandsontableOne'){
-        let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
         params.el.children[0].style.border = 'none';
       }
     },
@@ -511,19 +510,25 @@ export default {
         tempArr.forEach(elem => {
           if (elem.data.data.insertObj == '' || elem.data.data.insertObj == 'empty' || typeof  elem.data.data.insertObj === 'undefined'){
             if (this.$data.cellFocused.length > 1){
-              this.$refs.naiveModal.$refs.promtModal.title = `Вы добавляете ${this.$data.cellFocused.length} элементов. "Авто", чтобы установить имя автоматически. "Да" - ввести для каждого.`;
+              this.$refs.naiveModal.$refs.promtModal.title = `Создать: ${objName} (${this.$data.cellFocused.length} экземпляра)`;
+              this.$refs.naiveModal.$refs.promtModal.content = '"Авто", чтобы установить имя автоматически. "Вручную" - ввести для каждого.';
               this.$refs.naiveModal.$refs.promtModal.negativeText = 'Авто';
-              this.$refs.naiveModal.$refs.promtModal.showModal = true;
-              this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, chartType: params.type};
+              this.$refs.naiveModal.$refs.promtModal.positiveText = 'Вручную';
+              this.$refs.naiveModal.$refs.promtModal.showInput = false;
+              setTimeout(() => this.$refs.naiveModal.$refs.promtModal.showModal = true, 300);
+              this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, type: params.type, objName: objName};
               lengthFlag = true;
+              throw {
+                event: 'multiAdding',
+              }
             }else if (!lengthFlag){
               this.$refs.naiveModal.$refs.promtModal.showInput = true;
-              this.$refs.naiveModal.$refs.promtModal.content = 'Очистить выбранные ячейки?';
-              this.$refs.naiveModal.$refs.promtModal.title = `${objName}. Введите имя`;
+              this.$refs.naiveModal.$refs.promtModal.title = `Создать: ${objName}`;
+              this.$refs.naiveModal.$refs.promtModal.content = 'Введите имя ячейки';
               this.$refs.naiveModal.$refs.promtModal.negativeText = 'Отмена';
               this.$refs.naiveModal.$refs.promtModal.positiveText = 'Принять';
-              this.$refs.naiveModal.$refs.promtModal.showModal = true;
-              this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, chartType: params.type};
+              this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, type: params.type, objName: objName};
+              setTimeout(() => this.$refs.naiveModal.$refs.promtModal.showModal = true, 300);
             }
           }else{
             this.$refs.naiveModal.$refs.promtModal.showModal = true;
@@ -532,52 +537,110 @@ export default {
             }else{
               this.$refs.naiveModal.$refs.promtModal.content = 'Некоторые ячейки содержат объекты. Перезаписать?';
             }
-            this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, chartType: params.type};
+            this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, type: params.type};
           }
         });
       }catch (e) {
-        console.log(`Err: ${promptModal(MySimpleModal)}`);
+        console.log(`Err: ${e.event}`);
       }
     },
-    promtModalAction(params){
-      let tempArr = this.$data.cellFocused.slice(0);
-      tempArr.forEach(elem => {
-        elem.data.data.insertObj = params.data.data.chartType;
-        elem.data.data.cellBgColor = '';
-        elem.data.data.cellFocusAnima = false;
-        this.cellFocus({data: elem.data, focused: false});
-        let targetRows = [];
-        let heightArr = [];
-        this.$refs.cell.map((item)=> {
-          if (item.gridRow == elem.data.data.gridRow){
-            heightArr.push(item.$el.getBoundingClientRect().height);
-            targetRows.push(item.$data);
-          }
-        });
-        let maxRowHeight = Math.max.apply(null, heightArr);
-        if (elem.data.el.getBoundingClientRect().height > maxRowHeight){
-          targetRows.forEach(item => {
-            item.newHeight = elem.data.el.getBoundingClientRect().height + 'px';
-          });
-        }else if (elem.data.el.getBoundingClientRect().height < maxRowHeight){
-          targetRows.forEach(item => {
-            item.newHeight = maxRowHeight + 'px';
-          });
-        }else if (elem.data.el.getBoundingClientRect().height == maxRowHeight){
-          targetRows.forEach(item => {
-            if (item.newHeight === ''){
-              let type = params.data.data.chartType;
-              if (type === 'barChartHor' || type === 'barChartVert' || type === 'bubbleChart' || type === 'doughnutChart'
-                  || type === 'groupedBarChart' || type === 'lineChart' || type === 'mixBarChart'
-                  || type === 'pieChart' || type === 'radarChart' || type === 'sectorChart'){
-                item.newHeight = maxRowHeight + 150 + 'px';
-              }else{
-                item.newHeight = maxRowHeight + 'px';
-              }
-            }
-          });
+    addElement(params){
+      let elem = params.data.data.cell;
+      elem.data.data.insertObj = params.data.data.type;
+      elem.data.data.cellBgColor = '';
+      elem.data.data.cellFocusAnima = false;
+      this.cellFocus({data: elem.data, focused: false});
+      let targetRows = [];
+      let heightArr = [];
+      this.$refs.cell.map((item)=> {
+        if (item.gridRow == elem.data.data.gridRow){
+          heightArr.push(item.$el.getBoundingClientRect().height);
+          targetRows.push(item.$data);
         }
       });
+      let maxRowHeight = Math.max.apply(null, heightArr);
+      if (elem.data.el.getBoundingClientRect().height > maxRowHeight){
+        targetRows.forEach(item => {
+          item.newHeight = elem.data.el.getBoundingClientRect().height + 'px';
+        });
+      }else if (elem.data.el.getBoundingClientRect().height < maxRowHeight){
+        targetRows.forEach(item => {
+          item.newHeight = maxRowHeight + 'px';
+        });
+      }else if (elem.data.el.getBoundingClientRect().height == maxRowHeight){
+        targetRows.forEach(item => {
+          if (item.newHeight === ''){
+            let type = params.data.data.type;
+            if (type === 'barChartHor' || type === 'barChartVert' || type === 'bubbleChart' || type === 'doughnutChart'
+                || type === 'groupedBarChart' || type === 'lineChart' || type === 'mixBarChart'
+                || type === 'pieChart' || type === 'radarChart' || type === 'sectorChart'){
+              item.newHeight = maxRowHeight + 150 + 'px';
+            }else{
+              item.newHeight = maxRowHeight + 'px';
+            }
+          }
+        });
+      }
+      if (this.$data.cellFocused.length != 0) this.insertChart({data: params.data.data, type: params.data.data.type});
+    },
+    promtModalAction(params){
+      try {
+        let tempArr = this.$data.cellFocused.slice(0);
+        let elem = tempArr[0];
+          // if (params.data.action === 'Вручную'){
+            this.$refs.naiveModal.$refs.promtModal.showInput = true;
+            this.$refs.naiveModal.$refs.promtModal.title = `Создать: ${params.data.data.objName}`;
+            this.$refs.naiveModal.$refs.promtModal.content = 'Введите имя ячейки';
+            this.$refs.naiveModal.$refs.promtModal.negativeText = 'Отмена';
+            this.$refs.naiveModal.$refs.promtModal.positiveText = 'Принять';
+            this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, type: params.data.data.type, params: params.data};
+            setTimeout(() => this.$refs.naiveModal.$refs.promtModal.showModal = true, 300);
+          // }
+      }
+     catch (e) {
+       console.log(`Err: ${e.event}`);
+     }
+
+      // else
+      // {
+      //   tempArr.forEach(elem => {
+      //     elem.data.data.insertObj = params.data.data.chartType;
+      //     elem.data.data.cellBgColor = '';
+      //     elem.data.data.cellFocusAnima = false;
+      //     this.cellFocus({data: elem.data, focused: false});
+      //     let targetRows = [];
+      //     let heightArr = [];
+      //     this.$refs.cell.map((item)=> {
+      //       if (item.gridRow == elem.data.data.gridRow){
+      //         heightArr.push(item.$el.getBoundingClientRect().height);
+      //         targetRows.push(item.$data);
+      //       }
+      //     });
+      //     let maxRowHeight = Math.max.apply(null, heightArr);
+      //     if (elem.data.el.getBoundingClientRect().height > maxRowHeight){
+      //       targetRows.forEach(item => {
+      //         item.newHeight = elem.data.el.getBoundingClientRect().height + 'px';
+      //       });
+      //     }else if (elem.data.el.getBoundingClientRect().height < maxRowHeight){
+      //       targetRows.forEach(item => {
+      //         item.newHeight = maxRowHeight + 'px';
+      //       });
+      //     }else if (elem.data.el.getBoundingClientRect().height == maxRowHeight){
+      //       targetRows.forEach(item => {
+      //         if (item.newHeight === ''){
+      //           let type = params.data.data.chartType;
+      //           if (type === 'barChartHor' || type === 'barChartVert' || type === 'bubbleChart' || type === 'doughnutChart'
+      //               || type === 'groupedBarChart' || type === 'lineChart' || type === 'mixBarChart'
+      //               || type === 'pieChart' || type === 'radarChart' || type === 'sectorChart'){
+      //             item.newHeight = maxRowHeight + 150 + 'px';
+      //           }else{
+      //             item.newHeight = maxRowHeight + 'px';
+      //           }
+      //         }
+      //       });
+      //     }
+      //   });
+      // }
     },
   },
   mounted() {
