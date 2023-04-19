@@ -204,7 +204,7 @@ export default {
       resizedTextWidth: '',
       resizedMinWidth: '',
       newHeight: '',
-      insertObj: '',
+      insertObj: 'empty',
       cellBgColor: '',
       cellFocusAnima: false,
     }

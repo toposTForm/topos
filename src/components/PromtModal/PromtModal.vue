@@ -11,7 +11,7 @@
         :negative-text='negativeText'
         :on-after-enter="onOpen"
         @positive-click="onPositiveClick(bufferElem)"
-        @negative-click="onNegativeClick"
+        @negative-click="onNegativeClick(bufferElem)"
         >
       <div>{{content}}</div>
       <my-naive-input v-if="showInput" ref="nInput"></my-naive-input>
@@ -67,13 +67,19 @@ export default {
       onOpenRef,
       onOpen: onOpenRef,
       onPositiveClick (bufferElem) {
-        if (this.positiveText === 'Вручную'){
+       if (this.positiveText === 'Вручную'){
           showModalRef.value = false;
-          this.clickedPos = true;
-          emit('promtModalAction', { data: bufferElem, action: this.positiveText});
-        }else if (this.clickedPos || this.positiveText === 'Принять'){
+          emit('promtModalAction', { data: bufferElem, actionFirst: this.positiveText});
+        }else if (bufferElem.actionFirst === 'Вручную' || this.positiveText === 'Принять'){
           showModalRef.value = false;
-          emit('addElement', { data: bufferElem, action: this.positiveText});
+          let action = 'addElement'
+          emit('addElement', { data: bufferElem, action: action});
+          message.success('Успешно');
+        }else if (this.positiveText === 'Удалить') {
+          showModalRef.value = false;
+          let action = 'Удалить'
+          emit('addElement', { data: bufferElem, action: action});
+          message.success('Успешно');
         }
         else{
           message.success('Успешно');
@@ -81,10 +87,17 @@ export default {
           emit('promtModalAction', { data: bufferElem, action: 'Ok'})
         }
       },
-      onNegativeClick () {
-        message.info('Отмена');
-        showModalRef.value = false;
-        this.clickedPos = false;
+      onNegativeClick (bufferElem) {
+        if (this.negativeText === 'Авто'){
+          message.success('Успешно');
+          showModalRef.value = false;
+          this.clickedPos = false;
+          emit('addElement', { data: bufferElem, action: this.negativeText});
+        }else{
+          message.info('Отмена');
+          showModalRef.value = false;
+          this.clickedPos = false;
+        }
       },
     }
   },
