@@ -21,7 +21,7 @@ export default {
   components: {
     QuillEditor,
   },
-  props: ['width', 'height', 'showAvatar'],
+  props: ['width', 'height'],
   emits: ['resizeRowBar', 'saveInnerHtml', 'displayFontMenu'],
   data(){
     return {

@@ -124,6 +124,10 @@ export default {
                 if (cellData.state.$data.insertObj === 'quillEditor'){
                     cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
                         `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме выбора`);
+                }else if (cellData.state.$data.insertObj === 'handsonTable'){
+                    cellData.state.$refs.handsonTable.disableEditor();
+                    cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
+                        `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме выбора`);
                 }else if (cellData.state.$data.insertObj !== 'empty') {
                     cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
                         `Выбор элемента ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X разблокирован`);
@@ -144,6 +148,10 @@ export default {
                     return
                 }else if (cellData.state.$data.insertObj === 'quillEditor'){
                     cellData.state.$refs.quillEditor.enableEditor();
+                    cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
+                        `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме редактирования`);
+                }else if (cellData.state.$data.insertObj === 'handsonTable'){
+                    cellData.state.$refs.handsonTable.enableEditor();
                     cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
                         `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме редактирования`);
                 }else if (cellData.state.$data.insertObj !== 'empty') {

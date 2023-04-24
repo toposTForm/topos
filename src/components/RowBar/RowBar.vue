@@ -29,7 +29,7 @@ export default {
       name: 'RowBar',
       choosed: false,
       gridCol: '',
-      newHeight: '40',
+      newHeight: '68',
       gridRaw: 1,
       gridRow: '',
       cursor: 'pointer',
@@ -71,7 +71,7 @@ export default {
 }
 .main-container_hover{
   display: grid;
-  background-color: gray;
+  background-color: #D9DCEF;
   opacity: 0.9;
   font-size: 14px;
   transition-duration: 100ms;
@@ -85,14 +85,21 @@ export default {
 }
 .wrap{
   display: grid;
-  border: 1px solid black;
-  min-height: 40px;
+  border: 1px solid white;
+  min-height: 68px;
   min-width: 20px;
   border-right: none;
 }
 .cell-text{
-  align-self: center;
-  line-height: normal;
+  margin-top: 8px;
+  align-self: start;
+  justify-self: center;
   text-align: left;
+  font-family: 'Golos-Text_Regular';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 10px;
+
 }
 </style>

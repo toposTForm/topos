@@ -33,8 +33,16 @@ export default {
 </script>
 
 <style>
- .app{
-   height: 100%;
-   width: 100%;
- }
+@font-face{
+  font-display: auto;
+  font-style: normal;
+  font-family: 'Golos-Text_Regular';
+  src: url("./fonts/Golos Text/Golos-Text_Regular.ttf");
+}
+@font-face{
+  font-display: auto;
+  font-style: normal;
+  font-family: 'Golos Text Bold';
+  src: url("./fonts/Golos Text/Golos-Text_Bold.ttf");
+}
 </style>

@@ -1,42 +1,40 @@
 
   <template>
     <n-input
-        v-model=value
+        v-model:value="value"
         type="text"
+        maxlength="16" show-count clearable
         :placeholder=placeholder
         @focus="focusChanged()"
-        :on-input="checkInput"
-        :on-update:value="checkUpdate()"
+        @input="checkInput()"
     />
   </template>
 
 <script>
 import { NInput } from 'naive-ui'
 import { ref } from 'vue'
+import { useMessage } from 'naive-ui'
 
 export default {
   name: "MyNaiveInput",
+  emits: ['checkInput'],
+  props: {
+  },
   components: {
     NInput
   },
-  setup() {
-    const valueRef = ref('value');
-    const placeHolderRef = ref('поле ввода')
-    const checkInputRef =  function checkInput(value){
-      let bla = 0;
-    }
+  setup(_, {emit}) {
+    const inputValueRef = ref(false);
+    let valueRef = ref('');
+    const placeHolderRef = ref('поле ввода');
     return {
       value: valueRef,
+      inputValue: inputValueRef,
       placeholder: placeHolderRef,
-      checkInputRef,
-      checkUpdate()  {
-        let bla = 0;
+      checkInput(){
+        emit('checkInput', { data: this.value });
       },
-      checkInput()  {
-        let bla = 0;
-      },
-      focusChanged()  {
-        let bla = 0;
+      focusChanged() {
       }
     }
   }

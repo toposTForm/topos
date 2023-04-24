@@ -509,7 +509,7 @@ export default {
         let lengthFlag = false;
         let notEmptyFlag = false;
         let emptyMessageFlag = false;
-        tempArr.forEach((elem, index) => {
+        tempArr.forEach((elem) => {
           if ((elem.data.data.insertObj == 'empty' || typeof  elem.data.data.insertObj === 'undefined') && params.type !== 'empty'){
             notEmptyFlag = true;
             if (this.$data.cellFocused.length > 1 && params.action !== 'addElement'){
@@ -540,7 +540,14 @@ export default {
           }else{
             if (params.type == 'empty' && elem.data.data.insertObj !== 'empty'){
               this.$refs.naiveModal.$refs.promtModal.title = `Очистить ячейки`;
-              this.$refs.naiveModal.$refs.promtModal.content = `Удалить: ${objName} (${this.$data.cellFocused.length} экземпляра)`;
+
+              if (this.$data.cellFocused.length == 1){
+                this.$refs.naiveModal.$refs.promtModal.content = `(${this.$data.cellFocused.length} ячейка будет очищена)`;
+              }else if (this.$data.cellFocused.length >= 2 && this.$data.cellFocused.length < 5){
+                this.$refs.naiveModal.$refs.promtModal.content = `(${this.$data.cellFocused.length} ячейки будет очищено)`;
+              }else{
+                this.$refs.naiveModal.$refs.promtModal.content = `(${this.$data.cellFocused.length} ячеек будет очищено)`;
+              }
               this.$refs.naiveModal.$refs.promtModal.positiveText = 'Удалить';
               this.$refs.naiveModal.$refs.promtModal.negativeText = 'Отмена';
               this.$refs.naiveModal.$refs.promtModal.showInput = false;
@@ -556,10 +563,10 @@ export default {
             }else{
               this.$refs.naiveModal.$refs.promtModal.title = `Перезаписать: ${objName}`;
               this.$refs.naiveModal.$refs.promtModal.content = 'Некоторые ячейки содержат объекты. Перезаписать?';
-              this.$refs.naiveModal.$refs.promtModal.positiveText = 'Принять';
-              this.$refs.naiveModal.$refs.promtModal.negativeText = 'Отмена';
+              this.$refs.naiveModal.$refs.promtModal.positiveText = 'Вручную';
+              this.$refs.naiveModal.$refs.promtModal.negativeText = 'Авто';
               this.$refs.naiveModal.$refs.promtModal.showInput = false;
-              this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, type: params.type};
+              this.$refs.naiveModal.$refs.promtModal.bufferElem = {cell: elem, type: params.type, objName: objName};
               setTimeout(() => this.$refs.naiveModal.$refs.promtModal.showModal = true, 100);
             }
             if (params.action == 'Удалить'){
@@ -578,6 +585,11 @@ export default {
           elem.data.data.insertObj = params.data.data.type;
           elem.data.data.cellBgColor = '';
           elem.data.data.cellFocusAnima = false;
+          if (params.data.action === 'Авто'){
+            elem.data.data.userName = `${params.data.data.objName}_${elem.data.data.gridCol}Y/${elem.data.data.gridRow}X`;
+          }else if(params.data.action === 'Удалить') {
+            elem.data.data.userName = ``;
+          }
           this.cellFocus({data: elem.data, focused: false});
           let targetRows = [];
           let heightArr = [];
@@ -616,6 +628,12 @@ export default {
         elem.data.data.insertObj = params.data.data.type;
         elem.data.data.cellBgColor = '';
         elem.data.data.cellFocusAnima = false;
+        elem.data.data.userName = params.data.userName;
+        elem.data.data.cellName = params.data.data.objName;
+        let targetCell = this.$refs.cell.find(item => item.$data.uid == elem.data.data.uid);
+        if (typeof targetCell.$refs.avatarGroup !== 'undefined'){
+          targetCell.$refs.avatarGroup.value = params.data.userName;
+        }
         this.cellFocus({data: elem.data, focused: false});
         let targetRows = [];
         let heightArr = [];

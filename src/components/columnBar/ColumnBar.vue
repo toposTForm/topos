@@ -87,7 +87,7 @@ export default {
   }
   .main-container_hover{
     display: grid;
-    background-color: gray;
+    background-color: #D9DCEF;
     opacity: 0.9;
     font-size: 14px;
     transition-duration: 100ms;
@@ -103,13 +103,17 @@ export default {
     display: grid;
     min-height: 20px;
     min-width: 30px;
-    border: 1px solid black;
+    border: 1px solid white;
     border-right: none;
   }
   .cell-text{
     align-self: center;
-    line-height: normal;
-    text-align: left;
+    text-align: center;
     width: 100%;
+    font-family: 'Golos-Text_Regular';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 10px;
   }
 </style>

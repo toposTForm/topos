@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <hot-table :settings="hotSettings"
+  <div >
+    <hot-table :settings="hotSettings" style="cursor: pointer"
        :style='{width: width, height: height}'>
     </hot-table>
   </div>
@@ -44,6 +44,8 @@ export default {
         rowHeaders: true,
         contextMenu: true,
         mergeCells: true,
+        readOnly: true,
+        cursor: 'pointer',
         licenseKey: 'non-commercial-and-evaluation',
         language: 'ru-RU',
         search: {
@@ -63,6 +65,12 @@ export default {
     searchResultCounter(){
 
     },
+    disableEditor(){
+      this.hotSettings.readOnly = true;
+    },
+    enableEditor(){
+      this.hotSettings.readOnly = false;
+    },
   },
   watch: {
     tableHeight: function (data){
@@ -70,7 +78,6 @@ export default {
     },
   },
   mounted() {
-    // this.$data.tableHeight = this.$el.children[0].getBoundingClientRect().height;
     this.$data.tableHeight = this.$el.parentElement.offsetHeight;
     this.$emit('displayFontMenu', {
       data: this.$data,

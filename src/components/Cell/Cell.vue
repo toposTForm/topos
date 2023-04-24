@@ -1,7 +1,4 @@
-<!--@dblclick='dbClickCell(this)'-->
-<!--          <div v-if="!dbClicked" class="cell-text" v-html="cellTextHtml" :style="{fontSize: `${fontSize}px`,fontWeight: fontWeight, width: `${resizedTextWidth}`, height: `${textAreaNewHeight}` }"-->
-<!--          >-->
-<!--          </div>-->
+
 <template>
   <div :id=uid
        v-if="active"
@@ -14,123 +11,235 @@
        class="cell"
        :style="{display: 'grid', gridRow: gridRow, gridColumn: gridCol, cursor: cursor, width: `${resizedWidth}`, backgroundColor: `${cellBgColor}`, justifyContent: 'stretch'}">
     <div class="wrap" tabindex="1"  @keyup.delete.exact="insertChart('empty')" :style="{width: `${resizedMinWidth}`, height: `${newHeight}`, minHeight: `${newHeight}`}" :class="{'cell-focus-anima': cellFocusAnima}">
-      <div v-if="insertObj === 'handsonTable'">
-        <handsontable-one
-            ref="hansontableOne"
-            @displayFontMenu="displayFontMenu"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`, zIndex: 0}">
-        </handsontable-one>
-      </div>
-      <div v-else-if="insertObj === 'quillEditor'">
-        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false'>
+      <div style="display: grid" v-if="insertObj === 'handsonTable'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
           <template #trigger>
-            <div>
+            <div style="grid-area: 1/1; z-index: 0">
+              <handsontable-one
+                  ref="handsonTable"
+                  @displayFontMenu="displayFontMenu"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`, zIndex: 0}">
+              </handsontable-one>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
+      </div>
+      <div style="display: grid" v-else-if="insertObj === 'quillEditor'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
               <my-quill-editor
                   ref="quillEditor"
                   @resizeRowBar="resizeRowBar"
                   @displayFontMenu="displayFontMenu"
-                  :show-avatar="dbClicked"
                   :height="newHeight"
                   :width='resizedMinWidth'
                   :style="{width: `${resizedMinWidth}px`}">
               </my-quill-editor>
             </div>
           </template>
-         Двойной клик для выхода из редактирования
+         <div>Двойной клик для выхода из редактирования</div>
         </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'lineChart'">
-        <line-chart
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :width='resizedMinWidth'
-            :height="newHeight"
-            :style="{width: `${resizedMinWidth}px`}"
-        ></line-chart>
+      <div style="display: grid" v-else-if="insertObj === 'lineChart'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <line-chart
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :width='resizedMinWidth'
+                  :height="newHeight"
+                  :style="{width: `${resizedMinWidth}px`}"
+              ></line-chart>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'barChartHor'">
-        <bar-chart-hor
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}"
-        ></bar-chart-hor>
+      <div style="display: grid" v-else-if="insertObj === 'barChartHor'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <bar-chart-hor
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}"
+              ></bar-chart-hor>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'barChartVert'">
-        <bar-chart-vert
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}"
-        ></bar-chart-vert>
+      <div style="display: grid" v-else-if="insertObj === 'barChartVert'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <bar-chart-vert
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}"
+              ></bar-chart-vert>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'bubbleChart'">
-        <bubble-chart
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}"
-        ></bubble-chart>
+      <div style="display: grid" v-else-if="insertObj === 'bubbleChart'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <bubble-chart
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}"
+              ></bubble-chart>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'doughnutChart'">
-        <doughnut-chart
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}"
-        ></doughnut-chart>
+      <div style="display: grid" v-else-if="insertObj === 'doughnutChart'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <doughnut-chart
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}"
+              ></doughnut-chart>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'groupedBarChart'">
-        <grouped-bar-chart
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}"
-        ></grouped-bar-chart>
+      <div style="display: grid" v-else-if="insertObj === 'groupedBarChart'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <grouped-bar-chart
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}"
+              ></grouped-bar-chart>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'mixBarChart'">
-        <mix-bar-chart
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}"
-        ></mix-bar-chart>
+      <div style="display: grid" v-else-if="insertObj === 'mixBarChart'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <mix-bar-chart
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}"
+              ></mix-bar-chart>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'pieChart'">
-        <pie-chart
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}"
-        ></pie-chart>
+      <div style="display: grid" v-else-if="insertObj === 'pieChart'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <pie-chart
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}"
+              ></pie-chart>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'radarChart'">
-        <radar-chart
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}"
-        ></radar-chart>
+      <div style="display: grid" v-else-if="insertObj === 'radarChart'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <radar-chart
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}"
+              ></radar-chart>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
-      <div v-else-if="insertObj === 'sectorChart'">
-        <sector-chart
-            ref="chartcontainer"
-            @resizeRowBar="resizeRowBar"
-            :height="newHeight"
-            :width='resizedMinWidth'
-            :style="{width: `${resizedMinWidth}px`}">
-        </sector-chart>
+      <div style="display: grid" v-else-if="insertObj === 'sectorChart'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <sector-chart
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}">
+              </sector-chart>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
       </div>
       <div v-else-if="insertObj === 'empty'"></div>
       <right-click-menu v-if="showMenu"></right-click-menu>
@@ -158,6 +267,8 @@ import BarChartHor from "@/components/ChartJS/BarChartHor";
 import BarChartVert from "@/components/ChartJS/BarChartVert";
 import Tooltip from "@/components/MyNaiveMessage/Tooltip";
 import { NTooltip } from "naive-ui";
+import AvatarGroup from "@/components/MyNaiveMessage/AvatarGroup";
+import {nextTick} from "vue";
 
 export default {
   name: "Cell",
@@ -177,7 +288,8 @@ export default {
     MyQuillEditor,
     HandsontableOne,
     Tooltip,
-    NTooltip
+    NTooltip,
+    AvatarGroup
   },
   props: ['cellListuid', 'rows', 'columns'],
   setup(props){
@@ -207,6 +319,8 @@ export default {
       insertObj: 'empty',
       cellBgColor: '',
       cellFocusAnima: false,
+      userName: '',
+      cellName: '',
     }
   },
   computed: mapGetters(['getCell', 'getCellMinHeight', "getClickUp", "getSelectedText"]),
@@ -272,6 +386,63 @@ export default {
         type: param
       })
     },
+    cellNameUpdate(){
+      let objName = '';
+      switch (this.$data.insertObj){
+        case 'barChartHor':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'doughnutChart':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'barChartVert':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'groupedBarChart':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'pieChart':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'lineChart':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'mixBarChart':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'radarChart':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'sectorChart':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'bubbleChart':
+          objName ='Граф';
+          this.$refs.avatarGroup.imgUrl = 'icon__graph';
+          break;
+        case 'quillEditor':
+          objName ='Текст';
+          this.$refs.avatarGroup.imgUrl = 'icon__text';
+          break;
+        case 'handsonTable':
+          objName ='Таблица';
+          this.$refs.avatarGroup.imgUrl = 'icon__table';
+          break;
+        default:
+          objName = 'Без имени';
+      }
+      this.$refs.avatarGroup.name = objName;
+      this.$refs.avatarGroup.value = this.$data.userName;
+    }
   },
 }
 </script>
@@ -282,14 +453,14 @@ export default {
 .cell{
   width: 100%;
   display: grid;
-  background-color: azure;
+  background-color: #FBFAFA;
   opacity: 0.9;
   font-size: 14px;}
 .wrap{
   display: grid;
-  min-height: 40px;
-  min-width: 18px;
-  border: 1px solid gray;
+  min-height: 68px;
+  min-width: 68px;
+  border: 1px solid #DFE3EE;
   overflow: hidden;
 }
 .cell-focus-anima{
@@ -314,34 +485,14 @@ export default {
   background-color: blanchedalmond;
   cursor: pointer;
 }
-.cell-text{
-  align-self: center;
-  /*line-height: normal;*/
-  /*text-align: left;*/
-  overflow: auto;
-  -webkit-user-select: none; /* Safari */
-  user-select: none; /* Standard syntax */
+.avatarGroup{
+  grid-area: 1/1;
+  z-index: 2;
+  align-self: end;
+  opacity: 1;
 }
-.input-cell{
-  width: fit-content;
-  font-size: 14px;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  grid-column: 1 / 3;
-  grid-row: 1 / 3;
-  display: grid;
-  background-color: white;
-  justify-content: stretch;
-}
-.text-area {
-  padding: 2px;
-  min-height: 40px;
-  grid-column: 1 / 3;
-  grid-row: 1 / 3;
-  resize: none;
-  cursor: text;
-}
+
+
 .ql-container {
   box-sizing: border-box;
   font-family: Helvetica, Arial, sans-serif;

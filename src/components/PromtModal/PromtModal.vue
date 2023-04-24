@@ -2,6 +2,7 @@
   <div>
     <n-modal
         ref="nModal"
+        style="font-family: Golos-Text_Regular"
         v-model:show="showModal"
         :mask-closable="false"
         preset="dialog"
@@ -14,13 +15,13 @@
         @negative-click="onNegativeClick(bufferElem)"
         >
       <div>{{content}}</div>
-      <my-naive-input v-if="showInput" ref="nInput"></my-naive-input>
+      <my-naive-input v-if="showInput" v-model="inputValue" @checkInput="checkInput" ref="nInput"></my-naive-input>
     </n-modal>
   </div>
 </template>
 <script>
 import { NButton } from 'naive-ui'
-import { ref } from 'vue'
+import { h, ref } from 'vue'
 import { useMessage } from 'naive-ui'
 import { NModal } from "naive-ui";
 import MyNaiveInput from "@/components/MyNaiveMessage/MyNaiveInput";
@@ -43,11 +44,13 @@ export default {
   watch: {
   },
   methods: {
+
   },
   setup (_, {emit}) {
     const message = useMessage();
     let showModalRef = ref(false);
-    let clickedPosRef = ref(false)
+    let clickedPosRef = ref(false);
+    let inputValueRef = ref('')
     const onOpenRef = async function (){
     };
     let showInputRef = ref(false);
@@ -64,7 +67,7 @@ export default {
       content: contentRef, bufferElem,
       clickedPos: clickedPosRef,
       showInput: showInputRef,
-      onOpenRef,
+      inputValue: ref(''),
       onOpen: onOpenRef,
       onPositiveClick (bufferElem) {
        if (this.positiveText === 'Вручную'){
@@ -73,7 +76,7 @@ export default {
         }else if (bufferElem.actionFirst === 'Вручную' || this.positiveText === 'Принять'){
           showModalRef.value = false;
           let action = 'addElement'
-          emit('addElement', { data: bufferElem, action: action});
+          emit('addElement', { data: bufferElem, action: action, userName: showModalRef.inputValue});
           message.success('Успешно');
         }else if (this.positiveText === 'Удалить') {
           showModalRef.value = false;
@@ -92,13 +95,16 @@ export default {
           message.success('Успешно');
           showModalRef.value = false;
           this.clickedPos = false;
-          emit('addElement', { data: bufferElem, action: this.negativeText});
+          emit('addElement', { data: bufferElem, action: this.negativeText, userName: showModalRef.inputValue});
         }else{
           message.info('Отмена');
           showModalRef.value = false;
           this.clickedPos = false;
         }
       },
+      checkInput(params){
+        showModalRef.inputValue = params.data;
+      }
     }
   },
 }
