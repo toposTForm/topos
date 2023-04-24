@@ -38,12 +38,13 @@ export default {
   font-display: auto;
   font-style: normal;
   font-family: 'Golos-Text_Regular';
-  src: url("./fonts/Golos Text/Golos-Text_Regular.ttf") format("truetype");;
+  src: url("./fonts/Golos Text/Golos-Text_Regular.ttf") format("truetype");
+  src: local('GolosText_Regular');
 }
 @font-face{
   font-display: auto;
   font-style: normal;
   font-family: 'Golos Text Bold';
-  src: url("./fonts/Golos Text/Golos-Text_Bold.ttf") format("truetype");;
+  /*src: url("./fonts/Golos Text/Golos-Text_Bold.ttf") format("truetype");*/
 }
 </style>
