@@ -25,8 +25,6 @@ export default {
     Cell,
     MyQuillEditor,
     naive,
-    GolosText_Regular,
-    GolosText_Bold
   },
   methods: {
   }
