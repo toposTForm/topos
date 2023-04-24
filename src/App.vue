@@ -35,9 +35,9 @@ export default {
   font-display: auto;
   font-weight: bold;
   font-style: italic;
-  font-family: 'Golos Text Bold';
-  src: local('Golos Text Bold'),
-  url("@/fonts/Golos Text/GolosText-Bold.woff") format("woff");
+  font-family: 'Golos Text Regular';
+  src: local('Golos Text Regular'),
+  url("@/fonts/Golos Text/GolosText-Regular.woff") format("woff");
 }
 
 

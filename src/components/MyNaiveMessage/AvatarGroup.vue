@@ -55,7 +55,7 @@ export default defineComponent({
    color: #272838;
    /*font-family: 'Arial Black';*/
    /*font-family: 'Golos Text Regular';*/
-   font-family: 'Golos Text Bold', serif;
+   font-family: 'Golos Text Regular', serif;
    /*font-family: 'Aria';*/
    /*font-style: normal;*/
    /*font-weight: 600;*/
