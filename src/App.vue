@@ -38,13 +38,14 @@ export default {
   font-display: auto;
   font-style: normal;
   font-family: 'Golos-Text_Regular';
-  src: url("./fonts/Golos Text/Golos-Text_Regular.ttf") format("ttf");
+  src: local('Golos-Text_Regular'),
+      url("./fonts/Golos Text/Golos-Text_Regular.ttf") format("ttf");
   /*src: local('GolosText_Regular');*/
 }
-@font-face{
-  font-display: auto;
-  font-style: normal;
-  font-family: 'Golos Text Bold';
-  /*src: url("./fonts/Golos Text/Golos-Text_Bold.ttf") format("truetype");*/
-}
+/*@font-face{*/
+/*  font-display: auto;*/
+/*  font-style: normal;*/
+/*  font-family: 'Golos Text Bold';*/
+/*  src: url("./fonts/Golos Text/Golos-Text_Bold.ttf") format("truetype");*/
+/*}*/
 </style>
