@@ -12,8 +12,8 @@ import Cell from "@/components/Cell/Cell";
 import MyQuillEditor from "@/components/QuillEditor/MyQuillEditor";
 import {ButtonPlugin} from "@syncfusion/ej2-vue-buttons";
 import naive from "naive-ui";
-import GolosText_Regular from '@/fonts/Golos Text/Golos-Text_Regular.ttf'
-import GolosText_Bold from '@/fonts/Golos Text/Golos-Text_Bold.ttf'
+// import GolosText_Regular from '@/fonts/Golos Text/Golos-Text_Regular.ttf'
+// import GolosText_Bold from '@/fonts/Golos Text/Bold.ttf'
 
 export default {
   name: 'App',
@@ -35,17 +35,20 @@ export default {
 <style>
 
 @font-face{
-  font-display: auto;
-  font-style: normal;
-  font-family: 'Golos-Text_Regular';
-  src: local('Golos-Text_Regular'),
-      url("./fonts/Golos Text/Golos-Text_Regular.ttf") format("ttf");
+  /*font-family: 'Golos Text Regular';*/
+  /*src: local('Golos-Text_Regular'),*/
+  /*    url("./fonts/Golos Text/Golos-Text_Regular.ttf") format("ttf");*/
+  /*!*src: url("./Golos-Text_Regular.ttf") format("ttf");*!*/
+  /*font-display: auto;*/
+  /*font-style: normal;*/
   /*src: local('GolosText_Regular');*/
 }
-/*@font-face{*/
-/*  font-display: auto;*/
-/*  font-style: normal;*/
-/*  font-family: 'Golos Text Bold';*/
-/*  src: url("./fonts/Golos Text/Golos-Text_Bold.ttf") format("truetype");*/
-/*}*/
+@font-face{
+  /*font-display: auto;*/
+  /*font-weight: bold;*/
+  /*font-style: italic;*/
+  /*font-family: 'Golos Text Bold';*/
+  /*src: url("@/Bold.ttf") format("ttf");*/
+}
+
 </style>

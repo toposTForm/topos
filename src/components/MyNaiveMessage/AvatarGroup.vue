@@ -21,7 +21,7 @@ export default defineComponent({
     NImage
   },
   setup(_, {emit}) {
-    const valueRef = async function(value){
+    const valueRef = async function(){
       this.value = 'test';
     }
     return {
@@ -53,12 +53,24 @@ export default defineComponent({
    height: 60px;
    background-repeat: no-repeat;
    color: #272838;
-   font-family: 'Golos Text Regular';
-   font-style: normal;
-   font-weight: 600;
-   font-size: 10px;
+   /*font-family: 'Arial Black';*/
+   /*font-family: 'Golos Text Regular';*/
+   font-family: 'Black', serif;
+   /*font-family: 'Aria';*/
+   /*font-style: normal;*/
+   /*font-weight: 600;*/
+   /*font-weight: bold;*/
+   font-size: 15px;
    line-height: 12px;
    z-index: 1;
+ }
+ @font-face{
+   font-display: auto;
+   font-weight: bold;
+   font-style: italic;
+   font-family: 'Black';
+   src: local('Black'),
+   url("@/Black.woff") format("woff");
  }
  .avatar-container:hover{
    background-color: #F0E5FF;
