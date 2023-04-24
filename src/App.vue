@@ -38,8 +38,8 @@ export default {
   font-display: auto;
   font-style: normal;
   font-family: 'Golos-Text_Regular';
-  src: url("./fonts/Golos Text/Golos-Text_Regular.ttf") format("truetype");
-  src: local('GolosText_Regular');
+  src: url("./fonts/Golos Text/Golos-Text_Regular.ttf") format("ttf");
+  /*src: local('GolosText_Regular');*/
 }
 @font-face{
   font-display: auto;
