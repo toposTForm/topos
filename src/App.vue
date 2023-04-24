@@ -12,6 +12,8 @@ import Cell from "@/components/Cell/Cell";
 import MyQuillEditor from "@/components/QuillEditor/MyQuillEditor";
 import {ButtonPlugin} from "@syncfusion/ej2-vue-buttons";
 import naive from "naive-ui";
+import GolosText_Regular from '@/fonts/Golos Text/Golos-Text_Regular.ttf'
+import GolosText_Bold from '@/fonts/Golos Text/Golos-Text_Bold.ttf'
 
 export default {
   name: 'App',
