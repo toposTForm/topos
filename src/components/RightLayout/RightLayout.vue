@@ -14,94 +14,232 @@
           border-radius: 16px 0px 0px 0px;">
       <n-layout style="max-height: 1000px; min-height: 300px; min-width: 0px; " />
       <n-layout-sider
-
           position="static"
           collapse-mode="width"
           :default-collapsed="true"
-          :show-collapsed-content="false"
+          :show-collapsed-content="true"
           :collapsed-width="72"
+          :show-trigger="false"
+          :collapsed="isCollapsed"
+          :on-after-enter="() => hideCollapsed()"
           :width="240"
           :native-scrollbar="false"
           style="max-height: 1000px; "
       >
-        <div class="collapsed-layout-container">
-          <div class="components-container main">
+        <div class="collapsed-layout-container" >
+          <div class="components-container main" >
+              <div class="wrapper">
+                <div class="text-menu-container">
+                  <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                    <template #trigger>
+                      <div class="text-menu-image"></div>
+                    </template>
+                    <div>Параметры</div>
+                  </n-tooltip>
+                </div>
+                <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-image"></div>
+                  </template>
+                  <div>Текстовый редактор</div>
+                </n-tooltip>
+              </div>
             <div class="wrapper">
               <div class="text-menu-container">
-                <div class="text-menu-image"></div>
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
               </div>
-              <div class="text-image"></div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image table"></div>
+                </template>
+                <div>Таблица</div>
+              </n-tooltip>
             </div>
             <div class="wrapper">
               <div class="text-menu-container">
-                <div class="text-menu-image"></div>
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
               </div>
-              <div class="text-image table"></div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image topos-obj"></div>
+                </template>
+                <div>Топос-объект</div>
+              </n-tooltip>
             </div>
             <div class="wrapper">
               <div class="text-menu-container">
-                <div class="text-menu-image"></div>
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
               </div>
-              <div class="text-image linear-graph"></div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image linear-graph"></div>
+                </template>
+                <div>Линейный график</div>
+              </n-tooltip>
             </div>
             <div class="wrapper">
               <div class="text-menu-container">
-                <div class="text-menu-image"></div>
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
               </div>
-              <div class="text-image bar-chart-hor"></div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image bar-chart-hor"></div>
+                </template>
+                <div>Гистограмма гориз.</div>
+              </n-tooltip>
             </div>
             <div class="wrapper">
               <div class="text-menu-container">
-                <div class="text-menu-image"></div>
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
               </div>
-              <div class="text-image bar-chart-vert"></div>
-            </div>
-            <div class="wrapper poor-resolution ">
-              <div class="text-menu-container">
-                <div class="text-menu-image"></div>
-              </div>
-              <div class="text-image mix-bar-chart"></div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image bar-chart-vert"></div>
+                </template>
+                <div>Гистограмма верт.</div>
+              </n-tooltip>
             </div>
             <div class="wrapper poor-resolution">
               <div class="text-menu-container">
-                <div class="text-menu-image"></div>
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
               </div>
-              <div class="text-image pie-chart"></div>
-            </div>
-            <div class="wrapper poor-resolution middle-resolution">
-              <div class="text-menu-container">
-                <div class="text-menu-image"></div>
-              </div>
-              <div class="text-image bubble-chart"></div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image mix-bar-chart"></div>
+                </template>
+                <div>Составной график</div>
+              </n-tooltip>
             </div>
             <div class="wrapper poor-resolution">
               <div class="text-menu-container">
-                <div class="text-menu-image"></div>
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
               </div>
-              <div class="text-image radar-chart"></div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image pie-chart"></div>
+                </template>
+                <div>Секторная диаграмма</div>
+              </n-tooltip>
             </div>
             <div class="wrapper poor-resolution middle-resolution">
               <div class="text-menu-container">
-                <div class="text-menu-image"></div>
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
               </div>
-              <div class="text-image sector-chart"></div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image bubble-chart"></div>
+                </template>
+                <div>Пузырьковая диаграмма</div>
+              </n-tooltip>
             </div>
             <div class="wrapper poor-resolution middle-resolution">
               <div class="text-menu-container">
-                <div class="text-menu-image"></div>
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
               </div>
-              <div class="text-image doughnut-chart"></div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image radar-chart"></div>
+                </template>
+                <div>Диаграмма направленности</div>
+              </n-tooltip>
+            </div>
+            <div class="wrapper poor-resolution middle-resolution">
+              <div class="text-menu-container">
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
+              </div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image sector-chart"></div>
+                </template>
+                <div>Секторная диаграмма</div>
+              </n-tooltip>
+            </div>
+            <div class="wrapper poor-resolution middle-resolution hight-resolution">
+              <div class="text-menu-container">
+                <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <template #trigger>
+                    <div class="text-menu-image"></div>
+                  </template>
+                  <div>Параметры</div>
+                </n-tooltip>
+              </div>
+              <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image doughnut-chart"></div>
+                </template>
+                <div>Кольцевая диаграмма</div>
+              </n-tooltip>
             </div>
           </div>
           <div class="components-container empty"></div>
           <div class="components-container second">
             <div class="wrapper" style="align-content: center; height: 40px">
-              <div class="text-image" style="background-image: none; display: grid; justify-content: center; align-content: center">
-                <div class="form-menu"></div>
-              </div>
+              <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image" style="background-image: none; display: grid; justify-content: center; align-content: center">
+                    <div class="form-menu"></div>
+                  </div>
+                </template>
+                <div>Управление</div>
+              </n-tooltip>
             </div>
             <div class="wrapper" style="align-content: center; height: 40px">
-              <div class="text-image expand-menu"></div>
+              <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                <template #trigger>
+                  <div class="text-image expand-menu" @click="expandMenu(this)"></div>
+                </template>
+                <div>Развернуть</div>
+              </n-tooltip>
             </div>
           </div>
         </div>
@@ -111,15 +249,37 @@
 </template>
 
 <script>
-import { h, defineComponent, Component } from "vue";
-import { NCard, NLayout, NLayoutSider, NSpace } from 'naive-ui'
+import { NCard, NLayout, NLayoutSider, NSpace, NTooltip } from 'naive-ui';
+import { ref } from 'vue';
+
 export default {
   name: "RightLayout",
   components:{
     NCard,
     NLayout,
     NLayoutSider,
-    NSpace
+    NSpace,
+    NTooltip
+  },
+  data(){
+    return{
+
+    }
+  },
+  setup(){
+    return{
+      isCollapsed: ref(true),
+      expandMenu(){
+        if(this.isCollapsed){
+          this.isCollapsed = false;
+        }else{
+          this.isCollapsed = true;
+        }
+      },
+      hideCollapsed(arg){
+        let bla = 0;
+      }
+    }
   }
 }
 </script>
@@ -134,9 +294,7 @@ export default {
     display: grid;
     width: 40px;
     grid-row-gap: 8px;
-    /*justify-content: center;*/
     justify-self: center;
-    /*padding-right: 6px;*/
   }
   .empty{
     grid-row: 2;
@@ -160,9 +318,6 @@ export default {
     width: 40px;
     height: 51px;
     align-content: space-evenly;
-  }
-  .wrapper:hover .form-menu{
-
   }
   .text-menu-container{
     display: grid;
@@ -241,17 +396,20 @@ export default {
     background-image: url("./AvatarIcons/doughnut-chart-icon.png");
   }
   .form-menu{
-    /*width: 6px;*/
-    grid-area: 1/1;
     background-repeat: no-repeat;
-    width: 6px;
-    height: 20px;
+    width: 5px;
+    height: 16px;
     background-image: url("./AvatarIcons/form-menu-icon.svg");
   }
   .expand-menu{
     width: 20px;
+    height: 20px;
     background-image: url("./AvatarIcons/expand-menu-icon.svg");
   }
+  .topos-obj{
+    width: 20px;
+    background-image: url("./AvatarIcons/insert-object-icon.png");
+   }
   @media only screen and (max-height: 605px) {
     .poor-resolution{
       display: none;
@@ -259,6 +417,11 @@ export default {
   }
   @media only screen and (max-height: 800px) {
     .middle-resolution{
+      display: none;
+    }
+  }
+  @media only screen and (max-height: 900px) {
+    .hight-resolution{
       display: none;
     }
   }
