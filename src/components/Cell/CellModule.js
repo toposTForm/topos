@@ -136,7 +136,6 @@ export default {
                 cellData.state.$.parent.data.cellDbClicked = '';
                 state.selectedText = '';
                 nextTick(() => {
-                    // cellData.state.textAreaNewHeight = cellData.state.$el.offsetHeight;
                     cellData.state.cellBgColor = '';
                     cellData.state.cellFocusAnima = false;
                     setTimeout(() => {
@@ -144,7 +143,7 @@ export default {
                     }, 100);
                 });
             }else {
-                if (cellData.state.$data.insertObj === ''){
+                if (cellData.state.$data.insertObj === '' || cellData.state.$data.insertObj === 'empty'){
                     return
                 }else if (cellData.state.$data.insertObj === 'quillEditor'){
                     cellData.state.$refs.quillEditor.enableEditor();

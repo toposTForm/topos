@@ -307,7 +307,7 @@ export default {
       cellTextHtml: '',
       gridCol: '',
       gridRow: '',
-      cursor: 'pointer',
+      cursor: `pointer`,
       fontSize: 14,
       fontWeight: 'normal',
       textAreaOldHeight: 40,
@@ -455,13 +455,20 @@ export default {
   display: grid;
   background-color: #FBFAFA;
   opacity: 0.9;
-  font-size: 14px;}
+  font-size: 14px;
+}
 .wrap{
   display: grid;
   min-height: 68px;
   min-width: 68px;
   border: 1px solid #DFE3EE;
   overflow: hidden;
+}
+.wrap:hover{
+  border-color: #A4A6C2;
+  background: rgba(217, 220, 239, 0.12);
+  transition-duration: 200ms;
+
 }
 .cell-focus-anima{
   width: 100%;
@@ -481,9 +488,11 @@ export default {
 }
 .cell:hover{
   opacity: 1;
-  border-color: black;
-  background-color: blanchedalmond;
-  cursor: pointer;
+  cursor: url("./Icons/cursor-pointer-icon.svg") 0 0, pointer;
+  z-index: 1;
+  transition-timing-function: ease-in;
+  transition-duration: 200ms;
+  transform: scale(1.05, 1.05);
 }
 .avatarGroup{
   grid-area: 1/1;
@@ -491,6 +500,9 @@ export default {
   align-self: end;
   opacity: 1;
 }
+
+
+
 
 
 .ql-container {

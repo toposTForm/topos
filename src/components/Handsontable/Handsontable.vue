@@ -45,6 +45,7 @@ export default {
         contextMenu: true,
         mergeCells: true,
         readOnly: true,
+        manualColumnMove: true,
         cursor: 'pointer',
         licenseKey: 'non-commercial-and-evaluation',
         language: 'ru-RU',

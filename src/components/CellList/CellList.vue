@@ -57,7 +57,7 @@
             v-for="cell in cellField.defaultCols">
         </column-bar>
       </div>
-      <div :style="{display: 'grid', height: '100%', zIndex: '0', gridRow: '3', gridColumn: `1 / ${cellField.defaultCols + 1}`, alignContent: cellField.alignCellContent, justifyContent: cellField.justifyCellContent, paddingLeft: '31px'}">
+      <div :style="{display: 'grid', overflow: 'hidden', height: '100%', zIndex: '0', gridRow: '3', gridColumn: `1 / ${cellField.defaultCols + 1}`, alignContent: cellField.alignCellContent, justifyContent: cellField.justifyCellContent, paddingLeft: '31px'}">
         <Cell
             ref="cell"
             @resizeRowBar = "resizeRowBar"
@@ -70,6 +70,7 @@
       </div>
     </div>
   </div>
+
   <!--  modals-->
   <my-naive-modal
       ref="naiveModal"
@@ -91,7 +92,6 @@ import MySimpleModal from "@/components/MySimpleModal/MySimpleModal";
 import MyJenesiusModal from "@/components/MyJenesiusModal/MyJenesiusModal";
 import MyNaiveModal from "@/components/MyNaiveModal/MyNaiveModal";
 import MyNaiveInput from "@/components/MyNaiveMessage/MyNaiveInput";
-
 export default {
   name: "CellList",
   components:{
@@ -103,7 +103,7 @@ export default {
     testChart,
     MyJenesiusModal,
     MySimpleModal,
-    MyNaiveInput
+    MyNaiveInput,
   },
   directives: {
     resize: {
@@ -587,12 +587,67 @@ export default {
           elem.data.data.cellFocusAnima = false;
           if (params.data.action === 'Авто'){
             elem.data.data.userName = `${params.data.data.objName}_${elem.data.data.gridCol}Y/${elem.data.data.gridRow}X`;
+            if (elem.data.data.userName.length > 16){
+              let firstStr = elem.data.data.userName.slice(0, 16);
+              let afterSlash = /[_].*/gi;
+              let secStr = elem.data.data.userName.match(afterSlash);
+              let nameStr = firstStr.slice(0, firstStr.length - secStr[0].length) + secStr;
+              elem.data.data.userName = nameStr;
+            }
           }else if(params.data.action === 'Удалить') {
             elem.data.data.userName = ``;
           }
           this.cellFocus({data: elem.data, focused: false});
           let targetRows = [];
           let heightArr = [];
+          nextTick(() => {
+            this.$refs.cell.map((item)=> {
+              if (item.gridRow == elem.data.data.gridRow){
+                heightArr.push(item.$el.getBoundingClientRect().height);
+                targetRows.push(item.$data);
+              }
+            });
+            let maxRowHeight = Math.max.apply(null, heightArr);
+            if (elem.data.el.getBoundingClientRect().height > maxRowHeight){
+              targetRows.forEach(item => {
+                item.newHeight = elem.data.el.getBoundingClientRect().height + 'px';
+              });
+            }else if (elem.data.el.getBoundingClientRect().height < maxRowHeight){
+              targetRows.forEach(item => {
+                item.newHeight = maxRowHeight + 'px';
+              });
+            }else if (elem.data.el.getBoundingClientRect().height == maxRowHeight){
+              targetRows.forEach(item => {
+                // if (item.newHeight === ''){
+                  let type = params.data.data.type;
+                  if (type === 'barChartHor' || type === 'barChartVert' || type === 'bubbleChart' || type === 'doughnutChart'
+                      || type === 'groupedBarChart' || type === 'lineChart' || type === 'mixBarChart'
+                      || type === 'pieChart' || type === 'radarChart' || type === 'sectorChart'){
+                    // item.newHeight = maxRowHeight + 150 + 'px';
+                    item.newHeight = maxRowHeight + 'px';
+                  }else{
+                    item.newHeight = maxRowHeight + 'px';
+                  }
+                // }
+              });
+            }
+          })
+        });
+      }else{
+        let elem = params.data.data.cell;
+        elem.data.data.insertObj = params.data.data.type;
+        elem.data.data.cellBgColor = '';
+        elem.data.data.cellFocusAnima = false;
+        elem.data.data.userName = params.data.userName;
+        elem.data.data.cellName = params.data.data.objName;
+        let targetCell = this.$refs.cell.find(item => item.$data.uid == elem.data.data.uid);
+        if (typeof targetCell.$refs.avatarGroup !== 'undefined'){
+          targetCell.$refs.avatarGroup.value = params.data.userName;
+        }
+        this.cellFocus({data: elem.data, focused: false});
+        let targetRows = [];
+        let heightArr = [];
+        nextTick(() => {
           this.$refs.cell.map((item)=> {
             if (item.gridRow == elem.data.data.gridRow){
               heightArr.push(item.$el.getBoundingClientRect().height);
@@ -610,62 +665,20 @@ export default {
             });
           }else if (elem.data.el.getBoundingClientRect().height == maxRowHeight){
             targetRows.forEach(item => {
-              if (item.newHeight === ''){
+              // if (item.newHeight === ''){
                 let type = params.data.data.type;
                 if (type === 'barChartHor' || type === 'barChartVert' || type === 'bubbleChart' || type === 'doughnutChart'
                     || type === 'groupedBarChart' || type === 'lineChart' || type === 'mixBarChart'
                     || type === 'pieChart' || type === 'radarChart' || type === 'sectorChart'){
-                  item.newHeight = maxRowHeight + 150 + 'px';
+                  // item.newHeight = maxRowHeight + 150 + 'px';
+                  item.newHeight = maxRowHeight + 'px';
                 }else{
                   item.newHeight = maxRowHeight + 'px';
                 }
-              }
+              // }
             });
           }
-        });
-      }else{
-        let elem = params.data.data.cell;
-        elem.data.data.insertObj = params.data.data.type;
-        elem.data.data.cellBgColor = '';
-        elem.data.data.cellFocusAnima = false;
-        elem.data.data.userName = params.data.userName;
-        elem.data.data.cellName = params.data.data.objName;
-        let targetCell = this.$refs.cell.find(item => item.$data.uid == elem.data.data.uid);
-        if (typeof targetCell.$refs.avatarGroup !== 'undefined'){
-          targetCell.$refs.avatarGroup.value = params.data.userName;
-        }
-        this.cellFocus({data: elem.data, focused: false});
-        let targetRows = [];
-        let heightArr = [];
-        this.$refs.cell.map((item)=> {
-          if (item.gridRow == elem.data.data.gridRow){
-            heightArr.push(item.$el.getBoundingClientRect().height);
-            targetRows.push(item.$data);
-          }
-        });
-        let maxRowHeight = Math.max.apply(null, heightArr);
-        if (elem.data.el.getBoundingClientRect().height > maxRowHeight){
-          targetRows.forEach(item => {
-            item.newHeight = elem.data.el.getBoundingClientRect().height + 'px';
-          });
-        }else if (elem.data.el.getBoundingClientRect().height < maxRowHeight){
-          targetRows.forEach(item => {
-            item.newHeight = maxRowHeight + 'px';
-          });
-        }else if (elem.data.el.getBoundingClientRect().height == maxRowHeight){
-          targetRows.forEach(item => {
-            if (item.newHeight === ''){
-              let type = params.data.data.type;
-              if (type === 'barChartHor' || type === 'barChartVert' || type === 'bubbleChart' || type === 'doughnutChart'
-                  || type === 'groupedBarChart' || type === 'lineChart' || type === 'mixBarChart'
-                  || type === 'pieChart' || type === 'radarChart' || type === 'sectorChart'){
-                item.newHeight = maxRowHeight + 150 + 'px';
-              }else{
-                item.newHeight = maxRowHeight + 'px';
-              }
-            }
-          });
-        }
+        })
         if (this.$data.cellFocused.length != 0) this.insertChart({data: params.data.data, type: params.data.data.type, action: params.data.action});
       }
     },
