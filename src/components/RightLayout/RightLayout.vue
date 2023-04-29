@@ -11,7 +11,7 @@
           display: grid;
           box-shadow: 0px 12px 10px -2px rgba(44, 75, 99, 0.14);
           border-radius: 16px 0px 0px 0px;">
-      <n-layout style="max-height: 1000px; min-height: 700px;  min-width: 0px; " />
+      <n-layout style="max-height: 1000px; height: 900px; min-width: 0px; " />
       <n-layout-sider
           position="static"
           collapse-mode="width"
@@ -23,7 +23,7 @@
           :on-after-enter="() => hideCollapsed()"
           :width="288"
           :native-scrollbar="false"
-          style="max-height: 700px "
+          style="max-height: 1000px;"
       >
         <div v-if="isCollapsed" class="collapsed-layout-container" >
           <div class="components-container main" >
