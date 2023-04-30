@@ -11,7 +11,6 @@
           display: grid;
           box-shadow: 0px 12px 10px -2px rgba(44, 75, 99, 0.14);
           border-radius: 16px 0px 0px 0px;">
-      <n-layout style="max-height: 1000px; height: 900px; min-width: 0px; " />
       <n-layout-sider
           position="static"
           collapse-mode="width"
@@ -23,13 +22,13 @@
           :on-after-enter="() => hideCollapsed()"
           :width="288"
           :native-scrollbar="false"
-          style="max-height: 1000px;"
+          style="max-height: 1000px; "
       >
         <div v-if="isCollapsed" class="collapsed-layout-container" >
-          <div class="components-container main" >
+          <div class="components-container main">
               <div class="wrapper">
                 <div class="text-menu-container">
-                  <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+                  <n-tooltip trigger="hover" placement="left-end" :animated="true" :duration="100" :keep-alive-on-hover='false'>
                     <template #trigger>
                       <div class="text-menu-image"></div>
                     </template>
@@ -251,12 +250,11 @@
               line-height: 22px;
               height: 28px;
               color: #64748B;
-              position: sticky;
             "
-              pane-style="height: 650px"
               default-value="components"
+                    pane-style="background-color:red;"
             >
-              <n-tab-pane name="components" tab="Компоненты">
+              <n-tab-pane  name="components" tab="Компоненты">
                 <div class="components-container__expanded">
                   <div class="base-components-container">
                     <div class="base-label">Базовые</div>
@@ -304,7 +302,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image" style="width: 32px; height: 32px"></div>
+                          <div class="text-image linear-graph" style="width: 32px; height: 32px"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Линейный</div>
@@ -536,7 +534,8 @@ export default {
   }
   .expanded-layout-container{
     display: grid;
-    width: 288px;
+    min-width: 288px;
+    min-height: 600px;
     border-width: 1px 0px 0px 1px;
     border-style: solid;
     border-color: #F0F2F7;
@@ -553,7 +552,7 @@ export default {
     display: grid;
     padding-top: 16px;
     gap: 16px;
-    align-content: start;
+    /*align-content: start;*/
     align-self: stretch;
   }
   .base-components-container{
@@ -570,7 +569,7 @@ export default {
     padding: 16px;
     padding-left: 0;
     gap: 8px;
-    background: #FFFFFF;
+    /*background: #FFFFFF;*/
     border-top: 1px solid #F0F2F7;
     box-shadow: 4px 0px 4px rgba(44, 75, 99, 0.1);
   }
@@ -649,7 +648,6 @@ export default {
     padding: 4px 16px;
     background: #F8FAFC;
     border-radius: 50px;
-    width: 288px;
     height: 36px;
   }
   .empty{
@@ -778,19 +776,42 @@ export default {
   .gauge-arrow{
     background-image: url("AvatarIcons/gauge-arrow-icon.svg");
   }
-  @media only screen and (max-height: 605px) {
+  @media only screen and (max-height: 700px) and (min-height: 500px) {
     .poor-resolution{
       display: none;
     }
+    .expanded-layout-container{
+      height: 500px;
+    }
   }
-  @media only screen and (max-height: 800px) {
+  @media only screen and (max-height: 800px) and (min-height: 710px) {
     .middle-resolution{
       display: none;
     }
+    .expanded-layout-container{
+      height: 700px;
+    }
   }
-  @media only screen and (max-height: 900px) {
+  @media only screen and (max-height: 900px) and (min-height: 810px) {
     .hight-resolution{
       display: none;
+    }
+    .expanded-layout-container{
+      height: 800px;
+    }
+    .components-container__expanded{
+      height: 750px;
+    }
+  }
+  @media only screen and (max-height: 1100px) and (min-height: 910px) {
+    .hight-resolution{
+      display: none;
+    }
+    .expanded-layout-container{
+      height: 900px;
+    }
+    .components-container__expanded{
+      height: 850px;
     }
   }
 </style>
