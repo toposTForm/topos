@@ -133,7 +133,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image mix-bar-chart"></div>
+                  <div class="text-image mix-bar-chart" @click="insertChart('mixBarChart')"></div>
                 </template>
                 <div>Составной график</div>
               </n-tooltip>
@@ -149,7 +149,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image pie-chart"></div>
+                  <div class="text-image pie-chart" @click="insertChart('pieChart')"></div>
                 </template>
                 <div>Секторная диаграмма</div>
               </n-tooltip>
@@ -165,7 +165,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image bubble-chart"></div>
+                  <div class="text-image bubble-chart" @click="insertChart('bubbleChart')"></div>
                 </template>
                 <div>Пузырьковая диаграмма</div>
               </n-tooltip>
@@ -181,7 +181,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image radar-chart"></div>
+                  <div class="text-image radar-chart" @click="insertChart('radarChart')"></div>
                 </template>
                 <div>Диаграмма направленности</div>
               </n-tooltip>
@@ -197,7 +197,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image sector-chart"></div>
+                  <div class="text-image sector-chart" @click="insertChart('sectorChart')"></div>
                 </template>
                 <div>Секторная диаграмма</div>
               </n-tooltip>
@@ -213,7 +213,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image doughnut-chart"></div>
+                  <div class="text-image doughnut-chart" @click="insertChart('doughnutChart')"></div>
                 </template>
                 <div>Кольцевая диаграмма</div>
               </n-tooltip>
@@ -252,7 +252,7 @@
               color: #64748B;
             "
               default-value="components"
-                    pane-style="background-color:red;"
+              pane-style=""
             >
               <n-tab-pane  name="components" tab="Компоненты">
                 <div class="components-container__expanded">
@@ -264,7 +264,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image" style="width: 32px; height: 32px"></div>
+                          <div class="text-image" @click="insertChart('quillEditor')" style="width: 32px; height: 32px"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Текст</div>
@@ -275,7 +275,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image table" style="width: 20px;"></div>
+                          <div class="text-image table" @click="insertChart('handsonTable')" style="width: 20px;"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Таблица</div>
@@ -286,7 +286,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image topos-obj" style="width: 26px;"></div>
+                          <div class="text-image topos-obj" style="width: 24px;"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Топос-объект</div>
@@ -302,7 +302,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image linear-graph" style="width: 32px; height: 32px"></div>
+                          <div class="text-image linear-graph" @click="insertChart('lineChart')" style="width: 32px; height: 32px"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Линейный</div>
@@ -313,7 +313,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image bar-chart-vert" style="width: 26px"></div>
+                          <div class="text-image bar-chart-vert" @click="insertChart('barChartVert')" style="width: 26px; height: 24px"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Гистограмма В.</div>
@@ -324,7 +324,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image bar-chart-hor" style="width: 26px;"></div>
+                          <div class="text-image bar-chart-hor" @click="insertChart('barChartHor')" style="width: 24px;"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Гистограмма Г.</div>
@@ -335,7 +335,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image pie-chart" style="width: 28px; height: 28px"></div>
+                          <div class="text-image pie-chart" @click="insertChart('pieChart')" style="width: 28px; height: 28px"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Круговая</div>
@@ -346,7 +346,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image bubble-chart" style="width: 28px; height: 28px;"></div>
+                          <div class="text-image bubble-chart" @click="insertChart('bubbleChart')" style="width: 28px; height: 28px;"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Пузырьковая</div>
@@ -357,7 +357,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image mix-bar-chart" style="width: 28px; height: 28px;"></div>
+                          <div class="text-image mix-bar-chart" @click="insertChart('mixBarChart')" style="width: 28px; height: 28px;"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Смешанная</div>
@@ -368,7 +368,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image sector-chart" style="width: 28px; height: 28px;"></div>
+                          <div class="text-image sector-chart" @click="insertChart('sectorChart')" style="width: 28px; height: 28px;"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Секторная</div>
@@ -379,7 +379,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image radar-chart" style="width: 28px; height: 28px;"></div>
+                          <div class="text-image radar-chart" @click="insertChart('radarChart')" style="width: 28px; height: 28px;"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Направленности</div>
@@ -390,7 +390,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image doughnut-chart" style="width: 28px; height: 28px;"></div>
+                          <div class="text-image doughnut-chart" @click="insertChart('doughnutChart')" style="width: 28px; height: 28px;"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Кольцевая</div>
@@ -428,7 +428,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image bar-chart-hor" style="width: 26px;"></div>
+                          <div class="text-image bar-chart-hor" style="width: 24px;"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label">Гистограмма Г.</div>
@@ -489,6 +489,7 @@ export default {
   setup(_, {emit}){
     return{
       isCollapsed: ref(false),
+      cellSelected: ref(false),
       expandMenu(){
         if(this.isCollapsed){
           this.isCollapsed = false;
@@ -497,10 +498,14 @@ export default {
         }
       },
       hideCollapsed(arg){
-        let bla = 0;
+        let nTabsBar = document.querySelector('.n-tabs-bar');
+        nTabsBar.style.backgroundColor = '#F0E5FF';
+        nTabsBar.style.border = '1px solid #E1CCFF';
+        nTabsBar.style.borderRadius = '50px';
       },
       insertChart(param){
-        this.$emit('insertChart', {
+        let bla = 0;
+        emit('insertChart', {
           data: this.$data,
           type: param
         })
@@ -512,16 +517,16 @@ export default {
     nTabsBar.style.backgroundColor = '#F0E5FF';
     nTabsBar.style.border = '1px solid #E1CCFF';
     nTabsBar.style.borderRadius = '50px';
-    nTabsBar.style.width = '88px';
-    nTabsBar.style.minHeight = '28px';
-    nTabsBar.style.order = '0';
-    nTabsBar.style.zIndex = '0';
-    nTabsBar.style.marginRight = '10px';
-    nTabsBar.style.paddingLeft = '10px';
-    let nTabsTabWrapper = document.querySelectorAll('.n-tabs-tab-wrapper');
-    nTabsTabWrapper.forEach(elem => {
-      elem.style.zIndex = 1;
-    })
+    // nTabsBar.style.width = '88px';
+    // nTabsBar.style.minHeight = '28px';
+    // nTabsBar.style.order = '0';
+    // nTabsBar.style.zIndex = '0';
+    // nTabsBar.style.marginRight = '10px';
+    // nTabsBar.style.paddingLeft = '10px';
+    // let nTabsTabWrapper = document.querySelectorAll('.n-tabs-tab-wrapper');
+    // nTabsTabWrapper.forEach(elem => {
+    //   elem.style.zIndex = 1;
+    // })
   }
 }
 </script>
@@ -780,13 +785,19 @@ export default {
     .poor-resolution{
       display: none;
     }
+    .collapsed-layout-container{
+      height: 600px;
+    }
     .expanded-layout-container{
-      height: 500px;
+      height: 600px;
     }
   }
   @media only screen and (max-height: 800px) and (min-height: 710px) {
     .middle-resolution{
       display: none;
+    }
+    .collapsed-layout-container{
+      height: 700px;
     }
     .expanded-layout-container{
       height: 700px;
@@ -795,6 +806,9 @@ export default {
   @media only screen and (max-height: 900px) and (min-height: 810px) {
     .hight-resolution{
       display: none;
+    }
+    .collapsed-layout-container{
+      height: 800px;
     }
     .expanded-layout-container{
       height: 800px;
@@ -806,6 +820,9 @@ export default {
   @media only screen and (max-height: 1100px) and (min-height: 910px) {
     .hight-resolution{
       display: none;
+    }
+    .collapsed-layout-container{
+      height: 900px;
     }
     .expanded-layout-container{
       height: 900px;

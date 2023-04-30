@@ -1,4 +1,5 @@
 <template v-if="getCellList">
+
   <div
       v-if="active && typeof cellField.raws !== 'undefined'"
       v-on="loadCellListParams(this.$data)"
@@ -11,9 +12,18 @@
     </div>
     <div class="cell">
       <div class="empty-bar" :style="{gridColumn: `1 / ${cellField.defaultCols + 1}`}"></div>
+      <div style="position: fixed; bottom: 0%; overflow: visible; right: 0px; z-index: 2;" >
+        <right-layout
+            @insertChart="insertChart"
+            ref='formatBar'
+            :cellListuid="cellListuid"
+        >
+
+        </right-layout>
+      </div>
       <div class="format-bar">
         <format-bar
-            ref='formatBar'
+            ref='formatBarOld'
             @insertChart="insertChart"
             :cellListuid="cellListuid">
         </format-bar>
@@ -92,6 +102,7 @@ import MySimpleModal from "@/components/MySimpleModal/MySimpleModal";
 import MyJenesiusModal from "@/components/MyJenesiusModal/MyJenesiusModal";
 import MyNaiveModal from "@/components/MyNaiveModal/MyNaiveModal";
 import MyNaiveInput from "@/components/MyNaiveMessage/MyNaiveInput";
+import RightLayout from "@/components/RightLayout/RightLayout";
 export default {
   name: "CellList",
   components:{
@@ -104,6 +115,7 @@ export default {
     MyJenesiusModal,
     MySimpleModal,
     MyNaiveInput,
+    RightLayout
   },
   directives: {
     resize: {
@@ -431,7 +443,7 @@ export default {
         if (typeof checkCellState === 'undefined'){
           this.$data.cellFocused.push(params);
         }
-        this.$refs.formatBar.$data.cellSelected = params;
+        this.$refs.formatBar.cellSelected = params;
       }else{
         let cellIndex = '';
         let checkCellState = this.$data.cellFocused.find((elem, index) => {
@@ -443,30 +455,30 @@ export default {
         if(typeof checkCellState !== 'undefined'){
           this.$data.cellFocused.splice(cellIndex,1);
         }
-        if (this.$data.cellFocused.length == 0) this.$refs.formatBar.$data.cellSelected = false;
+        if (this.$data.cellFocused.length == 0) this.$refs.formatBar.cellSelected = false;
       }
     },
     displayFontMenu(params){
-      if (params.type === 'MyQuillEditor'){
-        let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
-        params.el.children[0].style.border = 'none';
-        if(fontContainer.children.length == 0){
-          if (params.enable){
-            fontContainer.appendChild(params.el.children[0]);
-            params.toolbar.style.display = 'block';
-          }
-        }else{
-          if (params.enable){
-            params.toolbar.style.display = 'block';
-            fontContainer.children[0].replaceWith(params.toolbar);
-          }
-          if (!params.enable){
-            params.toolbar.style.display = 'none';
-          }
-        }
-      }else if (params.type === 'HandsontableOne'){
-        params.el.children[0].style.border = 'none';
-      }
+      // if (params.type === 'MyQuillEditor'){
+      //   let fontContainer = this.$refs.formatBar.$el.querySelector('.quill-edit');
+      //   params.el.children[0].style.border = 'none';
+      //   if(fontContainer.children.length == 0){
+      //     if (params.enable){
+      //       fontContainer.appendChild(params.el.children[0]);
+      //       params.toolbar.style.display = 'block';
+      //     }
+      //   }else{
+      //     if (params.enable){
+      //       params.toolbar.style.display = 'block';
+      //       fontContainer.children[0].replaceWith(params.toolbar);
+      //     }
+      //     if (!params.enable){
+      //       params.toolbar.style.display = 'none';
+      //     }
+      //   }
+      // }else if (params.type === 'HandsontableOne'){
+      //   params.el.children[0].style.border = 'none';
+      // }
     },
     insertChart(params){
       try {

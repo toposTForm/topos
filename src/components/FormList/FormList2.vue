@@ -3,9 +3,7 @@
     <CellList cellListuid = 'mainCellsTable'>
 
     </CellList>
-  <div style="position: fixed; bottom: 0%; overflow: visible; right: 0px; z-index: 2;" >
-    <right-layout></right-layout>
-  </div>
+
 
 </template>
 
