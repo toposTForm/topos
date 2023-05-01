@@ -12,6 +12,7 @@
        :style="{display: 'grid', gridRow: gridRow, gridColumn: gridCol, cursor: cursor, width: `${resizedWidth}`, backgroundColor: `${cellBgColor}`, justifyContent: 'stretch'}">
     <div class="wrap" tabindex="1"  @keyup.delete.exact="insertChart('empty')" :style="{width: `${resizedMinWidth}`, height: `${newHeight}`, minHeight: `${newHeight}`}" :class="{'cell-focus-anima': cellFocusAnima}">
       <div style="display: grid" v-if="insertObj === 'handsonTable'">
+        <gauge-chart>asdasd</gauge-chart>
         <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
           <template #trigger>
             <div style="grid-area: 1/1; z-index: 0">
@@ -241,6 +242,26 @@
           <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
         </div>
       </div>
+      <div style="display: grid" v-else-if="insertObj === 'gaugeChart'">
+        <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+          <template #trigger>
+            <div style="grid-area: 1/1">
+              <gauge-chart
+                  ref="chartcontainer"
+                  @resizeRowBar="resizeRowBar"
+                  :uid="uid"
+                  :height="newHeight"
+                  :width='resizedMinWidth'
+                  :style="{width: `${resizedMinWidth}px`}">
+              </gauge-chart>
+            </div>
+          </template>
+          <div>Двойной клик для выхода из редактирования</div>
+        </n-tooltip>
+        <div v-if="!dbClicked" class="avatarGroup">
+          <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
+        </div>
+      </div>
       <div v-else-if="insertObj === 'empty'"></div>
       <right-click-menu v-if="showMenu"></right-click-menu>
   </div>
@@ -269,6 +290,7 @@ import Tooltip from "@/components/MyNaiveMessage/Tooltip";
 import { NTooltip } from "naive-ui";
 import AvatarGroup from "@/components/MyNaiveMessage/AvatarGroup";
 import {nextTick} from "vue";
+import GaugeChart from "@/components/ChartJS/GaugeChart";
 
 export default {
   name: "Cell",
@@ -289,7 +311,8 @@ export default {
     HandsontableOne,
     Tooltip,
     NTooltip,
-    AvatarGroup
+    AvatarGroup,
+    GaugeChart
   },
   props: ['cellListuid', 'rows', 'columns'],
   setup(props){
@@ -436,6 +459,10 @@ export default {
         case 'handsonTable':
           objName ='Таблица';
           this.$refs.avatarGroup.imgUrl = 'icon__table';
+          break;
+        case 'gaugeChart':
+          objName ='Индикатор';
+          this.$refs.avatarGroup.imgUrl = 'icon__indicator';
           break;
         default:
           objName = 'Без имени';

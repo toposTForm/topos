@@ -56,6 +56,7 @@ export default {
       })
     },
     disableEditor(){
+      this.$el.children[0].style.display = 'none';
       this.$refs.myEditor.getQuill().enable(false);
       for (let i = 0; i < this.$refs.myEditor.getEditor().children[0].children.length; i++){
         this.$refs.myEditor.getEditor().children[0].children[i].style.cursor = 'pointer';
@@ -69,6 +70,7 @@ export default {
       });
     },
     enableEditor(){
+      this.$el.children[0].style.display = 'block';
       this.$refs.myEditor.getQuill().enable(true);
       this.$refs.myEditor.getQuill().focus();
       for (let i = 0; i < this.$refs.myEditor.getEditor().children[0].children.length; i++){
@@ -109,16 +111,17 @@ export default {
     }
   },
   mounted() {
-    this.$data.quillHeight = this.$props.height;
-    this.$el.children[1].style.height = this.$props.height;
-    this.$el.children[1].style.zIndex = 1;
+    this.$data.quillHeight = this.$props.height + 150;
+    // this.$el.children[1].style.height = this.$props.height;
+    this.$el.children[0].style.display = 'none';
+    // this.$el.style.zIndex = 0;
     let toolBar = this.$refs.myEditor.getToolbar();
-    toolBar.style.display = 'none';
-    nextTick(() => {
-      for (let i = 0; i < this.$refs.myEditor.getEditor().children[0].children.length; i++){
-        this.$refs.myEditor.getEditor().children[0].children[i].style.cursor = 'pointer';
-      }
-    })
+    // toolBar.style.display = 'none';
+    // nextTick(() => {
+    //   for (let i = 0; i < this.$refs.myEditor.getEditor().children[0].children.length; i++){
+    //     this.$refs.myEditor.getEditor().children[0].children[i].style.cursor = 'pointer';
+    //   }
+    // })
   },
 }
 

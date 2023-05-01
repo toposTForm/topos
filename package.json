@@ -21,6 +21,7 @@
     "vue": "^3.2.13",
     "vue-chartjs": "^5.2.0",
     "vue-class-component": "^8.0.0-rc.1",
+    "vue-gauge": "^1.0.3",
     "vue-ios-alertview": "^1.1.2",
     "vue-unique-id": "^3.2.1",
     "vue3-material": "^1.0.8",

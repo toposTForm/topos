@@ -95,4 +95,7 @@ export default defineComponent({
  .icon__table{
    background-image: url("./AvatarIcons/table-icon.png");
  }
+ .icon__indicator{
+   background-image: url("./AvatarIcons/gauge-arrow-icon.svg");
+ }
 </style>

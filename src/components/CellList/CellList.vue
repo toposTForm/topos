@@ -515,6 +515,9 @@ export default {
           case 'handsonTable':
             objName ='Таблица';
             break;
+          case 'gaugeChart':
+            objName ='Индикатор';
+            break;
           default:
             objName = 'Без имени';
         }
@@ -653,7 +656,7 @@ export default {
         elem.data.data.userName = params.data.userName;
         elem.data.data.cellName = params.data.data.objName;
         let targetCell = this.$refs.cell.find(item => item.$data.uid == elem.data.data.uid);
-        if (typeof targetCell.$refs.avatarGroup !== 'undefined'){
+        if (typeof targetCell.$refs.avatarGroup !== 'undefined' && targetCell.$refs.avatarGroup !== null){
           targetCell.$refs.avatarGroup.value = params.data.userName;
         }
         this.cellFocus({data: elem.data, focused: false});
@@ -783,6 +786,7 @@ export default {
     grid-row: 1;
   }
   .format-bar{
+    visibility: hidden;
     display: grid;
     position: sticky;
     justify-content: start;

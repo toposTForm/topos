@@ -406,7 +406,7 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image gauge-arrow" style="width: 32px; height: 32px"></div>
+                          <div class="text-image gauge-arrow" @click="insertChart('gaugeChart')" style="width: 32px; height: 32px"></div>
                         </div>
                         <div class="image-wrapper">
                           <div class="item-label ">Стрелочный</div>
@@ -417,10 +417,10 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image bar-chart-vert" style="width: 26px"></div>
+                          <div class="text-image gauge-digital" style="width: 24px"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="item-label">Гистограмма В.</div>
+                          <div class="item-label">Цифровой</div>
                         </div>
                       </div>
                       <div class="item-wrapper" style="grid-row: 1">
@@ -428,10 +428,10 @@
                           <div class="text-menu-image" style="margin-top: 9px; scale: 120%"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="text-image bar-chart-hor" style="width: 24px;"></div>
+                          <div class="text-image gauge-progress" style="width: 24px;"></div>
                         </div>
                         <div class="image-wrapper">
-                          <div class="item-label">Гистограмма Г.</div>
+                          <div class="item-label">Прогрессия</div>
                         </div>
                       </div>
                     </div>
@@ -780,6 +780,12 @@ export default {
    }
   .gauge-arrow{
     background-image: url("AvatarIcons/gauge-arrow-icon.svg");
+  }
+  .gauge-digital{
+    background-image: url("AvatarIcons/digital-indicator-icon.svg");
+  }
+  .gauge-progress{
+    background-image: url("AvatarIcons/progress-bar-icon.png");
   }
   @media only screen and (max-height: 700px) and (min-height: 500px) {
     .poor-resolution{
