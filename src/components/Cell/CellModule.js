@@ -33,7 +33,7 @@ export default {
             ctx.commit("processCellText", {state: cellData});
         },
         dbClickCell(ctx, cellData){
-            ctx.commit("processDbClickCell", {state: cellData});
+            ctx.commit("processDbClickCell", {state: cellData.params, event: cellData.event});
         },
         rClick(ctx, cellData){
             ctx.commit("showrClickMenu", {state: cellData});
@@ -117,17 +117,26 @@ export default {
             if (cellData.state.dbClicked) {
                 cellData.state.dbClicked = false;
                 if (typeof cellData.state.$refs.quillEditor !== 'undefined' && cellData.state.$refs.quillEditor !== null){
-                    cellData.state.$data.cellTextHtml = cellData.state.$refs.quillEditor.$data.content;
-                    cellData.state.$refs.quillEditor.$data.readOnly = true;
-                    cellData.state.$refs.quillEditor.disableEditor();
+                    // cellData.state.$data.cellTextHtml = cellData.state.$refs.quillEditor.$data.content;
+                    // cellData.state.$refs.quillEditor.$data.readOnly = true;
+
                 }
                 if (cellData.state.$data.insertObj === 'quillEditor'){
-                    cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
-                        `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме выбора`);
+                    if (cellData.event === 'dbClick'){
+                        cellData.state.dbClicked = true;
+                    }else if(cellData.event === 'esc'){
+                        cellData.state.$refs.quillEditor.disableEditor();
+                        cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
+                            `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме выбора`);
+                    }
                 }else if (cellData.state.$data.insertObj === 'handsonTable'){
-                    cellData.state.$refs.handsonTable.disableEditor();
-                    cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
-                        `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме выбора`);
+                    if (cellData.event === 'dbClick'){
+                        cellData.state.dbClicked = true;
+                    }else if (cellData.event === 'esc'){
+                        cellData.state.$refs.handsonTable.disableEditor();
+                        cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
+                            `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме выбора`);
+                    }
                 }else if (cellData.state.$data.insertObj !== 'empty') {
                     cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
                         `Выбор элемента ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X разблокирован`);
@@ -151,6 +160,7 @@ export default {
                         `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме редактирования`);
                 }else if (cellData.state.$data.insertObj === 'handsonTable'){
                     cellData.state.$refs.handsonTable.enableEditor();
+
                     cellData.state.$.parent.refs.naiveModal.$refs.message.createMessage(
                         `Элемент ${cellData.state.$data.gridCol}Y/${cellData.state.$data.gridRow}X в режиме редактирования`);
                 }else if (cellData.state.$data.insertObj !== 'empty') {

@@ -7,12 +7,12 @@
        loadCellColumn(this.$data)"
        @resize="resizeRowBar"
        @click="cellFocus({name: name, data: this.$data, el: this.$el, event: $event})"
-       @dblclick='dbClickCell(this)'
+       @dblclick="dbClickCell({params: this, event: 'dbClick'})"
+       @keyup.esc.exact="dbClickCell({params: this, event: 'esc'})"
        class="cell"
-       :style="{display: 'grid', gridRow: gridRow, gridColumn: gridCol, cursor: cursor, width: `${resizedWidth}`, backgroundColor: `${cellBgColor}`, justifyContent: 'stretch'}">
+       :style="{display: 'grid', gridRow: gridRow, gridColumn: gridCol, cursor: cursor, width: `${resizedWidth}`, backgroundColor: `${cellBgColor}`, justifyContent: 'stretch', transform: cellTransformOnhover}">
     <div class="wrap" tabindex="1"  @keyup.delete.exact="insertChart('empty')" :style="{width: `${resizedMinWidth}`, height: `${newHeight}`, minHeight: `${newHeight}`}" :class="{'cell-focus-anima': cellFocusAnima}">
-      <div style="display: grid" v-if="insertObj === 'handsonTable'">
-        <gauge-chart>asdasd</gauge-chart>
+      <div style="display: grid" v-if="insertObj === 'handsonTable'" @focusin="disableHoverEffects" @mouseleave="disableHoverEffects">
         <n-tooltip trigger="hover" :disabled="!dbClicked" :animated="true" :duration="100" :keep-alive-on-hover='false' >
           <template #trigger>
             <div style="grid-area: 1/1; z-index: 0">
@@ -26,7 +26,7 @@
               </handsontable-one>
             </div>
           </template>
-          <div>Двойной клик для выхода из редактирования</div>
+          <div>"Esc" для выхода из редактирования</div>
         </n-tooltip>
         <div v-if="!dbClicked" class="avatarGroup">
           <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
@@ -46,7 +46,7 @@
               </my-quill-editor>
             </div>
           </template>
-         <div>Двойной клик для выхода из редактирования</div>
+         <div>"Esc" для выхода из редактирования</div>
         </n-tooltip>
         <div v-if="!dbClicked" class="avatarGroup">
           <avatar-group ref="avatarGroup" @cellNameUpdate='cellNameUpdate()'></avatar-group>
@@ -344,6 +344,7 @@ export default {
       cellFocusAnima: false,
       userName: '',
       cellName: '',
+      cellTransformOnhover: '',
     }
   },
   computed: mapGetters(['getCell', 'getCellMinHeight', "getClickUp", "getSelectedText"]),
@@ -469,7 +470,14 @@ export default {
       }
       this.$refs.avatarGroup.name = objName;
       this.$refs.avatarGroup.value = this.$data.userName;
-    }
+    },
+    disableHoverEffects(){
+      if (this.$data.dbClicked){
+        this.$data.cellTransformOnhover = 'scale(1, 1)';
+      }else{
+        this.$data.cellTransformOnhover = '';
+      }
+    },
   },
 }
 </script>
@@ -495,7 +503,6 @@ export default {
   border-color: #A4A6C2;
   background: rgba(217, 220, 239, 0.12);
   transition-duration: 200ms;
-
 }
 .cell-focus-anima{
   width: 100%;
@@ -527,6 +534,12 @@ export default {
   align-self: end;
   opacity: 1;
 }
+
+
+
+
+
+
 
 
 

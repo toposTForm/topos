@@ -11,6 +11,7 @@ import { defineComponent } from 'vue';
 import { HotTable } from '@handsontable/vue3';
 import { registerAllModules } from 'handsontable/registry';
 import 'handsontable/dist/handsontable.full.css';
+import HyperFormula from 'hyperformula';
 import {
   registerLanguageDictionary,
   getLanguagesDictionaries,
@@ -47,8 +48,13 @@ export default {
         readOnly: true,
         manualColumnMove: true,
         cursor: 'pointer',
+        filters: true,
+        dropdownMenu: true,
         licenseKey: 'non-commercial-and-evaluation',
         language: 'ru-RU',
+        formulas: {
+          engine: HyperFormula,
+        },
         search: {
           // add your custom callback function
           callback: this.searchResultCounter

@@ -102,7 +102,7 @@ export default {
   .wrap{
     display: grid;
     min-height: 20px;
-    min-width: 30px;
+    min-width: 68px;
     border: 1px solid white;
     border-right: none;
   }
