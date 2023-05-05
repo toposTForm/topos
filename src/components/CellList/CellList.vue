@@ -1,5 +1,4 @@
 <template v-if="getCellList">
-
   <div
       v-if="active && typeof cellField.raws !== 'undefined'"
       v-on="loadCellListParams(this.$data)"
@@ -11,23 +10,28 @@
          :style="{top: `${resizeRowLine.offsetTop}px`, display: resizeRowLine.display, width: `${resizeRowLine.width}px`}">
     </div>
     <div class="cell">
-      <div class="empty-bar" :style="{gridColumn: `1 / ${cellField.defaultCols + 1}`}"></div>
+      <div class="empty-bar" :style="{gridColumn: `1 / ${cellField.defaultCols + 1}`}">
+        <format-bar
+            ref='formatBar'
+            @insertChart="insertChart"
+            :cellListuid="cellListuid">
+        </format-bar>
+      </div>
       <div style="position: fixed; bottom: 0%; overflow: visible; right: 0px; z-index: 2;" >
         <right-layout
             @insertChart="insertChart"
             ref='formatBar'
             :cellListuid="cellListuid"
         >
-
         </right-layout>
       </div>
-      <div class="format-bar">
-        <format-bar
-            ref='formatBarOld'
-            @insertChart="insertChart"
-            :cellListuid="cellListuid">
-        </format-bar>
-      </div>
+<!--      <div class="format-bar">-->
+<!--        <format-bar-->
+<!--            ref='formatBar'-->
+<!--            @insertChart="insertChart"-->
+<!--            :cellListuid="cellListuid">-->
+<!--        </format-bar>-->
+<!--      </div>-->
       <div class="row-resize-container"
            @mousemove="moveResizeRowLine({data: this.$data, el: this.$el, event: $event})"
            @click="showResizeRowLine({name: name, data: this.$data, el: this.$el, event: $event})"
@@ -252,6 +256,7 @@ export default {
           if ((this.$data.resizeLine.offsetLeft + scrollLeft) < (offsetLeft + width) && (this.$data.resizeLine.offsetLeft + scrollLeft) > (offsetLeft - 31)){
             let temp = this.$data.resizeLine.offsetLeft - offsetLeft + scrollLeft;
             targetBar.$data.resizedMinWidth = temp + 31;
+            if (targetBar.$data.resizedMinWidth < 68) targetBar.$data.resizedMinWidth = 68;
             targetCell.forEach(elem => {
               elem.$data.resizedMinWidth = targetBar.$data.resizedMinWidth + 'px';
             });
@@ -362,6 +367,7 @@ export default {
           if ((this.$data.resizeRowLine.offsetTop - window.scrollY) < (offsetTop + height) && (this.$data.resizeRowLine.offsetTop) > offsetTop){
             let temp = this.$data.resizeRowLine.offsetTop - window.scrollY - offsetTop;
             targetBar.$data.newHeight = temp + 2;
+            if (targetBar.$data.newHeight < 68) targetBar.$data.newHeight = 68;
             targetCell.forEach(elem => {
               elem.$data.newHeight = targetBar.$data.newHeight + 'px';
             });
@@ -779,17 +785,18 @@ export default {
     position: sticky;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 1;
     align-content: stretch;
     justify-content: stretch;
-    background-color: black;
+    background-color: transparent;
     grid-row: 1;
   }
   .format-bar{
     visibility: hidden;
     display: grid;
     position: sticky;
-    justify-content: start;
+    width: 100%;
+    /*justify-content: start;*/
     top: 0;
     left: 0;
     z-index: 2;
@@ -832,7 +839,7 @@ export default {
     position: sticky;
     height: fit-content;
     width: fit-content;
-    top: 117px;
+    top: 112px;
     z-index: 1;
     grid-row: 2;
     justify-content: start;
@@ -843,7 +850,7 @@ export default {
   .column-resize-container{
     position: absolute;
     background-color: transparent;
-    top: 117px;
+    top: 112px;
     left: 31px;
     z-index: 1;
     height: 20px;

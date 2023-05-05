@@ -98,8 +98,8 @@ export default {
 
 <style scoped>
 .main-container{
-  max-width: 300px;
-  height: 300px;
-  background-color: white;
+  display: grid;
+  background-color: transparent;
+  grid-template-rows: 50px 50px;
 }
 </style>
