@@ -12,7 +12,6 @@
     <div class="cell">
       <div class="empty-bar" :style="{gridColumn: `1 / ${cellField.defaultCols + 1}`}">
         <format-bar
-            ref='formatBar'
             @insertChart="insertChart"
             :cellListuid="cellListuid">
         </format-bar>
@@ -784,7 +783,7 @@ export default {
     display: grid;
     position: sticky;
     top: 0;
-    left: 0;
+    /*left: 100%;*/
     z-index: 1;
     align-content: stretch;
     justify-content: stretch;
