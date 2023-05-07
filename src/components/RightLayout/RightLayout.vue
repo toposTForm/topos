@@ -517,16 +517,6 @@ export default {
     nTabsBar.style.backgroundColor = '#F0E5FF';
     nTabsBar.style.border = '1px solid #E1CCFF';
     nTabsBar.style.borderRadius = '50px';
-    // nTabsBar.style.width = '88px';
-    // nTabsBar.style.minHeight = '28px';
-    // nTabsBar.style.order = '0';
-    // nTabsBar.style.zIndex = '0';
-    // nTabsBar.style.marginRight = '10px';
-    // nTabsBar.style.paddingLeft = '10px';
-    // let nTabsTabWrapper = document.querySelectorAll('.n-tabs-tab-wrapper');
-    // nTabsTabWrapper.forEach(elem => {
-    //   elem.style.zIndex = 1;
-    // })
   }
 }
 </script>

@@ -5,8 +5,10 @@
         <div class="logo"></div>
         <div class="docname-wrapper">
           <div class="new-form-text">Имя формы {{ formName }}</div>
-          <div class="saved-text">Изменения {{ dateTime }}</div>
-          <div style="display: grid; grid-row: 1/3; grid-column: 2; align-content: center;"><div class="pen-icon"></div></div>
+          <div class="saved-text">Последнее изменение {{ dateTime }}</div>
+          <div style="display: grid; grid-row: 1/3; grid-column: 2; align-content: center;">
+            <div @click="changeName" class="pen-icon"></div>
+          </div>
         </div>
       </div>
       <div class="actions-container">
@@ -42,7 +44,12 @@ export default {
   computed: mapGetters(["getSelectedText"]),
   methods: {
     ...mapActions(['selectedText']),
-
+    changeName(){
+      this.$emit('changeFormName', {
+        data: this.$data,
+        type: 'changeFormName'
+      })
+    }
   },
   watch: {
 

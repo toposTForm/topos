@@ -12,25 +12,19 @@
     <div class="cell">
       <div class="empty-bar" :style="{gridColumn: `1 / ${cellField.defaultCols + 1}`}">
         <format-bar
-            @insertChart="insertChart"
+            ref='formatBar'
+            @changeFormName="changeFormName"
             :cellListuid="cellListuid">
         </format-bar>
       </div>
       <div style="position: fixed; bottom: 0%; overflow: visible; right: 0px; z-index: 2;" >
         <right-layout
+            ref='rightLayout'
             @insertChart="insertChart"
-            ref='formatBar'
             :cellListuid="cellListuid"
         >
         </right-layout>
       </div>
-<!--      <div class="format-bar">-->
-<!--        <format-bar-->
-<!--            ref='formatBar'-->
-<!--            @insertChart="insertChart"-->
-<!--            :cellListuid="cellListuid">-->
-<!--        </format-bar>-->
-<!--      </div>-->
       <div class="row-resize-container"
            @mousemove="moveResizeRowLine({data: this.$data, el: this.$el, event: $event})"
            @click="showResizeRowLine({name: name, data: this.$data, el: this.$el, event: $event})"
@@ -718,6 +712,15 @@ export default {
        console.log(`Err: ${e.event}`);
      }
     },
+    changeFormName(params){
+      this.$refs.naiveModal.$refs.promtModal.title = `Имя Формы`;
+      this.$refs.naiveModal.$refs.promtModal.content = 'Введите название:';
+      this.$refs.naiveModal.$refs.promtModal.negativeText = 'Отмена';
+      this.$refs.naiveModal.$refs.promtModal.positiveText = 'Принять';
+      this.$refs.naiveModal.$refs.promtModal.showInput = true;
+      setTimeout(() => this.$refs.naiveModal.$refs.promtModal.showModal = true, 300);
+      this.$refs.naiveModal.$refs.promtModal.bufferElem = {elem: params, objName: `Имя Формы`};
+    }
   },
   mounted() {
     this.$data.cellField.numberOfcells = this.$data.cellField.defaultRaws * this.$data.cellField.defaultCols;

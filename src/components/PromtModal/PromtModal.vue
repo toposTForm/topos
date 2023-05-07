@@ -75,12 +75,16 @@ export default {
           emit('promtModalAction', { data: bufferElem, actionFirst: this.positiveText});
         }else if (bufferElem.actionFirst === 'Вручную' || this.positiveText === 'Принять'){
           showModalRef.value = false;
-          let action = 'addElement'
-          emit('addElement', { data: bufferElem, action: action, userName: showModalRef.inputValue});
+          let action = 'addElement';
+          if (bufferElem.elem.type === 'changeFormName'){
+            bufferElem.elem.data.formName = showModalRef.inputValue;
+          }else{
+            emit('addElement', { data: bufferElem, action: action, userName: showModalRef.inputValue});
+          }
           message.success('Успешно');
         }else if (this.positiveText === 'Удалить') {
           showModalRef.value = false;
-          let action = 'Удалить'
+          let action = 'Удалить';
           emit('addElement', { data: bufferElem, action: action});
           message.success('Успешно');
         }
