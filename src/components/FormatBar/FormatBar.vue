@@ -4,8 +4,8 @@
       <div class="logo-container">
         <div class="logo"></div>
         <div class="docname-wrapper">
-          <div class="new-form-text">Имя формы {{ formName }}</div>
-          <div class="saved-text">Последнее изменение {{ dateTime }}</div>
+          <div class="new-form-text">Имя формы: {{ formName }}</div>
+          <div class="saved-text">Последнее изменение: {{ dateTime }}</div>
           <div style="display: grid; grid-row: 1/3; grid-column: 2; align-content: center;">
             <div @click="changeName" class="pen-icon"></div>
           </div>
@@ -26,15 +26,36 @@
         </div>
       </div>
     </div>
-    <div class="sub-panel-container"></div>
+    <div class="sub-panel-container">
+      <div class="tools-container">
+        <div class="tool-wrapper">
+          <div class="tool-icon udo"></div>
+          <div class="tool-icon redo"></div>
+          <div class="tool-icon divider"></div>
+          <div class="tool-icon delete-form"></div>
+          <div class="active-dropdown">
+            <MySelect></MySelect>
+          </div>
+        </div>
+      </div>
+
+      <div class="active-dropdown">
+
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapActions} from "vuex";
+import MySelect from "@/components/MyNaiveMessage/Select";
+
 export default {
   name: "FormatBar",
   props: ['cellListuid',],
+  components: {
+    MySelect,
+  },
   data(){
     return{
       formName: '',
@@ -63,7 +84,6 @@ export default {
     grid-template-rows: repeat(2, 56px);
     background-color: transparent;
     justify-self: center;
-    /*justify-content: center;*/
   }
   .header-container{
     display: grid;
@@ -74,7 +94,14 @@ export default {
     padding-right: 31px;
   }
   .sub-panel-container{
+    display: grid;
+    grid-auto-flow: column;
+    padding-right: 30%;
+    padding-left: 46px;
     background: #FAFBFC;
+    align-content: center;
+    /*justify-content: start;*/
+    grid-column-gap: 16px;
   }
   .logo-container{
     display: grid;
@@ -218,5 +245,69 @@ export default {
   .icon-wrapper:hover .inf-button{
     transform: scale(1.15, 1.15);
     transition-duration: 200ms;
+  }
+  .tools-container{
+    display: grid;
+    justify-self: start;
+  }
+  .tool-wrapper{
+    display: grid;
+    align-content: center;
+    justify-self: start;
+    grid-column-gap: 8px;
+    grid-auto-flow: column;
+  }
+  .tool-icon{
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    align-self: center;
+  }
+  .udo{
+    opacity: 0.5;
+    width: 15.04px;
+    height: 13.54px;
+    background-image: url("./undo-icon.svg");
+  }
+  .redo{
+    opacity: 0.5;
+    width: 15.04px;
+    height: 13.54px;
+    background-image: url("./redo-icon.svg");
+  }
+  .divider{
+    width: 0px;
+    height: 24px;
+    border: 1px solid #E7EBF4;
+    grid-row: 1;
+    background-image: url("./divider-icon.svg");
+  }
+
+  .tool-icon:hover {
+    opacity: 1;
+    transform: scale(1.1, 1.1);
+    transition-duration: 200ms;
+    cursor: url("./cursor-pointer-icon.svg") 0 0, pointer;
+  }
+  .divider:hover{
+    transform: none;
+    cursor: initial;
+  }
+  .delete-form{
+    opacity: 0.5;
+    width: 16px;
+    height: 16px;
+    background-image: url("./delete-icon.svg");
+  }
+  .active-dropdown{
+    display: grid;
+    width: 230px;
+    max-height: 32px;
+    background: #F9F9F9;
+    border: 1px solid #DDDEDF;
+    border-radius: 5px;
+    align-content: center;
+    justify-self: start;
   }
 </style>

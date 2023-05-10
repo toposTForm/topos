@@ -37,7 +37,7 @@
                 </div>
                 <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                   <template #trigger>
-                    <div class="text-image"></div>
+                    <div class="text-image" @click="insertChart('quillEditor')"></div>
                   </template>
                   <div>Текстовый редактор</div>
                 </n-tooltip>
@@ -53,7 +53,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image table"></div>
+                  <div class="text-image table" @click="insertChart('handsonTable')"></div>
                 </template>
                 <div>Таблица</div>
               </n-tooltip>
@@ -85,7 +85,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image linear-graph"></div>
+                  <div class="text-image linear-graph" @click="insertChart('lineChart')"></div>
                 </template>
                 <div>Линейный график</div>
               </n-tooltip>
@@ -101,7 +101,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image bar-chart-hor"></div>
+                  <div class="text-image bar-chart-hor" @click="insertChart('barChartHor')"></div>
                 </template>
                 <div>Гистограмма гориз.</div>
               </n-tooltip>
@@ -117,7 +117,7 @@
               </div>
               <n-tooltip trigger="hover" placement="left" :animated="true" :duration="100" :keep-alive-on-hover='false' >
                 <template #trigger>
-                  <div class="text-image bar-chart-vert"></div>
+                  <div class="text-image bar-chart-vert" @click="insertChart('barChartVert')"></div>
                 </template>
                 <div>Гистограмма верт.</div>
               </n-tooltip>
@@ -488,12 +488,16 @@ export default {
   },
   setup(_, {emit}){
     return{
-      isCollapsed: ref(false),
+      isCollapsed: ref(true),
       cellSelected: ref(false),
       expandMenu(){
         if(this.isCollapsed){
           this.isCollapsed = false;
         }else{
+          let nTabsBar = document.querySelector('.n-tabs-bar');
+          nTabsBar.style.backgroundColor = '#F0E5FF';
+          nTabsBar.style.border = '1px solid #E1CCFF';
+          nTabsBar.style.borderRadius = '50px';
           this.isCollapsed = true;
         }
       },
@@ -504,7 +508,6 @@ export default {
         nTabsBar.style.borderRadius = '50px';
       },
       insertChart(param){
-        let bla = 0;
         emit('insertChart', {
           data: this.$data,
           type: param
@@ -513,10 +516,7 @@ export default {
     }
   },
   mounted() {
-    let nTabsBar = document.querySelector('.n-tabs-bar');
-    nTabsBar.style.backgroundColor = '#F0E5FF';
-    nTabsBar.style.border = '1px solid #E1CCFF';
-    nTabsBar.style.borderRadius = '50px';
+
   }
 }
 </script>

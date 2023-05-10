@@ -76,7 +76,7 @@ export default {
         }else if (bufferElem.actionFirst === 'Вручную' || this.positiveText === 'Принять'){
           showModalRef.value = false;
           let action = 'addElement';
-          if (bufferElem.elem.type === 'changeFormName'){
+          if (bufferElem.type === 'changeFormName'){
             bufferElem.elem.data.formName = showModalRef.inputValue;
           }else{
             emit('addElement', { data: bufferElem, action: action, userName: showModalRef.inputValue});

@@ -100,6 +100,33 @@ import MyJenesiusModal from "@/components/MyJenesiusModal/MyJenesiusModal";
 import MyNaiveModal from "@/components/MyNaiveModal/MyNaiveModal";
 import MyNaiveInput from "@/components/MyNaiveMessage/MyNaiveInput";
 import RightLayout from "@/components/RightLayout/RightLayout";
+
+class Memento{
+  constructor(value) {
+    this.value = value;
+  }
+};
+const creator = {
+  save: val => new Memento(val),
+  restore: memento => memento.value,
+};
+class Caretaker{
+  constructor() {
+    this.values = [];
+  }
+  addMemento(memento){
+    this.values.push(memento);
+  }
+  getMemento(index){
+    return this.values[index];
+  }
+}
+const hranitel = new Caretaker();
+// creator.restore(hranitel.getMemento(0));
+// hranitel.addMemento(creator.save('hello'));
+// hranitel.addMemento(creator.save('hello1'));
+// hranitel.addMemento(creator.save('hello2'));
+// console.log(creator.restore(hranitel.getMemento(1)));
 export default {
   name: "CellList",
   components:{
@@ -480,6 +507,7 @@ export default {
       // }
     },
     insertChart(params){
+
       try {
         let tempArr = this.$data.cellFocused.slice(0);
         let objName = '';
@@ -713,13 +741,14 @@ export default {
      }
     },
     changeFormName(params){
+      hranitel.addMemento(creator.save(params.data.formName));
       this.$refs.naiveModal.$refs.promtModal.title = `Имя Формы`;
       this.$refs.naiveModal.$refs.promtModal.content = 'Введите название:';
       this.$refs.naiveModal.$refs.promtModal.negativeText = 'Отмена';
       this.$refs.naiveModal.$refs.promtModal.positiveText = 'Принять';
       this.$refs.naiveModal.$refs.promtModal.showInput = true;
       setTimeout(() => this.$refs.naiveModal.$refs.promtModal.showModal = true, 300);
-      this.$refs.naiveModal.$refs.promtModal.bufferElem = {elem: params, objName: `Имя Формы`};
+      this.$refs.naiveModal.$refs.promtModal.bufferElem = {type: params.type, elem: params};
     }
   },
   mounted() {
