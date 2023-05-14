@@ -909,19 +909,32 @@ export default {
       height: 750px;
     }
   }
-  @media only screen and (max-height: 1400px) and (min-height: 910px) {
+  @media only screen and (max-height: 960px) and (min-height: 910px) {
     .hight-resolution{
       display: none;
     }
     .collapsed-layout-container{
-      height: 47vw;
+      height: 860px;
     }
     .expanded-layout-container{
-      height: 47vw;
+      height: 860px;
     }
     .components-container__expanded{
-      height: 46vw;
+      height: 845px;
     }
   }
-
+  @media only screen and (max-height: 1400px) and (min-height: 961px) {
+    .hight-resolution{
+      display: none;
+    }
+    .collapsed-layout-container{
+      height: 900px;
+    }
+    .expanded-layout-container{
+      height: 900px;
+    }
+    .components-container__expanded{
+      height: 845px;
+    }
+  }
 </style>
