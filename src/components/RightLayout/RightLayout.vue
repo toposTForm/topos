@@ -899,6 +899,12 @@ export default {
     .hight-resolution{
       display: none;
     }
+    .empty{
+      display: none;
+    }
+    .second{
+      margin-top: 12px;
+    }
     .collapsed-layout-container{
       height: 800px;
     }
