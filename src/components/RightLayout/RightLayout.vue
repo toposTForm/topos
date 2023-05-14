@@ -911,9 +911,6 @@ export default {
     .expanded-layout-container{
       height: 800px;
     }
-    .components-container__expanded{
-      height: 750px;
-    }
   }
   @media only screen and (max-height: 960px) and (min-height: 910px) {
     .hight-resolution{
@@ -921,6 +918,7 @@ export default {
     }
     .empty{
       height: 0px;
+      padding-top: 0px;
     }
     .collapsed-layout-container{
       height: 860px;
