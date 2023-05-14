@@ -2,12 +2,11 @@
 <template>
   <n-space vertical style="background-color: #F9F9F9">
     <n-select
-        v-model:value="options"
+        v-model:value="value"
         placeholder="история"
-        multiple
         :options="options"
+        :on-update:value="onOpenRef"
         :max-tag-count="1"
-        :fallback-option="trim"
         status="success"
     />
   </n-space>
@@ -24,79 +23,78 @@ export default defineComponent({
     NSelect,
     NSpace
   },
-  setup () {
+  data(){
     return {
-      value: ref([1,2,3,4,5]),
-      trim: (value) => {
-        let bla = value;
-        return {
-          label: value + '/',
-          value
-        };
+      bufferElem: '',
+    }
+  },
+  setup (_, {emit}) {
+    const optionsRef = ref([
+      {
+        label: "Действие 1",
+        value: 'song0',
+        disabled: false,
+        style: {
+          backgroundColor: 'transparent'
+        },
+        type: 'table',
+        status: 'warning'
       },
-      options: [
-        {
-          label: "Everybody's Got Something to Hide Except Me and My Monkey",
-          value: 'song0',
-          disabled: true,
-          style: {
-            backgroundColor: 'red'
-          },
-          status: 'warning'
-
-        },
-        {
-          label: 'Drive My Car',
-          value: 'song1',
-          status: 'warning'
-        },
-        {
-          label: 'Norwegian Wood',
-          value: 'song2'
-        },
-        {
-          label: "You Won't See",
-          value: 'song3',
-          disabled: true
-        },
-        {
-          label: 'Nowhere Man',
-          value: 'song4'
-        },
-        {
-          label: 'Think For Yourself',
-          value: 'song5'
-        },
-        {
-          label: 'The Word',
-          value: 'song6'
-        },
-        {
-          label: 'Michelle',
-          value: 'song7',
-          disabled: true
-        },
-        {
-          label: 'What goes on',
-          value: 'song8'
-        },
-        {
-          label: 'Girl',
-          value: 'song9'
-        },
-        {
-          label: "I'm looking through you",
-          value: 'song10'
-        },
-        {
-          label: 'In My Life',
-          value: 'song11'
-        },
-        {
-          label: 'Wait',
-          value: 'song12'
-        }
-      ],
+      {
+        label: 'Действие 2',
+        value: 'song1',
+        status: 'warning'
+      },
+      {
+        label: 'Действие 3',
+        value: 'song2'
+      },
+      {
+        label: "Действие 4",
+        value: 'song3',
+        disabled: true
+      },
+      {
+        label: 'Действие 5',
+        value: 'song4'
+      },
+      {
+        label: 'Действие 6',
+        value: 'song5'
+      },
+      {
+        label: 'Действие 7',
+        value: 'song6'
+      },
+      {
+        label: 'Действие 8',
+        value: 'song7',
+        disabled: true
+      },
+      {
+        label: 'Действие 9',
+        value: 'song8'
+      },
+      {
+        label: 'Действие 10',
+        value: 'song9'
+      },
+    ],);
+    const temp = ref(123);
+    const onOpenRef = (value, label) =>{
+      let bla = value;
+      let bla2 = label;
+      updateValue(value, label);
+    };
+    function updateValue(valueCur, label){
+      let bla = optionsRef;
+      let blafd = temp;
+      temp.value = valueCur;
+    }
+    return {
+      value: temp,
+      onOpenRef,
+      options: optionsRef,
     }
   },
   mounted() {

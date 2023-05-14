@@ -29,10 +29,25 @@
     <div class="sub-panel-container">
       <div class="tools-container">
         <div class="tool-wrapper">
-          <div class="tool-icon udo"></div>
-          <div class="tool-icon redo"></div>
+          <n-tooltip trigger="hover" placement="top-end" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+            <template #trigger>
+              <div class="tool-icon udo"></div>
+            </template>
+            <div class="tooltip">Отменить действие</div>
+          </n-tooltip>
+          <n-tooltip trigger="hover" placement="top-start" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+            <template #trigger>
+              <div class="tool-icon redo"></div>
+            </template>
+            <div class="tooltip">Повторить действие</div>
+          </n-tooltip>
           <div class="tool-icon divider"></div>
-          <div class="tool-icon delete-form"></div>
+          <n-tooltip trigger="hover" placement="top-start" :animated="true" :duration="100" :keep-alive-on-hover='false' >
+            <template #trigger>
+              <div class="tool-icon delete-form"></div>
+            </template>
+            <div class="tooltip">Очистить историю</div>
+          </n-tooltip>
           <div class="active-dropdown">
             <MySelect></MySelect>
           </div>
@@ -49,12 +64,14 @@
 <script>
 import {mapGetters, mapActions} from "vuex";
 import MySelect from "@/components/MyNaiveMessage/Select";
+import { NTooltip } from "naive-ui";
 
 export default {
   name: "FormatBar",
   props: ['cellListuid',],
   components: {
     MySelect,
+    NTooltip
   },
   data(){
     return{
@@ -309,5 +326,11 @@ export default {
     border-radius: 5px;
     align-content: center;
     justify-self: start;
+  }
+  .tooltip{
+    font-family: 'Golos Text Regular';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
   }
 </style>
