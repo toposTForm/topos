@@ -923,4 +923,5 @@ export default {
       height: 46vw;
     }
   }
+
 </style>
