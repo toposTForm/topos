@@ -920,7 +920,7 @@ export default {
       height: 860px;
     }
     .components-container__expanded{
-      height: 845px;
+      height: 815px;
     }
   }
   @media only screen and (max-height: 1400px) and (min-height: 961px) {
