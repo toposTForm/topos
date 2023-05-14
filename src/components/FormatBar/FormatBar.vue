@@ -98,12 +98,14 @@ export default {
 <style scoped>
   .main-container{
     display: grid;
+    width: 100vw;
     grid-template-rows: repeat(2, 56px);
     background-color: transparent;
     justify-self: center;
   }
   .header-container{
     display: grid;
+    width: 100vw;
     background: #FFFFFF;
     border-bottom: 1px solid #F0F2F7;
     box-shadow: 0px 4px 12px #EDF5F9;

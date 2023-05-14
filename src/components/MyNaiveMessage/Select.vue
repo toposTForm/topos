@@ -80,7 +80,7 @@ export default defineComponent({
         value: 'song9'
       },
     ],);
-    const temp = ref(123);
+    const temp = ref('история');
     const onOpenRef = (value, label) =>{
       let bla = value;
       let bla2 = label;

@@ -10,7 +10,8 @@
          :style="{top: `${resizeRowLine.offsetTop}px`, display: resizeRowLine.display, width: `${resizeRowLine.width}px`}">
     </div>
     <div class="cell">
-      <div class="empty-bar" :style="{gridColumn: `1 / ${cellField.defaultCols + 1}`}">
+      <div class="empty-bar" >
+<!--        :style="{gridColumn: `1 / ${cellField.defaultCols + 1}`}"-->
         <format-bar
             ref='formatBar'
             @changeFormName="changeFormName"
@@ -814,13 +815,9 @@ export default {
   .empty-bar{
     display: grid;
     position: sticky;
-    top: 0;
-    /*left: 100%;*/
-    z-index: 1;
-    align-content: stretch;
-    justify-content: stretch;
-    background-color: transparent;
-    grid-row: 1;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
   }
   .format-bar{
     visibility: hidden;

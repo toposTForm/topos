@@ -530,7 +530,7 @@ export default {
   .expanded-layout-container{
     display: grid;
     min-width: 288px;
-    min-height: 600px;
+    min-height: 400px;
     border-width: 1px 0px 0px 1px;
     border-style: solid;
     border-color: #F0F2F7;
@@ -547,7 +547,6 @@ export default {
     display: grid;
     padding-top: 16px;
     gap: 16px;
-    /*align-content: start;*/
     align-self: stretch;
   }
   .base-components-container{
@@ -564,7 +563,6 @@ export default {
     padding: 16px;
     padding-left: 0;
     gap: 8px;
-    /*background: #FFFFFF;*/
     border-top: 1px solid #F0F2F7;
     box-shadow: 4px 0px 4px rgba(44, 75, 99, 0.1);
   }
@@ -777,18 +775,116 @@ export default {
   .gauge-progress{
     background-image: url("AvatarIcons/progress-bar-icon.png");
   }
-  @media only screen and (max-height: 700px) and (min-height: 500px) {
+  @media only screen and (max-height: 550px) and (min-height: 500px) {
+    .components-container__expanded{
+      gap: 2px;
+      padding-top: 2px;
+    }
+    .items-container{
+      gap: 1px;
+      height: fit-content;
+    }
+    .item-wrapper{
+      height: 50px;
+    }
+    .item-menu-wrapper{
+      display: none;
+    }
+    .base-components-container{
+      grid-row-gap: 0px;
+    }
+    .footer-container{
+      padding: 6px;
+      height: fit-content;
+    }
+    .empty{
+      display: none;
+    }
+    .second{
+      margin-top: 0px;
+      padding-top: 3px;
+      height: fit-content;
+      padding-bottom: 3px;
+    }
     .poor-resolution{
       display: none;
     }
     .collapsed-layout-container{
-      height: 600px;
+      height: 445px;
     }
     .expanded-layout-container{
-      height: 600px;
+      height: 445px;
     }
   }
-  @media only screen and (max-height: 800px) and (min-height: 710px) {
+  @media only screen and (max-height: 610px) and (min-height: 551px) {
+    .components-container__expanded{
+      gap: 2px;
+      padding-top: 5px;
+    }
+    .items-container{
+      gap: 1px;
+    }
+    .item-wrapper{
+      height: 68px;
+    }
+    .empty{
+      display: none;
+    }
+    .base-components-container{
+      grid-row-gap: 2px;
+    }
+    .poor-resolution{
+      display: none;
+    }
+    .collapsed-layout-container{
+      height: 530px;
+    }
+    .expanded-layout-container{
+      height: 530px;
+    }
+  }
+  @media only screen and (max-height: 700px) and (min-height: 611px) {
+    .components-container__expanded{
+      gap: 2px;
+      padding-top: 5px;
+    }
+    .items-container{
+      gap: 1px;
+    }
+    .item-wrapper{
+      height: 70px;
+    }
+    .base-components-container{
+      grid-row-gap: 7px;
+    }
+    .second{
+      /*margin-top: 0px;*/
+      /*padding-top: 28px;*/
+      /*height: fit-content;*/
+      /*padding-bottom: 3px;*/
+    }
+    .poor-resolution{
+      display: none;
+    }
+    .collapsed-layout-container{
+      height: 44vw;
+    }
+    .expanded-layout-container{
+      height: 44vw;
+    }
+  }
+  @media only screen and (max-height: 750px) and (min-height: 701px) {
+    .middle-resolution{
+      display: none;
+    }
+    .collapsed-layout-container{
+      height: 650px;
+    }
+    .expanded-layout-container{
+      height: 650px;
+    }
+  }
+  @media only screen and (max-height: 800px) and (min-height: 751px) {
     .middle-resolution{
       display: none;
     }
