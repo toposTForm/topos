@@ -909,18 +909,18 @@ export default {
       height: 750px;
     }
   }
-  @media only screen and (max-height: 1100px) and (min-height: 910px) {
+  @media only screen and (max-height: 1400px) and (min-height: 910px) {
     .hight-resolution{
       display: none;
     }
     .collapsed-layout-container{
-      height: 900px;
+      height: 45vw;
     }
     .expanded-layout-container{
-      height: 900px;
+      height: 45vw;
     }
     .components-container__expanded{
-      height: 850px;
+      height: 44vw;
     }
   }
 </style>
