@@ -920,7 +920,7 @@ export default {
       display: none;
     }
     .empty{
-      height: 30px;
+      height: 0px;
     }
     .collapsed-layout-container{
       height: 860px;
