@@ -917,7 +917,7 @@ export default {
       display: none;
     }
     .empty{
-      height: 0px;
+      height: 15px;
       padding-top: 0px;
     }
     .collapsed-layout-container{
