@@ -914,13 +914,13 @@ export default {
       display: none;
     }
     .collapsed-layout-container{
-      height: 45vw;
+      height: 47vw;
     }
     .expanded-layout-container{
-      height: 45vw;
+      height: 47vw;
     }
     .components-container__expanded{
-      height: 44vw;
+      height: 46vw;
     }
   }
 </style>
