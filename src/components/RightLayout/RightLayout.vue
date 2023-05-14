@@ -919,6 +919,9 @@ export default {
     .hight-resolution{
       display: none;
     }
+    .empty{
+      padding-top: 30px;
+    }
     .collapsed-layout-container{
       height: 860px;
     }
